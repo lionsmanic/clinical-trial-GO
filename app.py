@@ -6,20 +6,18 @@ import pandas as pd
 # --- 頁面配置與自定義 CSS ---
 st.set_page_config(page_title="婦癌臨床試驗導航系統", layout="wide")
 
+# 修正：將 unsafe_allow_stdio 改回 unsafe_allow_html
 st.markdown("""
     <style>
-    /* 調整主標題字體 */
-    .main-title { font-size: 42px !important; font-weight: 700; color: #008080; }
-    /* 全域字體放大 */
-    html, body, [class*="css"] { font-size: 18px !important; }
-    /* 卡片式設計 */
-    .stAlert { border-radius: 10px; }
-    /* 側邊欄配色 */
-    [data-testid="stSidebar"] { background-color: #f0f2f6; }
+    .main-title { font-size: 42px !important; font-weight: 700; color: #008080; padding-bottom: 20px; }
+    html, body, [class*="css"] { font-size: 19px !important; line-height: 1.6; }
+    .stAlert { border-radius: 12px; border: 1px solid #d1d9e6; }
+    [data-testid="stSidebar"] { background-color: #f8f9fa; border-right: 1px solid #eee; }
+    .reportview-container .main .block-container { padding-top: 2rem; }
     </style>
-    """, unsafe_allow_stdio=True)
+    """, unsafe_allow_html=True)
 
-# --- 1. 完整臨床試驗資料庫 (已補全條件與中文機轉) ---
+# --- 1. 臨床試驗資料庫 ---
 TRIALS_DATA = [
     {
         "cancer_type": "Endometrial cancer (子宮內膜癌)",
@@ -108,87 +106,63 @@ TRIALS_DATA = [
     }
 ]
 
-# --- 2. 側邊欄：AI 與 搜尋 ---
+# --- 2. 側邊欄 ---
 with st.sidebar:
     st.markdown("### 🤖 Gemini AI 決策輔助")
     api_key = st.text_input("Gemini API Key", type="password")
-    patient_notes = st.text_area("輸入患者臨床摘要 (病史、基因檢測、治療紀錄)", height=300, placeholder="例如：65y/o OCCC, stage IIIC, s/p IP chemo, 8 months later CA-125 rise...")
+    patient_notes = st.text_area("輸入患者臨床摘要", height=300, placeholder="例如：65y/o OCCC, stage IIIC, s/p IP chemo...")
     
     if st.button("🚀 開始媒合試驗"):
         if api_key and patient_notes:
             try:
                 genai.configure(api_key=api_key)
                 model = genai.GenerativeModel('gemini-1.5-pro')
-                prompt = f"你是一位台灣婦癌專家。請根據現有試驗資料：{TRIALS_DATA}。分析患者：{patient_notes}。請以繁體中文建議適合的試驗，說明藥物機轉理由及入案優勢。"
+                prompt = f"你是一位台灣婦癌專家。請根據試驗資料：{TRIALS_DATA}，分析患者：{patient_notes}。請建議適合試驗，說明理由。"
                 response = model.generate_content(prompt)
                 st.markdown("---")
                 st.write(response.text)
             except Exception as e:
                 st.error(f"AI 連線失敗：{e}")
-        else:
-            st.warning("請填寫 API Key 與患者描述")
 
-# --- 3. 主頁面：視覺化地圖 ---
-st.markdown("<div class='main-title'>🎗️ 婦癌臨床試驗導航地圖</div>", unsafe_allow_stdio=True)
-st.write("點擊下方切換 Cancer Type，檢視不同病程階段的試驗佈局。")
+# --- 3. 主頁面 ---
+st.markdown("<div class='main-title'>🎗️ 婦癌臨床試驗導航地圖</div>", unsafe_allow_html=True)
 
 def create_sankey(cancer_type):
-    nodes = ["初診 (Diagnosis)", "一線治療 (1st Line)", "維持期 (Maintenance)", "復發期 (Recurrence)", "臨床試驗 (Trial)"]
+    nodes = ["初診 (Dx)", "一線 (1st Line)", "維持 (Maint.)", "復發 (Recurr.)", "試驗 (Trial)"]
     sources, targets, values, labels = [], [], [], []
-    
     for t in TRIALS_DATA:
         if t["cancer_type"].startswith(cancer_type):
             if "1st Line" in t["treatment_line"] and "Maintenance" not in t["treatment_line"]:
                 sources.extend([0, 1]); targets.extend([1, 4]); values.extend([1, 1]); labels.extend(["標準治療", t["name"]])
             elif "Maintenance" in t["treatment_line"]:
-                sources.extend([1, 2]); targets.extend([2, 4]); values.extend([1, 1]); labels.extend(["化療後穩定", t["name"]])
+                sources.extend([1, 2]); targets.extend([2, 4]); values.extend([1, 1]); labels.extend(["化療穩定", t["name"]])
             elif "Recurrence" in t["stage"]:
-                sources.extend([0, 3]); targets.extend([3, 4]); values.extend([1, 1]); labels.extend(["追蹤復發", t["name"]])
-
+                sources.extend([0, 3]); targets.extend([3, 4]); values.extend([1, 1]); labels.extend(["復發", t["name"]])
     fig = go.Figure(data=[go.Sankey(
-        node = dict(pad = 30, thickness = 25, label = nodes, color = "#008080", font=dict(size=16)),
-        link = dict(source = sources, target = targets, value = values, label = labels, color = "rgba(0, 128, 128, 0.15)")
+        node = dict(pad = 30, thickness = 25, label = nodes, color = "#008080"),
+        link = dict(source = sources, target = targets, value = values, label = labels, color = "rgba(0, 128, 128, 0.1)")
     )])
     fig.update_layout(height=400, margin=dict(l=10, r=10, t=20, b=20))
     return fig
 
-tab_ec, tab_oc = st.tabs(["子宮內膜癌 (Endometrial)", "卵巢癌 (Ovarian)"])
-with tab_ec:
-    st.plotly_chart(create_sankey("Endometrial"), use_container_width=True)
-with tab_oc:
-    st.plotly_chart(create_sankey("Ovarian"), use_container_width=True)
+t_ec, t_oc = st.tabs(["子宮內膜癌 (Endometrial)", "卵巢癌 (Ovarian)"])
+with t_ec: st.plotly_chart(create_sankey("Endometrial"), use_container_width=True)
+with t_oc: st.plotly_chart(create_sankey("Ovarian"), use_container_width=True)
 
-# --- 4. 臨床細節卡片 ---
-st.markdown("---")
-st.subheader("📋 試驗 Protocol 與 藥物機轉詳情")
-
+# --- 4. 詳情卡片 ---
+st.divider()
 selected_name = st.selectbox("請選擇試驗名稱：", [t["name"] for t in TRIALS_DATA])
 t = next(item for item in TRIALS_DATA if item["name"] == selected_name)
 
-# 使用 Status 呈現關鍵藥物
-with st.status(f"🛠️ **藥物機轉：{t['drug_name']}**", expanded=True):
-    st.write(t['rationale'])
-    
+st.markdown(f"### 🧪 藥物機轉：{t['drug_name']}")
+st.info(t['rationale'])
 
-col1, col2 = st.columns([1, 1])
-
+col1, col2 = st.columns(2)
 with col1:
-    st.markdown("#### 🧪 給藥 Protocol")
-    st.info(t['protocol'])
-    
-    st.markdown("#### 🏥 試驗階段")
-    st.write(f"**癌別:** {t['cancer_type']}")
-    st.write(f"**分期:** {t['stage']}")
-    st.write(f"**試驗期數:** {t['phase']}")
-
+    st.markdown("#### 💉 給藥 Protocol")
+    st.success(t['protocol'])
 with col2:
     st.markdown("#### ✅ 入案條件 (Inclusion)")
-    for inc in t['inclusion']:
-        st.write(f"🔹 {inc}")
-        
+    for inc in t['inclusion']: st.write(f"🔹 {inc}")
     st.markdown("#### ❌ 排除條件 (Exclusion)")
-    for exc in t['exclusion']:
-        st.write(f"🔸 {exc}")
-
-st.divider()
-st.caption("Disclaimer: 本平台僅供醫師學術交流與臨床參考，詳情請依據院內 SIV 手冊或 ClinicalTrials.gov 為準。")
+    for exc in t['exclusion']: st.write(f"🔸 {exc}")
