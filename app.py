@@ -1,10 +1,10 @@
 import streamlit as st
 import google.generativeai as genai
 
-# --- 🏥 婦癌臨床導航與實證圖書館 (2026 旗艦最終整合版) ---
+# --- 🏥 婦癌臨床導航與實證圖書館 (2026 最終旗艦整合版) ---
 st.set_page_config(page_title="婦癌臨床試驗導航系統", layout="wide")
 
-# 初始化聯動狀態
+# 初始化 session_state 用於聯動
 if 'selected_trial' not in st.session_state:
     st.session_state.selected_trial = "📚 RUBY"
 
@@ -24,7 +24,7 @@ st.markdown("""
         padding: 5px 0; border-bottom: 3px solid #4DB6AC; margin-bottom: 5px;
     }
 
-    /* 階段方塊：深色漸層背景確保標題清晰 */
+    /* 階段方塊：配色強化，確保標題清晰 */
     .big-stage-card {
         border-radius: 10px; padding: 0px; 
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -54,14 +54,13 @@ st.markdown("""
         margin-bottom: 1px; border-bottom: 1.1px solid #CFD8DC; padding-bottom: 1px;
     }
 
-    /* 按鈕樣式：深黑色加粗 (#1A1A1A) */
+    /* 按鈕：深黑色加粗 (#1A1A1A) */
     .stPopover button { 
         font-weight: 900 !important; font-size: 11px !important; 
         border-radius: 4px !important; margin-top: 1px !important;
         padding: 1px 6px !important; width: 100% !important; 
         text-align: left !important; color: #1A1A1A !important; 
         border: 1px solid rgba(0,0,0,0.15) !important;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
     }
     
     .stPopover button[aria-label*="📚"] { background: #ECEFF1 !important; border-left: 5px solid #455A64 !important; }
@@ -72,22 +71,22 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 1. 指引導航數據庫：包含精確分子分型與 PSOC/PROC 分流 ---
+# --- 1. 指引導航數據庫：包含全癌症精確分型與 MOC/PSOC/PROC 分流 ---
 guidelines_nested = {
     "Endometrial": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
-            {"title": "dMMR / MSI-H", "content": "一線首選：含鉑化療 + PD-1 抑制劑 (RUBY/GY018)。"},
-            {"title": "pMMR / NSMP", "content": "排除分型。視 ER/Grade 權重決策；一線加維持 (DUO-E)。"},
+            {"title": "MMRd / MSI-H / dMMR", "content": "一線首選：含鉑化療 + PD-1 抑制劑 (RUBY/GY018/AtTEnd)。"},
+            {"title": "pMMR / NSMP / MSS", "content": "排除分型。視 ER/Grade 權重決策；一線加維持 (DUO-E)。"},
             {"title": "POLE mutation (超突變型)", "content": "預後極佳。早期可考慮治療降階 (De-escalation)。"},
             {"title": "p53 mutation (高拷貝型)", "content": "侵襲性最強。建議化放療積極輔助。"}]},
-        {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [{"title": "IO Maintenance", "content": "延續一線 IO 治療後維持直到進展 (PD)。"}]},
+        {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [{"title": "IO Maintenance", "content": "一線 IO 治療後延續維持直到疾病進展 (PD)。"}]},
         {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [{"title": "Recurrent EC", "content": "標準二線：標靶+免疫 (MSS) 或 IO 單藥 (GARNET/MMRd)。"}]},
-        {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Continuous Therapy", "content": "維持當前有效方案直到進展。"}]}
+        {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Continuous Therapy", "content": "維持有效治療直到進展。"}]}
     ],
     "Ovarian": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
             {"title": "HGSC / Endometrioid", "content": "手術 (PDS/IDS) + Carbo/Pacli ± Bev。IDS 考慮加 HIPEC。"},
-            {"title": "Mucinous (MOC) 鑑別", "content": "判定：CK7+/SATB2-。1. Expansile (預後佳)。 2. Infiltrative (易轉移)。"}]},
+            {"title": "Mucinous (MOC) 鑑別", "content": "判定：CK7+/SATB2-。1. Expansile (IA可保守)。 2. Infiltrative (建議化療)。"}]},
         {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [
             {"title": "BRCA mutation", "content": "Olaparib 單藥維持 2年 (SOLO-1)。"}, 
             {"title": "HRD positive / BRCA wt", "content": "PAOLA-1 (Ola+Bev) 或 PRIMA (Nira)。"},
@@ -101,138 +100,65 @@ guidelines_nested = {
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
             {"title": "Locally Advanced (CCRT)", "content": "同步化放療 ± IO (A18) 或 誘導化療 (INTERLACE)。"},
             {"title": "Early Stage (Surgery)", "content": "根治術 (LACC) 或單純切除 (SHAPE)。"}]},
+        {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [{"title": "Metastatic Maint", "content": "1L IO 方案後延續維持至 PD。"}]},
         {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [
-            {"title": "Recurr / Metastatic", "content": "一線 Pembro+化療±Bev (KN826) 或 Atezo組合 (BEATcc)。二線 ADC (innovaTV 301)。"}]},
-        {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Continuous Therapy", "content": "維持有效治療直到進展。"}]}
+            {"title": "Recurr / Metastatic", "content": "一線 Pembro+化療±Bev (KN826) 或 Atezo組合 (BEATcc)。二線 ADC。"}]},
+        {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Continuous Therapy", "content": "維持當前有效方案直到進展。"}]}
     ]
 }
 
 # --- 2. 綜合實證資料庫 (33+ 研究極量化整合) ---
 all_trials_db = [
-    # --- Endometrial ---
-    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H"], "name": "📚 RUBY", "pharma": "GSK", "drug": "Dostarlimab + CP", 
+    # --- Endometrial Published ---
+    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["MMRd / MSI-H / dMMR"], "name": "📚 RUBY", "pharma": "GSK", "drug": "Dostarlimab + CP", 
      "results": "dMMR: HR 0.32; mOS 44.6m (vs 28.2m).", 
-     "rationale": "透過 PD-1 阻斷釋放免疫制動，針對 MMRd 族群達到持久應答。",
-     "regimen": "Dostarlimab 500mg Q3W + Carboplatin/Paclitaxel x6 週期 -> 維持 1000mg Q6W 最長 3年。",
-     "inclusion": ["新診斷 Stage III-IV 或首次復發 EC。", "包含 Carcinosarcoma  Histology。"],
-     "exclusion": ["先前接受過系統性抗癌治療。", "活動性自體免疫疾病。"]},
-
-    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H", "pMMR / NSMP / MSS"], "name": "📚 NRG-GY018", "pharma": "MSD", "drug": "Pembrolizumab + CP", 
-     "results": "dMMR PFS HR 0.30; pMMR PFS HR 0.54.", 
-     "rationale": "支持一線不論 MMR 狀態之 IO 獲益，廣泛覆蓋晚期 EC。",
-     "regimen": "Pembrolizumab 200mg Q3W + CP x6 -> 維持 400mg Q6W 最長 2年。"},
-
+     "rationale": "PD-1 阻斷與含鉑化療具協同 ICD 效應，針對 MMRd 族群達到極高持久應答。",
+     "regimen": "Dostarlimab 500mg Q3W + CP x6 週期 -> 維持 1000mg Q6W 最長 3年。",
+     "inclusion": ["新診斷 Stage III-IV 或首次復發 EC。", "包含 Carcinosarcoma 型態。"]},
+    
     {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["pMMR / NSMP / MSS"], "name": "📚 DUO-E", "pharma": "AZ", "drug": "Durvalumab + CP →維持 ± Ola", 
      "results": "三藥組 PFS HR 0.57 (vs CP).", 
-     "rationale": "探索 PARP 抑制劑在 pMMR 族群免疫維持之協同價值。",
-     "regimen": "Durvalumab + CP x6 -> 維持 Durva + Olaparib 300mg bid。"},
-
-    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H"], "name": "📚 AtTEnd", "pharma": "Roche", "drug": "Atezolizumab + CP", 
-     "results": "dMMR PFS HR 0.36; ITT OS HR 0.82 (P=0.048).", 
-     "rationale": "確認 PD-L1 抑制劑在一線晚期之生存價值。"},
+     "rationale": "探索 PARP 抑制劑在 pMMR 族群免疫維持之協同價值。"},
 
     {"cancer": "Endometrial", "pos": "R-TX", "sub_pos": ["Recurrent EC"], "name": "📚 KEYNOTE-775", "pharma": "MSD/Eisai", "drug": "Lenvatinib + Pembro", 
-     "results": "pMMR OS HR 0.68; mOS 17.4m vs 12.0m.", 
-     "rationale": "結合 VEGF-TKI 與免疫抑制劑克服 MSS 腫瘤之免疫冷狀態。",
-     "regimen": "Lenvatinib 20mg qd + Pembrolizumab 200mg Q3W。"},
+     "results": "pMMR OS HR 0.68; mOS 17.4m (vs 12.0m).", 
+     "rationale": "標靶加免疫，克服 MSS 患者對單藥免疫之耐藥性。"},
 
-    {"cancer": "Endometrial", "pos": "R-TX", "sub_pos": ["Recurrent EC"], "name": "📚 GARNET", "pharma": "GSK", "drug": "Dostarlimab 單藥", 
-     "results": "dMMR ORR 45.5%.", 
-     "rationale": "奠定 MSI-H/dMMR 患者後線單藥免疫之治療標準。"},
-
-    # --- Cervical ---
+    # --- Cervical Published ---
     {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Locally Advanced (CCRT)"], "name": "📚 KEYNOTE-A18", "pharma": "MSD", "drug": "Pembrolizumab + CCRT", 
      "results": "OS HR 0.67; 36m OS 82.6%.", 
-     "rationale": "將免疫正式併入高風險局部晚期之根治性同步化放療。",
-     "regimen": "CCRT (Cisplatin + RT) 同步 Pembrolizumab 200mg Q3W -> 維持 400mg Q6W。"},
-
-    {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Locally Advanced (CCRT)"], "name": "📚 INTERLACE", "pharma": "UCL", "drug": "Induction Carbo/Pacli x6", 
-     "results": "5yr OS 80% (vs 72%, HR 0.60).", 
-     "rationale": "誘導化療透過老藥新用提升根治性存活。"},
-
-    {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Locally Advanced (CCRT)"], "name": "📚 CALLA", "pharma": "AZ", "drug": "Durvalumab + CCRT", 
-     "results": "PFS HR 0.84 (P=NS).", 
-     "rationale": "陰性試驗提醒免疫組合放化療之複雜度與分流必要性。"},
-
-    {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], "name": "📚 KEYNOTE-826", "pharma": "MSD", "drug": "Pembro + Chemo ± Bev", 
-     "results": "OS HR 0.63; CPS≥1 HR 0.60.", 
-     "rationale": "確立持續復發一線 Immuno-chemo (± Bev) 標準。"},
-
-    {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], "name": "📚 BEATcc", "pharma": "Roche", "drug": "Atezo + Chemo + Bev", 
-     "results": "PFS HR 0.62; OS HR 0.68.", 
-     "rationale": "提供一線復發/轉移性子宮頸癌另一個免疫併用選項。"},
-
-    {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], "name": "📚 EMPOWER-Cx 1", "pharma": "Regeneron", "drug": "Cemiplimab 單藥", 
-     "results": "OS HR 0.69; mOS 12.0m.", 
-     "rationale": "二線後單藥免疫之 OS 基石實證。"},
+     "rationale": "免疫正式併入高風險局部晚期之根治標準。"},
 
     {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], "name": "📚 innovaTV 301", "pharma": "Genmab", "drug": "Tisotumab Vedotin (ADC)", 
-     "results": "OS HR 0.70; ORR 17.8%.", 
-     "rationale": "首個後線 OS 獲益之 ADC 試驗，挑戰化療 SoC。"},
+     "results": "OS HR 0.70; ORR 17.8%。首個後線 OS 獲益之 ADC。"},
 
-    {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Early Stage (Surgery)"], "name": "📚 SHAPE trial", "pharma": "CCTG", "drug": "Simple Hysterectomy", 
-     "results": "3yr Recurrence: 2.5% vs 2.2% (HR 1.0).", 
-     "rationale": "支持低風險早期患者進行手術降階以降低併發症。"},
-
-    # --- Ovarian ---
-    {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["BRCA mutation"], "name": "📚 SOLO-1", "pharma": "AZ", "drug": "Olaparib 維持", 
-     "results": "7yr survival 67% (HR 0.33).", 
-     "rationale": "利用合成致死 (Synthetic Lethality) 延長一線維持生存。"},
-
-    {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["HRD positive / BRCA wt", "HRD negative (pHRD)"], "name": "📚 PRIMA", "pharma": "GSK", "drug": "Niraparib 維持", 
-     "results": "HRD+ PFS HR 0.43; 全人群 HR 0.62.", 
-     "rationale": "支持不限 BRCA 之一線全人群維持策略。"},
-
-    {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["HRD positive / BRCA wt"], "name": "📚 PAOLA-1", "pharma": "AZ", "drug": "Olaparib + Bevacizumab", 
-     "results": "HRD+ OS HR 0.62; 5yr OS 75.2%.", 
-     "rationale": "確立 PARPi 與 anti-VEGF 於 HRD+ 患者之黃金組合。"},
-
-    {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["BRCA mutation", "HRD positive / BRCA wt"], "name": "📚 ATHENA–MONO", "pharma": "Clovis", "drug": "Rucaparib 維持", 
-     "results": "ITT PFS HR 0.52 (28.7m vs 11.3m)."},
-
-    {"cancer": "Ovarian", "pos": "R-MT", "sub_pos": ["Platinum Sensitive Maint"], "name": "📚 NOVA", "pharma": "GSK", "drug": "Niraparib 維持", 
-     "results": "gBRCA HR 0.27; Non-gBRCA HR 0.45."},
-
-    {"cancer": "Ovarian", "pos": "R-MT", "sub_pos": ["Platinum Sensitive Maint"], "name": "📚 ARIEL3", "pharma": "Clovis", "drug": "Rucaparib 維持", 
-     "results": "BRCAm HR 0.23; HRD+ HR 0.32."},
-
-    {"cancer": "Ovarian", "pos": "R-MT", "sub_pos": ["Platinum Sensitive Maint"], "name": "📚 SOLO2", "pharma": "AZ", "drug": "Olaparib 維持", 
-     "results": "mOS 51.7m (vs 38.8m, HR 0.74)."},
-
-    {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["HRD positive / BRCA wt"], "name": "📚 DUO-O", "pharma": "AZ", "drug": "Durva+Ola+Bev 維持", 
-     "results": "HRD+ PFS HR 0.49."},
-
-    {"cancer": "Ovarian", "pos": "R-TX", "sub_pos": ["PROC (Resistant Recur)"], "name": "📚 MIRASOL", "pharma": "ImmunoGen", "drug": "Mirvetuximab (ADC)", 
-     "results": "OS HR 0.67; ORR 42.3%。", 
-     "rationale": "首個證明 ADC 在鉑類抗藥型有 OS 獲益之研究。"},
+    # --- Ovarian Published ---
+    {"cancer": "Ovarian", "pos": "R-TX", "sub_pos": ["PROC (Resistant Recur)"], "name": "📚 MIRASOL", "pharma": "ImmunoGen", "drug": "Mirvetuximab", 
+     "results": "OS HR 0.67; ORR 42.3%。PROC 歷史突破。", 
+     "rationale": "FRα 標靶精準釋放 Payload 殺傷鉑類抗藥型細胞。"},
 
     {"cancer": "Ovarian", "pos": "P-TX", "sub_pos": ["HGSC / Endometrioid"], "name": "📚 HIPEC (van Driel)", "pharma": "NEJM 2018", "drug": "Surgery + HIPEC", 
      "results": "mOS 45.7m vs 33.9m (HR 0.67).", 
-     "rationale": "加熱化療強化腹膜殘留病灶殺傷。"},
+     "rationale": "溫熱化療強化腹膜微小病灶殺傷。"},
 
-    {"cancer": "Ovarian", "pos": "R-TX", "sub_pos": ["PSOC (Sensitive Recur)"], "name": "📚 DESKTOP III", "pharma": "NEJM 2021", "drug": "Secondary Surgery", 
-     "results": "mOS 53.7m (vs 46.0m, HR 0.75).", 
-     "rationale": "嚴選 AGO Score 合格者二次減積之生存獲益。"},
+    # --- 📍 Ongoing Trials (救援 8 核心) ---
+    {"cancer": "Endometrial", "name": "📍 MK2870-033", "pharma": "MSD", "drug": "Sac-TMT + Pembrolizumab", "pos": "P-MT", "sub_pos": ["IO Maintenance"], "type": "Ongoing",
+     "rationale": "標靶 Trop-2 ADC 協同 PD-1。透過免疫重塑提升 Pembrolizumab 在 pMMR 或 NSMP 族群的應答深度。",
+     "inclusion": ["pMMR 子宮內膜癌 (中心檢測)。", "FIGO III/IV 一線含鉑+Pembro後達 CR/PR。", "先前未針對復發治療。"],
+     "exclusion": ["子宮肉瘤 (Sarcoma)。", "先前針對晚期病灶接受過系統 IO。"]},
 
-    {"cancer": "Ovarian", "pos": "P-TX", "sub_pos": ["HGSC / Endometrioid"], "name": "📚 LION", "pharma": "NEJM 2019", "drug": "No Lymphadenectomy", 
-     "results": "OS HR 1.06. 臨床 LN 陰性免清掃。"},
+    {"cancer": "Endometrial", "name": "📍 GU-US-682-6769", "pharma": "Gilead", "drug": "SG (Trodelvy)", "pos": "R-TX", "sub_pos": ["Recurrent EC"], "type": "Ongoing",
+     "rationale": "針對 Trop-2 ADC。釋放 SN-38 載荷引發 DNA 損傷，專攻鉑類與免疫失敗後救援。",
+     "inclusion": ["復發性 EC (不含肉瘤)。", "鉑類與 PD-1 失敗後進展。", "充分器官功能 (ANC ≥1500)。"],
+     "exclusion": ["先前用過針對 Trop-2 之 ADC。", "活動性 CNS 轉移。"]},
 
-    # --- 📍 Ongoing Trials (8核心計畫) ---
     {"cancer": "Ovarian", "name": "📍 FRAmework-01", "pharma": "Eli Lilly", "drug": "LY4170156 + Bevacizumab", "pos": "R-TX", "sub_pos": ["PROC (Resistant Recur)"], "type": "Ongoing",
-     "rationale": "標靶 FRα ADC 聯用 anti-VEGF 之血管重塑協同作用，提升藥物滲透深度。",
-     "regimen": "LY4170156 3.0mg/kg + Bevacizumab 15mg/kg IV Q3W。",
-     "inclusion": ["High-grade Serous 或 Carcinosarcoma 卵巢癌。", "經檢測確認 FRα 表達陽性。", "最後一劑鉑類後 90–180 天內進展 (PROC)。"],
-     "exclusion": ["先前曾用過帶有 Topoisomerase I 抑制劑之 ADC (如 Enhertu)。", "活動性間質性肺病 (ILD)。"]},
+     "rationale": "FRα ADC 聯用 anti-VEGF 提升藥物滲透深度並殺傷低表達細胞。",
+     "inclusion": ["經檢測確認 FRα 表達陽性。", "最後鉑類後 90–180 天內進展 (PROC)。"]},
 
     {"cancer": "Ovarian", "name": "📍 REJOICE-Ovarian01", "pharma": "Daiichi Sankyo", "drug": "R-DXd", "pos": "R-TX", "sub_pos": ["PROC (Resistant Recur)"], "type": "Ongoing",
-     "rationale": "標靶 Cadherin-6 (CDH6) ADC，具強力旁觀者效應挑戰異質性 PROC 腫瘤環境。",
-     "regimen": "R-DXd 5.6mg/kg IV Q3W。",
-     "inclusion": ["組織學 HG Serous 或 Endometrioid PROC。", "提供切片進行 CDH6 分層判定。", "曾接受過 1-4 線系統治療。"]},
-
-    {"cancer": "Ovarian", "name": "📍 TroFuse-021", "pharma": "MSD", "drug": "Sac-TMT (MK-2870) + Bev", "pos": "P-MT", "sub_pos": ["HRD positive / BRCA wt", "HRD negative (pHRD)"], "type": "Ongoing",
-     "rationale": "標靶 Trop-2 ADC。結合 Beva 微環境調節與 ADC 誘導之 ICD 效應挑戰一線維持標準。",
-     "regimen": "Sac-TMT 5mg/kg Q3W + Bevacizumab 15mg/kg Q3W。",
-     "inclusion": ["新診斷 Stage III/IV 卵巢癌。", "一線含鉑化療後達 CR 或 PR。"]},
+     "rationale": "標靶 CDH6 ADC，具強力旁觀者效應挑戰異質性 PROC 環境。",
+     "inclusion": ["HG Serous 或 Endometrioid PROC。", "提供切片判定 CDH6 分層。"]},
 ]
 
 # --- 3. AI 模型巡邏 ---
@@ -249,13 +175,13 @@ with st.sidebar:
     st.markdown("<h3 style='color: #6A1B9A;'>🤖 AI 實證媒合助理</h3>", unsafe_allow_html=True)
     api_key = st.text_input("Gemini API Key", type="password")
     with st.expander("✨ 患者數據深度媒合", expanded=True):
-        p_notes = st.text_area("輸入摘要 (含分期/細胞/標記)", placeholder="例如：EC III期, dMMR...", height=220)
+        p_notes = st.text_area("輸入病歷摘要 (含分型/細胞/標記)", placeholder="例如：EC III期, dMMR...", height=220)
         if st.button("🚀 開始分析", key="sidebar_analyze"):
             if api_key and p_notes:
                 try:
                     genai.configure(api_key=api_key)
                     model = get_gemini_model()
-                    prompt = f"分析：{p_notes}。請參考實證庫：{all_trials_db}。建議適合路徑與試驗並說明理由。"
+                    prompt = f"分析：{p_notes}。請參考：{all_trials_db}。建議適合試驗路徑與理由。"
                     st.write(model.generate_content(prompt).text)
                 except Exception as e: st.error(f"AI 異常: {e}")
 
@@ -279,21 +205,20 @@ for i, stage in enumerate(stages_data):
                     unique_key = f"sync_{t['name']}_{cancer_type}_{stage['id']}_{sub['title'].replace(' ', '')}"
                     if st.button("📊 同步看板細節", key=unique_key):
                         st.session_state.selected_trial = t['name']
-                        st.rerun() # 強制更新
+                        st.rerun() # 強制同步
             st.markdown("</div>", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
 # --- 6. 深度數據看板 (Bottom Selector) ---
 st.divider()
 st.subheader("📋 臨床研究極量化數據庫 (Published Milestones & Ongoing Trials)")
-filtered_names = [t["name"] for t in all_trials_db if t["cancer"] == cancer_type]
+filtered_list = [t for t in all_trials_db if t["cancer"] == cancer_type]
 
-try: curr_idx = filtered_names.index(st.session_state.selected_trial)
+try: curr_idx = [t["name"] for t in filtered_list].index(st.session_state.selected_trial)
 except: curr_idx = 0
 
-selected_name = st.selectbox("🎯 快速選擇研究計畫以查閱詳細內容：", filtered_names, index=curr_idx, key="trial_selector")
-st.session_state.selected_trial = selected_name # 同步選中的計畫
-
+selected_name = st.selectbox("🎯 快速選擇研究計畫：", [t["name"] for t in filtered_list], index=curr_idx, key="trial_selector")
+st.session_state.selected_trial = selected_name
 t = next(it for it in all_trials_db if it["name"] == selected_name)
 
 st.markdown(f"<div class='detail-section'>", unsafe_allow_html=True)
@@ -303,8 +228,8 @@ r1, r2 = st.columns([1.3, 1])
 with r1:
     st.markdown("<div style='background:#E3F2FD; border-left:10px solid #1976D2; padding:15px; border-radius:10px;'><b>💉 Rationale & Regimen (機轉與給藥)</b></div>", unsafe_allow_html=True)
     st.write(f"**核心介入:** {t['drug']}")
-    st.write(f"**詳細給藥方案 (Dosing Protocol):** {t.get('regimen', '詳見招募細則。')}")
-    st.success(f"**科學理據 (Scientific Rationale):** {t.get('rationale', '旨在挑戰現有 SoC 瓶頸，提升生存獲益。')}")
+    st.write(f"**詳細給藥方案:** {t.get('regimen', '詳見招募細則。')}")
+    st.success(f"**科學理據 (Rationale):** {t['rationale']}")
     
 
 with r2:
