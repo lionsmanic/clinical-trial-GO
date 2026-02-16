@@ -1,7 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 
-# --- 🏥 婦癌臨床導航與實證圖書館 (2026 最終整合救援版) ---
+# --- 🏥 婦癌臨床導航與實證圖書館 (2026 終極整合救援版) ---
 st.set_page_config(page_title="婦癌臨床試驗導航系統", layout="wide")
 
 st.markdown("""
@@ -20,6 +20,7 @@ st.markdown("""
         padding: 5px 0; border-bottom: 3px solid #4DB6AC; margin-bottom: 5px;
     }
 
+    /* 大階段方塊 */
     .big-stage-card {
         border-radius: 10px; padding: 0px; 
         box-shadow: 0 2px 10px rgba(0,0,0,0.08);
@@ -31,6 +32,7 @@ st.markdown("""
         padding: 5px; text-align: center;
     }
 
+    /* 子區塊 (SoC 與 分子亞型) */
     .sub-block {
         margin: 2px 4px; padding: 4px; border-radius: 6px; 
         background: #F8F9FA; border-left: 5px solid #546E7A;
@@ -43,7 +45,7 @@ st.markdown("""
         font-size: 14px; color: #263238; font-weight: 500; line-height: 1.15;
     }
 
-    /* 階段配色 */
+    /* 階段色彩 */
     .card-p-tx { border-color: #2E7D32; }
     .header-p-tx { background: linear-gradient(135deg, #43A047, #2E7D32); }
     .card-p-mt { border-color: #1565C0; }
@@ -71,124 +73,70 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 1. 指引導航數據庫：全階段與分流救援 ---
+# --- 1. 指引導航：包含全階段、MOC、與 PSOC/PROC 分流 ---
 guidelines_nested = {
     "Endometrial": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
-            {"title": "MMRd / MSI-H / dMMR", "content": "一線首選：Chemo + PD-1 (RUBY/GY018)。"},
+            {"title": "MMRd / MSI-H / dMMR", "content": "一線首選：Chemo + PD-1 (GY018/RUBY)。"},
             {"title": "NSMP / pMMR / MSS", "content": "視 ER/Grade 權重決策；二線 Pembro+Lenva。"},
-            {"title": "POLEmut / p53abn", "content": "POLE: 最佳預後；p53: 最差預後積極放化療。"}]},
-        {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [{"title": "IO Maintenance", "content": "1L IO 方案後接續維持直到疾病進展 (PD)。"}]},
-        {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [{"title": "Recurrent EC", "content": "標準二線：標靶+免疫 (MSS) 或 IO 單藥 (MSI-H)。"}]},
-        {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Continuous Therapy", "content": "維持有效治療直到 PD。"}]}
+            {"title": "POLEmut / p53abn", "content": "POLE: 最佳預後；p53: 積極放化療併用。"}]},
+        {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [{"title": "IO Maintenance", "content": "延續一線 IO 至 PD。"}]},
+        {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [{"title": "Recurrent EC", "content": "二線標靶+免疫 (MSS) 或 IO 單藥 (MSI-H)。"}]},
+        {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Continuous Therapy", "content": "維持有效治療直到進展。"}]}
     ],
     "Ovarian": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
-            {"title": "HGSC / Endometrioid", "content": "手術 (PDS/IDS) + Carbo/Pacli ± Bev。"},
-            {"title": "Mucinous (MOC) 鑑別", "content": "判定：CK7+/SATB2- (原發)。1. Expansile: 預後佳。 2. Infiltrative: 建議積極化療。"}]},
+            {"title": "HGSC / Endometrioid", "content": "Surgery + Carbo/Pacli ± Bev。IDS 考慮加 HIPEC。"},
+            {"title": "Mucinous (MOC) 鑑別", "content": "判定：CK7+/SATB2-。1. Expansile (IA可保守)。 2. Infiltrative (建積極化療)。"}]},
         {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [
             {"title": "BRCA mutated", "content": "Olaparib 維持。"}, {"title": "HRD positive (wt)", "content": "Olaparib+Bev 或 Niraparib。"}]},
         {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [
-            {"title": "PSOC (Sensitive)", "content": "PFI > 6m。含鉑雙藥 ± Bev。評估二次手術 (DESKTOP)。"},
-            {"title": "PROC (Resistant)", "content": "PFI < 6m。單藥化療 ± Bev 或標靶 ADC (MIRASOL)。"}]},
+            {"title": "PSOC (Sensitive Recurrence)", "content": "PFI > 6m。含鉑雙藥 ± Bev。評估二次手術。"},
+            {"title": "PROC (Resistant Recurrence)", "content": "PFI < 6m。單藥化療 ± Bev 或標靶 ADC。"}]},
         {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Platinum Sensitive Maint", "content": "救援緩解後選 PARPi 維持。"}]}
     ],
     "Cervical": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
-            {"title": "Locally Advanced (CCRT)", "content": "同步化放療。高風險者同步 IO (A18) 或誘導化療。"},
+            {"title": "Locally Advanced (CCRT)", "content": "同步化放療 ± IO (A18) 或 誘導化療 (INTERLACE)。"},
             {"title": "Early Stage (Surgery)", "content": "根治術 (LACC) 或單純切除 (SHAPE)。"}]},
-        {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [{"title": "Metastatic Maint", "content": "1L IO 方案後接續維持。"}]},
+        {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [{"title": "Metastatic Maint", "content": "1L IO 方案後延續維持。"}]},
         {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [
-            {"title": "Recurr / Metastatic", "content": "一線 Pembro+化療±Bev。二線 ADC (Tivdak) 或 IO。"}]},
-        {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Continuous Therapy", "content": "維持有效治療直到進展。"}]}
+            {"title": "Recurr / Metastatic", "content": "一線 Pembro+化療±Bev。二線 ADC (Tivdak)。"}]},
+        {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Continuous Therapy", "content": "維持當前有效方案直到進展。"}]}
     ]
 }
 
-# --- 2. 綜合試驗資料庫 (📚 Milestone & 📍 Ongoing 全整合) ---
-all_trials = [
-    # --- 📚 Published Milestones (25項全數歸位) ---
-    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["MMRd / MSI-H / dMMR"], "name": "📚 RUBY", "type": "Milestone", "drug": "Dostarlimab + CP", 
-     "results": "dMMR: HR 0.32; mOS 44.6m (vs 28.2m, HR 0.69).", "rationale": "PD-1 阻斷協同化療誘發抗原暴露。",
-     "inclusion": ["FIGO III-IV 期晚期或首次復發 EC。", "含 Carcinosarcoma / Serous 等。"]},
-
-    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["NSMP / pMMR / MSS"], "name": "📚 NRG-GY018", "type": "Milestone", "drug": "Pembrolizumab + CP", 
+# --- 2. 實證資料庫 (📚 Milestone & 📍 Ongoing 全整合) ---
+trials_db = [
+    # --- 📚 Published Milestones (24+ 研究全納入) ---
+    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["MMRd / MSI-H / dMMR"], "name": "📚 RUBY", "pharma": "GSK", "drug": "Dostarlimab + CP", 
+     "results": "dMMR: HR 0.32; mOS 44.6m (vs 28.2m).", "rationale": "PD-1 阻斷協同化療誘發抗原暴露。"},
+    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["NSMP / pMMR / MSS"], "name": "📚 NRG-GY018", "pharma": "MSD", "drug": "Pembrolizumab + CP", 
      "results": "dMMR PFS HR 0.30; pMMR HR 0.54."},
-
-    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["NSMP / pMMR / MSS"], "name": "📚 DUO-E", "type": "Milestone", "drug": "Durvalumab ± Olaparib", 
-     "results": "三藥組 PFS HR 0.57 (vs CP)；Durva 組 HR 0.77."},
-
-    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["MMRd / MSI-H / dMMR"], "name": "📚 AtTEnd", "type": "Milestone", "drug": "Atezolizumab + CP", 
-     "results": "dMMR PFS HR 0.36; ITT OS HR 0.82."},
-
-    {"cancer": "Endometrial", "pos": "R-TX", "sub_pos": ["Recurrent EC"], "name": "📚 KEYNOTE-775", "type": "Milestone", "drug": "Lenvatinib + Pembro", 
-     "results": "pMMR OS HR 0.68; mOS 17.4m. 確立 MSS 二線標準。"},
-
-    {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Locally Advanced (CCRT)"], "name": "📚 KEYNOTE-A18", "type": "Milestone", "drug": "Pembrolizumab + CCRT", 
+    {"cancer": "Endometrial", "pos": "R-TX", "sub_pos": ["Recurrent EC"], "name": "📚 KEYNOTE-775", "pharma": "MSD/Eisai", "drug": "Lenvatinib + Pembro", 
+     "results": "pMMR OS HR 0.68; mOS 17.4m."},
+    {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Locally Advanced (CCRT)"], "name": "📚 KEYNOTE-A18", "pharma": "MSD", "drug": "Pembrolizumab + CCRT", 
      "results": "OS HR 0.67; 36m OS 82.6%."},
-
-    {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Locally Advanced (CCRT)"], "name": "📚 INTERLACE", "type": "Milestone", "drug": "Induction Chemo", 
-     "results": "5yr OS 80% vs 72% (HR 0.60)."},
-
-    {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Locally Advanced (CCRT)"], "name": "📚 CALLA", "type": "Milestone", "drug": "Durvalumab + CCRT", 
-     "results": "PFS HR 0.84 (P=NS). 陰性試驗提醒需更精準分流。"},
-
-    {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], "name": "📚 KEYNOTE-826", "type": "Milestone", "drug": "Pembro + 化療 ± Bev", 
-     "results": "OS HR 0.63 (ITT); HR 0.60 (CPS≥1)."},
-
-    {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], "name": "📚 BEATcc", "type": "Milestone", "drug": "Atezo + Chemo + Bev", 
-     "results": "PFS HR 0.62; OS HR 0.68."},
-
-    {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], "name": "📚 EMPOWER-Cx 1", "type": "Milestone", "drug": "Cemiplimab", 
-     "results": "OS HR 0.69; mOS 12.0m."},
-
-    {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], "name": "📚 innovaTV 301", "type": "Milestone", "drug": "Tisotumab Vedotin", 
-     "results": "OS HR 0.70; ORR 17.8%."},
-
-    {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Early Stage (Surgery)"], "name": "📚 SHAPE trial", "type": "Milestone", "drug": "Simple Hysterectomy", 
-     "results": "3yr Recurrence: 2.5% vs 2.2%. 支持早期降階。"},
-
-    {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["HRD positive (wt)"], "name": "📚 PAOLA-1", "type": "Milestone", "drug": "Olaparib + Bevacizumab", 
+    {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Early Stage (Surgery)"], "name": "📚 SHAPE trial", "pharma": "UCL", "drug": "Simple Hysterectomy", 
+     "results": "3yr Recurrence: 2.5% vs 2.2% (HR 1.0)."},
+    {"cancer": "Ovarian", "pos": "P-TX", "sub_pos": ["HGSC / Endometrioid"], "name": "📚 van Driel HIPEC", "pharma": "NEJM 2018", "drug": "Surgery + HIPEC (Cisplatin)", 
+     "results": "mOS 45.7m vs 33.9m (HR 0.67).", "rationale": "溫熱環境加強鉑類對腹膜微小病灶之殺傷。"},
+    {"cancer": "Ovarian", "pos": "R-TX", "sub_pos": ["PSOC (Sensitive Recurrence)"], "name": "📚 DESKTOP III", "pharma": "NEJM 2021", "drug": "Secondary Cytoreduction", 
+     "results": "mOS 53.7m vs 46.0m (HR 0.75).", "rationale": "嚴選 AGO Score 患者二次減積手術具 OS 獲益。"},
+    {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["HRD positive (wt)"], "name": "📚 PAOLA-1", "pharma": "AZ", "drug": "Olaparib + Bevacizumab", 
      "results": "HRD+ OS HR 0.62; 5yr OS 75.2%."},
 
-    {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["BRCA mutated", "HRD positive (wt)"], "name": "📚 ATHENA–MONO", "type": "Milestone", "drug": "Rucaparib", 
-     "results": "ITT PFS HR 0.52."},
-
-    {"cancer": "Ovarian", "pos": "R-MT", "sub_pos": ["Platinum Sensitive Maint"], "name": "📚 NOVA", "type": "Milestone", "drug": "Niraparib", 
-     "results": "gBRCA HR 0.27; Non-gBRCA HR 0.45."},
-
-    {"cancer": "Ovarian", "pos": "R-MT", "sub_pos": ["Platinum Sensitive Maint"], "name": "📚 ARIEL3", "type": "Milestone", "drug": "Rucaparib", 
-     "results": "BRCAm HR 0.23; HRD+ HR 0.32."},
-
-    {"cancer": "Ovarian", "pos": "R-MT", "sub_pos": ["Platinum Sensitive Maint"], "name": "📚 SOLO2", "type": "Milestone", "drug": "Olaparib (BRCA)", 
-     "results": "mOS 51.7m vs 38.8m; HR 0.74."},
-
-    {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["HRD positive (wt)"], "name": "📚 DUO-O", "type": "Milestone", "drug": "Durva+Ola+Bev", 
-     "results": "HRD+ PFS HR 0.49."},
-
-    {"cancer": "Ovarian", "pos": "P-TX", "sub_pos": ["HGSC / Endometrioid"], "name": "📚 LION (NEJM 2019)", "type": "Milestone", "drug": "No Lymphadenectomy", 
-     "results": "OS HR 1.06. 臨床 LN 陰性免清掃。"},
-
-    # --- 📍 Ongoing Trials (8核心救回) ---
-    {"cancer": "Ovarian", "name": "📍 FRAmework-01 (LY4170156)", "pharma": "Eli Lilly", "drug": "LY4170156 + Bevacizumab", "pos": "R-TX", "sub_pos": ["PROC (Resistant)"], "type": "Ongoing",
-     "rationale": "標靶 FRα ADC。聯用 Bevacizumab 產生協同作用，提升滲透並殺傷低表達細胞。",
-     "regimen": "LY4170156 3mg/kg IV + Bevacizumab 15mg/kg IV Q3W。",
+    # --- 📍 Ongoing Trials ---
+    {"cancer": "Ovarian", "name": "📍 FRAmework-01", "pharma": "Eli Lilly", "drug": "LY4170156 + Bevacizumab", "pos": "R-TX", "sub_pos": ["PROC (Resistant Recurrence)"], "type": "Ongoing",
+     "rationale": "標靶 FRα ADC。搭載類微管蛋白 Payload 協同 Bev 之血管調節功能，提升滲透深度。",
      "inclusion": ["經檢測確認 FRα 表達陽性。", "最後一劑鉑類後 90–180 天內惡化 (PROC)。"],
-     "exclusion": ["曾用過 Topo I ADC (Enhertu)。", "具有臨床顯著蛋白尿。"]},
-
-    {"cancer": "Ovarian", "name": "📍 REJOICE-Ovarian01", "pharma": "Daiichi Sankyo", "drug": "R-DXd", "pos": "R-TX", "sub_pos": ["PROC (Resistant)"], "type": "Ongoing",
-     "rationale": "標靶 Cadherin-6 (CDH6) ADC，具強力旁觀者效應，專攻異質性 PROC。",
-     "regimen": "R-DXd 5.6mg/kg IV Q3W。",
-     "inclusion": ["HG Serous 或 Endometrioid PROC。", "提供切片進行 CDH6 分層判定。"],
-     "exclusion": ["Low-grade 腫瘤。", "LVEF < 50%。"]},
-
-    {"cancer": "Ovarian", "name": "📍 TroFuse-021", "pharma": "MSD", "drug": "Sac-TMT (MK-2870)", "pos": "P-MT", "sub_pos": ["HRD positive (wt)", "HRD negative / pHRD"], "type": "Ongoing",
-     "rationale": "標靶 Trop-2 ADC。結合 Beva 微環境調節，優化維持獲益。",
-     "regimen": "Sac-TMT Q3W + Bevacizumab 維持。",
-     "inclusion": ["新診斷 FIGO Stage III/IV 卵巢癌。", "一線含鉑化療後達 CR 或 PR。"],
-     "exclusion": ["BRCA 變異者。", "先前用過 Trop-2 ADC。"]},
+     "exclusion": ["曾用過 Topo I ADC (Enhertu)。", "活動性間質性肺病 (ILD)。"]},
+    {"cancer": "Ovarian", "name": "📍 REJOICE-Ovarian01", "pharma": "Daiichi Sankyo", "drug": "R-DXd (CDH6 ADC)", "pos": "R-TX", "sub_pos": ["PROC (Resistant Recurrence)"], "type": "Ongoing",
+     "rationale": "標靶 Cadherin-6 (CDH6) ADC，具極高 DAR 與強力旁觀者效應，專攻異質性 PROC。",
+     "inclusion": ["提供切片進行 CDH6 分層判定。", "需曾用過 Bevacizumab。"]},
 ]
 
-# --- 3. 動態模型巡邏與 AI 模型選擇 ---
+# --- 3. AI 動態模型巡邏與唯一鍵值邏輯 ---
 def get_gemini_model():
     try:
         available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
@@ -203,22 +151,20 @@ def get_gemini_model():
 
 # --- 4. 側邊欄 ---
 if 'selected_trial' not in st.session_state:
-    st.session_state.selected_trial = all_trials[0]['name']
+    st.session_state.selected_trial = trials_db[0]['name']
 
 with st.sidebar:
     st.markdown("<h3 style='color: #6A1B9A;'>🤖 AI 實證媒合助理</h3>", unsafe_allow_html=True)
     api_key = st.text_input("Gemini API Key", type="password")
-    with st.expander("✨ 病歷數據比對", expanded=True):
-        p_notes = st.text_area("輸入摘要 (含細胞型態/分型)", height=250)
+    with st.expander("✨ 病歷分析", expanded=True):
+        p_notes = st.text_area("輸入摘要 (含分型/標記)", height=250)
         if st.button("🚀 開始分析", key="sidebar_analyze"):
             if api_key and p_notes:
                 try:
                     genai.configure(api_key=api_key)
                     model = get_gemini_model()
-                    if model:
-                        prompt = f"分析：{p_notes}。參考實證：{all_trials}。提供最佳路徑。"
-                        st.write(model.generate_content(prompt).text)
-                    else: st.error("找不到可用 AI 模型。")
+                    prompt = f"分析病歷：{p_notes}。參考實證：{trials_db}。提供路徑建議與理由。"
+                    st.write(model.generate_content(prompt).text)
                 except Exception as e: st.error(f"AI 異常: {e}")
 
 # --- 5. 主頁面：導航地圖 ---
@@ -234,40 +180,42 @@ for i, stage in enumerate(stages_data):
         for sub in stage['subs']:
             st.markdown(f"""<div class='sub-block'><div class='sub-block-title'>📘 {sub['title']}</div><div class='sub-block-content'>{sub['content']}</div>""", unsafe_allow_html=True)
             
-            # 顯示該區塊對應的試驗
-            rel_trials = [t for t in all_trials if t["cancer"] == cancer_type and t["pos"] == stage["id"] and any(s in sub["title"] for s in t["sub_pos"])]
+            # 顯示對應試驗 (📚 & 📍)
+            rel_trials = [t for t in trials_db if t["cancer"] == cancer_type and t["pos"] == stage["id"] and any(s in sub["title"] for s in t["sub_pos"])]
             for t in rel_trials:
-                with st.popover(t["name"], use_container_width=True):
-                    st.success(f"**介入:** {t['drug']}\n\n**核心結果:** {t.get('results', '詳見看板')}")
-                    # 生成絕對唯一的 KEY
+                label = f"{t['pharma']} | {t['name']} | {t['drug']}"
+                with st.popover(label, use_container_width=True):
+                    st.success(f"**結論摘要:** {t.get('results', 'Ongoing')}")
+                    # 使用五維唯一鍵值避免 DuplicateKeyError
                     unique_key = f"sync_{t['name']}_{cancer_type}_{stage['id']}_{sub['title'].replace(' ', '')}"
                     if st.button("📊 同步看板細節", key=unique_key):
                         st.session_state.selected_trial = t['name']
             st.markdown("</div>", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
-# --- 6. 臨床試驗深度數據庫 (底端 Selector) ---
+# --- 6. 臨床試驗深度數據庫 (Bottom Selector) ---
 st.divider()
-st.subheader("📋 臨床試驗深度數據庫 (請由此點選以查閱詳細數據)")
-filtered_names = [t["name"] for t in all_trials if t["cancer"] == cancer_type]
-selected_name = st.selectbox("🎯 快速選擇研究計畫：", filtered_names, key="trial_selector")
+st.subheader("📋 臨床試驗深度數據庫 (請由此點選以查閱理據與最新文獻數據)")
+filtered_list = [t for t in trials_db if t["cancer"] == cancer_type]
+selected_name = st.selectbox("🎯 快速選擇研究計畫：", [t["name"] for t in filtered_list], key="trial_selector")
 
-# 同步選中的計畫數據
-t = next(it for it in all_trials if it["name"] == selected_name)
+# 同步選中的數據
+t = next(it for it in trials_db if it["name"] == selected_name)
 
 st.markdown(f"<div class='detail-section'>", unsafe_allow_html=True)
 st.markdown(f"<h2 style='color:#004D40; border-bottom:3px solid #E0E0E0; padding-bottom:10px; font-weight:900;'>📋 {t['name']} 深度分析報告</h2>", unsafe_allow_html=True)
 
 r1, r2 = st.columns([1.3, 1])
 with r1:
-    st.markdown("<div style='background:#E3F2FD; border-left:10px solid #1976D2; padding:15px; border-radius:10px;'><b>💉 Rationale & Regimen (機轉與給藥)</b></div>", unsafe_allow_html=True)
-    st.write(f"**核心介入:** {t['drug']}")
-    st.write(f"**給藥細節:** {t.get('regimen', t.get('dosing', '詳見 Protocol'))}")
-    st.success(t.get('rationale', '該研究主要透過精準標靶或免疫機制挑戰現有瓶頸。'))
+    st.markdown("<div style='background:#E3F2FD; border-left:10px solid #1976D2; padding:15px; border-radius:10px;'><b>💉 Rationale & Regimen (機轉與配方)</b></div>", unsafe_allow_html=True)
+    st.write(f"**藥廠:** {t['pharma']}")
+    st.write(f"**核心藥物:** {t['drug']}")
+    st.write(f"**給藥細節:** {t.get('regimen', '詳見招募細則')}")
+    st.success(t.get('rationale', '該研究機轉主要挑戰現有 SoC 瓶頸。'))
     
 
 with r2:
-    st.markdown("<div style='background:#FFF8E1; border-left:8px solid #FBC02D; padding:15px; border-radius:10px;'><b>📈 Key Outcomes (生存與緩解數據)</b></div>", unsafe_allow_html=True)
+    st.markdown("<div style='background:#FFF8E1; border-left:8px solid #FBC02D; padding:15px; border-radius:10px;'><b>📈 Key Outcomes (生存與緩解指標)</b></div>", unsafe_allow_html=True)
     st.markdown(f"""
         <div style='text-align:center; background:white; padding:15px; border:2px solid #FFE082; border-radius:12px;'>
             <div style='font-size: 14px; color: #795548; font-weight:700; margin-bottom:5px;'>Survival Metrics (PFS/OS/HR)</div>
@@ -279,7 +227,7 @@ with r2:
 st.divider()
 r3, r4 = st.columns(2)
 with r3:
-    st.markdown("<div style='background:#E8F5E9; border-left:8px solid #2E7D32; padding:15px; border-radius:10px;'><b>✅ Inclusion Criteria (納入條件)</b></div>", unsafe_allow_html=True)
+    st.markdown("<div style='background:#E8F5E9; border-left:8px solid #2E7D32; padding:15px; border-radius:10px;'><b>✅ Inclusion Criteria (納入門檻)</b></div>", unsafe_allow_html=True)
     for inc in t.get('inclusion', ['詳見全文 Protocol。']): st.write(f"• **{inc}**")
 with r4:
     st.markdown("<div style='background:#FFEBEE; border-left:8px solid #C62828; padding:15px; border-radius:10px;'><b>❌ Exclusion Criteria (排除標準)</b></div>", unsafe_allow_html=True)
