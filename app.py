@@ -1,7 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 
-# --- 🏥 婦癌臨床試驗專家導航系統 (2026 FRAmework-01 更新版) ---
+# --- 🏥 婦癌臨床試驗導航系統 (FRAmework-01 深度增強版) ---
 st.set_page_config(page_title="婦癌臨床試驗導航系統", layout="wide")
 
 st.markdown("""
@@ -84,24 +84,38 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 1. 完整臨床資料庫 (已納入所有舊試驗與最新 FRAmework-01) ---
+# --- 1. 臨床資料庫 ---
 if 'trials_db' not in st.session_state:
     st.session_state.trials_db = [
         # --- Ovarian Cancer ---
         {
             "cancer": "Ovarian", "name": "FRAmework-01 (LY4170156)", "pharma": "Eli Lilly (禮來)",
             "drug": "LY4170156 + Bevacizumab", "pos": "Recurrence",
-            "summary": "針對 FRα 陽性患者之 Phase 3 試驗。區分 PROC 與 PSOC 族群，探討 ADC 聯手 Beva 之療效。",
-            "rationale": "葉酸受體 alpha (FRα) 標靶 ADC。利用強效載荷結合 Bevacizumab 的抗血管生成協同作用，解決 PARPi 失敗後之需求。",
+            "summary": "針對 FRα 陽性患者之 Phase 3 全球試驗。區分 PROC (Part A) 與 PSOC (Part B) 族群。",
+            "rationale": "葉酸受體 alpha (FRα) 標靶 ADC，搭載類微管蛋白載荷。與 Bevacizumab 聯用可產生協同效應，抑制血管增生並增強藥物遞送，解決後線治療瓶頸。",
             "dosing": {
-                "Experimental": "LY4170156 3 mg/kg + Bevacizumab 15 mg/kg Q3W.",
-                "Control (PROC)": "TPC (Paclitaxel/PLD/Gem/Top) or Mirvetuximab (MIRV).",
-                "Control (PSOC)": "Platinum Doublet + Bevacizumab."
+                "Experimental Arm (Combined)": "LY4170156 3 mg/kg IV + Bevacizumab 15 mg/kg IV on Day 1 of each 21-day cycle (Q3W).",
+                "Control Arm Part A (PROC)": "Investigator's Choice (Paclitaxel, PLD, Gemcitabine, or Topotecan) OR Mirvetuximab (MIRV).",
+                "Control Arm Part B (PSOC)": "Platinum-based doublet (Carboplatin + Paclitaxel/Gem/PLD) + Bevacizumab 15 mg/kg."
             },
-            "outcomes": {"ORR": "Promising Ph1/2 Data", "mPFS": "Primary Endpoint", "mOS": "Secondary Endpoint", "HR": "Phase 3 Ongoing", "CI": "NCT06536348", "AE": "Proteinuria, ILD monitoring"},
-            "inclusion": ["High-grade Serous / Carcinosarcoma", "FRα表達陽性", "Part A: PROC (復發≤6m)", "Part B: PSOC (復發>6m)"],
-            "exclusion": ["ILD 肺纖維化病史", "曾用過 Topo I 抑制劑 ADC (如 DS-8201)", "顯著蛋白尿"],
-            "ref": "Source: ClinicalTrials.gov 2026; Lilly Oncology Research"
+            "outcomes": {"ORR": "Ph 1/2: ~35-40%", "mPFS": "Primary Endpoint", "mOS": "Secondary Endpoint", "HR": "Recruiting", "CI": "NCT06536348", "AE": "Proteinuria, Hypertension, ILD Risk"},
+            "inclusion": [
+                "Age ≥18 years with histologically confirmed High-grade Serous or Carcinosarcoma of Ovarian/Fallopian/Peritoneal cancer.",
+                "Must provide tumor tissue to confirm FRα expression status (Positive per central lab).",
+                "Part A (PROC): Platinum-free interval (PFI) ≤ 6 months; 1-3 prior lines of therapy.",
+                "Part B (PSOC): Platinum-free interval (PFI) > 6 months; must have prior PARP inhibitor if eligible/acquired resistance.",
+                "ECOG Performance Status 0 or 1.",
+                "Measurable disease per RECIST v1.1."
+            ],
+            "exclusion": [
+                "Prior treatment with Topoisomerase I inhibitor ADCs (e.g., T-DXd).",
+                "Prior treatment with FRα-targeted ADCs (only applicable to Part B).",
+                "History of Interstitial Lung Disease (ILD) or non-infectious pneumonitis requiring steroids.",
+                "Clinically significant proteinuria (≥2 g/24h or UPCR ≥2.0).",
+                "Active CNS metastases or history of leptomeningeal disease.",
+                "Clinically significant cardiovascular disease or uncontrolled hypertension."
+            ],
+            "ref": "NCT06536348; Lilly Framework-01 Study Protocol"
         },
         {
             "cancer": "Ovarian", "name": "REJOICE-Ovarian01", "pharma": "Daiichi Sankyo",
@@ -112,7 +126,7 @@ if 'trials_db' not in st.session_state:
             "outcomes": {"ORR": "46.0%", "mPFS": "7.1m", "mOS": "N/A", "HR": "Phase 3", "CI": "NCT06161025", "AE": "ILD Risk, Nausea"},
             "inclusion": ["PROC 卵巢癌", "曾接受 1-4 線治療", "需曾用過 Bevacizumab"],
             "exclusion": ["Low-grade 腫瘤", "ILD/肺臟炎病史"],
-            "ref": "JCO 2024; SIV Topic 1"
+            "ref": "JCO 2024"
         },
         {
             "cancer": "Ovarian", "name": "TroFuse-021", "pharma": "MSD",
@@ -123,7 +137,7 @@ if 'trials_db' not in st.session_state:
             "outcomes": {"ORR": "Est. 40%", "mPFS": "TBD", "mOS": "TBD", "HR": "Ongoing", "CI": "NCT06241729", "AE": "Diarrhea, Stomatitis"},
             "inclusion": ["新診斷 FIGO III/IV", "HRD Negative (pHRD)", "1L Chemo CR/PR"],
             "exclusion": ["HRD Positive", "嚴重腸胃道疾病史"],
-            "ref": "ENGOT-ov85; SIV Topic 2"
+            "ref": "ENGOT-ov85"
         },
         {
             "cancer": "Ovarian", "name": "DOVE (APGOT-OV07)", "pharma": "GSK",
@@ -241,6 +255,7 @@ with r1_c1:
     for arm, details in t['dosing'].items(): st.write(f"🔹 **{arm}**: {details}")
     st.markdown("---")
     st.success(f"**機轉 Rationale:** {t['rationale']}")
+    
 
 with r1_c2:
     st.markdown("<div class='info-box-gold'><b>📈 Efficacy & Outcomes</b></div>", unsafe_allow_html=True)
@@ -253,6 +268,7 @@ with r1_c2:
     """, unsafe_allow_html=True)
     st.write(f"**ORR:** {t['outcomes']['ORR']} | **mPFS:** {t['outcomes']['mPFS']}")
     st.error(f"**Safety / AE:** {t['outcomes']['AE']}")
+    
 
 st.divider()
 r2_c1, r2_c2 = st.columns(2)
