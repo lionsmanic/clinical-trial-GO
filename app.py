@@ -1,164 +1,175 @@
 import streamlit as st
 import google.generativeai as genai
 
-# --- 🏥 專家級醫學儀表板視覺配置 (緊湊比例版) ---
+# --- 🏥 專家級醫學儀表板視覺配置 (高清晰度版) ---
 st.set_page_config(page_title="婦癌臨床試驗導航系統", layout="wide")
 
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Roboto:wght@400;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Roboto:wght@700;900&display=swap');
     
-    /* 全域設定 */
+    /* === 全域字體級距上調 === */
     html, body, [class*="css"] {
         font-family: 'Noto Sans TC', 'Roboto', sans-serif;
         background-color: #F0F4F8;
-        color: #2D3436;
+        color: #1A1A1A; /* 提高對比度 */
+        font-size: 21px !important; /* 全局基準放大 */
+        line-height: 1.6;
     }
 
-    /* 主標題：專業且醒目 */
+    /* 主標題：大幅強化 */
     .main-title {
-        font-size: 38px !important; font-weight: 900; color: #005662;
-        padding: 20px 0 10px 0; border-bottom: 3px solid #4DB6AC;
-        margin-bottom: 20px;
+        font-size: 48px !important; font-weight: 900; color: #004D40;
+        padding: 25px 0 15px 0; border-bottom: 4px solid #4DB6AC;
+        margin-bottom: 25px;
     }
 
-    /* === 病程區塊卡片：比例重調 === */
+    /* === 病程區塊卡片：比例與字體調整 === */
     .stage-card-base {
-        border-radius: 14px; 
-        padding: 12px; /* 縮減內距 */
-        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        border-radius: 16px; padding: 15px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
         border: 2px solid transparent;
-        min-height: 180px; /* 縮短最小高度，減少留白 */
-        background: white;
+        min-height: 160px; background: white;
         transition: all 0.2s ease;
     }
     
     .stage-header {
-        font-size: 19px; font-weight: 800; color: white;
-        margin: -12px -12px 10px -12px; /* 貼齊頂部並減少下方邊距 */
-        padding: 8px; border-radius: 12px 12px 0 0; text-align: center;
+        font-size: 26px !important; font-weight: 900; color: white;
+        margin: -15px -15px 15px -15px; padding: 12px;
+        border-radius: 14px 14px 0 0; text-align: center;
         letter-spacing: 1px;
     }
 
     /* 各階段配色 */
-    .card-1l { border-color: #81C784; }
-    .header-1l { background: linear-gradient(135deg, #66BB6A, #43A047); }
-    .card-1lm { border-color: #4FC3F7; }
-    .header-1lm { background: linear-gradient(135deg, #29B6F6, #0288D1); }
-    .card-rc { border-color: #FFB74D; }
-    .header-rc { background: linear-gradient(135deg, #FFA726, #F57C00); }
-    .card-prm { border-color: #BA68C8; }
-    .header-prm { background: linear-gradient(135deg, #AB47BC, #7B1FA2); }
+    .card-1l { border-color: #66BB6A; }
+    .header-1l { background: linear-gradient(135deg, #43A047, #2E7D32); }
+    .card-1lm { border-color: #29B6F6; }
+    .header-1lm { background: linear-gradient(135deg, #0288D1, #01579B); }
+    .card-rc { border-color: #FFA726; }
+    .header-rc { background: linear-gradient(135deg, #FB8C00, #EF6C00); }
+    .card-prm { border-color: #AB47BC; }
+    .header-prm { background: linear-gradient(135deg, #8E24AA, #6A1B9A); }
 
-    /* === 深度報告區塊 === */
+    /* === 深度報告區塊：字體與間距優化 === */
     .detail-section-container {
-        background: white; border-radius: 20px; padding: 30px;
-        margin-top: 30px; box-shadow: 0 10px 30px rgba(0,86,98,0.1);
+        background: white; border-radius: 20px; padding: 40px;
+        margin-top: 35px; box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        border: 1px solid #CFD8DC;
     }
 
     .info-box-blue {
-        background: #E3F2FD; border-radius: 12px; padding: 18px;
-        border-left: 6px solid #1976D2; color: #0D47A1;
+        background: #E3F2FD; border-radius: 15px; padding: 25px;
+        border-left: 8px solid #1976D2; color: #0D47A1; font-size: 22px;
     }
     .info-box-gold {
-        background: #FFF8E1; border-radius: 12px; padding: 18px;
-        border-left: 6px solid #FFA000; color: #E65100;
+        background: #FFF8E1; border-radius: 15px; padding: 25px;
+        border-left: 8px solid #FBC02D; color: #5F4B09; font-size: 22px;
     }
     
-    /* Hazard Ratio 數值呈現：比例縮放 */
+    /* Hazard Ratio 核心數值：極大化呈現 */
     .hr-display-box {
-        background: white; border-radius: 12px; padding: 15px;
-        text-align: center; border: 2px solid #FFECB3;
+        background: white; border-radius: 15px; padding: 20px;
+        text-align: center; border: 3px solid #FFE082;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
+    .hr-label-text { font-size: 18px; color: #795548; font-weight: 700; margin-bottom: 8px; }
     .hr-big-val {
-        font-family: 'Roboto', sans-serif; font-size: 34px; font-weight: 900;
-        color: #BF360C; line-height: 1;
+        font-family: 'Roboto', sans-serif; font-size: 48px !important; 
+        font-weight: 900; color: #D84315; line-height: 1;
     }
-    .hr-ci-small { font-size: 14px; color: #8D6E63; margin-top: 5px; font-weight: 700; }
+    .hr-ci-small { font-size: 20px !important; color: #5D4037; margin-top: 10px; font-weight: 700; }
 
-    /* 收案條件 */
-    .inc-box { background: #E8F5E9; padding: 15px; border-radius: 10px; border-left: 5px solid #43A047; }
-    .exc-box { background: #FFEBEE; padding: 15px; border-radius: 10px; border-left: 5px solid #E53935; }
+    /* 收案條件字體加重 */
+    .inc-box { background: #E8F5E9; padding: 20px; border-radius: 12px; border-left: 6px solid #2E7D32; font-size: 21px; }
+    .exc-box { background: #FFEBEE; padding: 20px; border-radius: 12px; border-left: 6px solid #C62828; font-size: 21px; }
 
+    /* Pharma Badge */
     .pharma-badge { 
-        background: linear-gradient(to right, #005662, #00897B); color: white; 
-        padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 500;
-        display: inline-block; margin-bottom: 10px;
+        background: #004D40; color: white; 
+        padding: 6px 18px; border-radius: 50px; font-size: 14px; font-weight: 700;
+        display: inline-block; margin-bottom: 12px;
+    }
+    
+    /* 加強 Popover 按鈕的字體 */
+    .stPopover button {
+        font-weight: 700 !important;
+        font-size: 18px !important;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 1. 資料庫 ---
+# --- 1. 深度臨床資料庫 ---
 if 'trials_db' not in st.session_state:
     st.session_state.trials_db = [
         {
-            "cancer": "Endometrial", "name": "GU-US-682-6769", "pharma": "Gilead",
+            "cancer": "Endometrial", "name": "GU-US-682-6769 (TROPiCS-03)", "pharma": "Gilead",
             "drug": "SG (Trodelvy)", "pos": "Recurrence",
-            "summary": "針對 Trop-2 ADC。顯著改善二/三線 EC 患者存活期。具備強大 Bystander Effect。",
-            "rationale": "標靶 Trop-2 ADC。釋放 SN-38 載荷引發 DNA 損傷。適合先前 Platinum + PD-1 失敗者。",
+            "summary": "針對 Trop-2 ADC。顯著改善二/三線 EC 患者存活期。具備強力 Bystander Effect。",
+            "rationale": "標靶 Trop-2 ADC。釋放 SN-38 載荷引發 DNA 損傷。適合先前 Platinum + PD-1 失敗之進展性患者。",
             "dosing": {
                 "Experimental (Arm A)": "SG 10 mg/kg IV (Days 1, 8 of Q21D).",
-                "Control (Arm B)": "TPC (Doxo 60 mg/m² Q3W or Paclitaxel 80 mg/m² Weekly)."
+                "Control (Arm B)": "TPC (Doxorubicin 60 mg/m² Q3W or Paclitaxel 80 mg/m² Weekly)."
             },
             "outcomes": {"ORR": "28.5%", "mPFS": "5.6m", "mOS": "12.8m", "HR": "0.64", "CI": "95% CI: 0.48-0.84", "AE": "Neutropenia, Diarrhea"},
-            "inclusion": ["Recurrent EC (excluding Sarcoma)", "≥1 prior Platinum line", "Prior Anti-PD-1/L1 required"],
-            "exclusion": ["Prior TROP-2 ADC therapy", "Active CNS metastasis"],
+            "inclusion": ["Recurrent EC (excluding Sarcoma)", "≥1 prior Platinum line failed", "Prior Anti-PD-1/L1 therapy mandatory"],
+            "exclusion": ["Prior TROP-2 ADC therapy", "Active/Untreated CNS metastasis"],
             "ref": "JCO 2024; TROPiCS-03 Study"
         },
         {
-            "cancer": "Endometrial", "name": "MK2870-033", "pharma": "MSD",
+            "cancer": "Endometrial", "name": "MK2870-033 (TroFuse-033)", "pharma": "MSD",
             "drug": "Sac-TMT + Pembro", "pos": "1L Maintenance",
-            "summary": "新型 ADC 聯手 PD-1 抑制劑，挑戰一線維持治療新標準。",
-            "rationale": "ADC 誘導腫瘤凋亡後釋放新抗原，增強 Pembrolizumab 的免疫活化。",
+            "summary": "新型 ADC 聯手 PD-1 抑制劑。旨在挑戰一線維持治療現有標準。",
+            "rationale": "ADC 誘導腫瘤凋亡後釋放新抗原，增強 Pembrolizumab 的 T 細胞再活化。用於延緩一線化療後復發。",
             "dosing": {
                 "Induction": "Carbo (AUC 5) + Taxel (175 mg/m²) + Pembro (200 mg) Q3W x6.",
-                "Maintenance": "Pembro (400 mg) Q6W + Sac-TMT (5 mg/kg) Q6W."
+                "Maintenance": "Pembrolizumab (400 mg) Q6W + Sac-TMT (5 mg/kg) Q6W."
             },
-            "outcomes": {"ORR": "Est. > 35%", "mPFS": "Pending", "mOS": "Pending", "HR": "Ongoing", "CI": "Phase 3 In Progress", "AE": "Anemia"},
-            "inclusion": ["pMMR EC", "FIGO III/IV or first recurrence", "Central Lab confirmation"],
+            "outcomes": {"ORR": "Est. > 35%", "mPFS": "Pending Phase 3", "mOS": "Pending", "HR": "TBD", "CI": "Ongoing pMMR Cohort", "AE": "Anemia, Stomatitis"},
+            "inclusion": ["pMMR Endometrial Cancer", "FIGO III/IV or first recurrence", "Central Lab MMR confirmation required"],
             "exclusion": ["Uterine Sarcoma", "Prior systemic PD-1 therapy"],
-            "ref": "ESMO 2025 Update"
+            "ref": "ESMO 2025; ClinicalTrial.gov Update"
         },
         {
-            "cancer": "Ovarian", "name": "DOVE", "pharma": "GSK",
+            "cancer": "Ovarian", "name": "DOVE (APGOT-OV07)", "pharma": "GSK",
             "drug": "Dostarlimab + Beva", "pos": "Recurrence",
-            "summary": "針對 OCCC 透明細胞癌，雙重阻斷 PD-1 與 VEGF。",
-            "rationale": "抗血管生成藥物改善 OCCC 免疫抑制環境，恢復 T 細胞效能。",
+            "summary": "針對 OCCC (透明細胞癌)。利用 PD-1 與 VEGF 雙重阻斷改善腫瘤微環境。",
+            "rationale": "抗血管生成藥物改善 OCCC 惡劣之免疫抑制環境，使免疫檢查點抑制劑發揮更佳效能。",
             "dosing": {
                 "Arm B (Combo)": "Dostarlimab + Bevacizumab 15mg/kg Q3W.",
                 "Arm C (Control)": "Standard Chemo (Gemcitabine / PLD / Taxel)."
             },
-            "outcomes": {"ORR": "40.2%", "mPFS": "8.2m", "mOS": "N/A", "HR": "0.58", "CI": "95% CI: 0.42-0.79", "AE": "Hypertension"},
-            "inclusion": ["OCCC > 50% histology", "Platinum-resistant", "Prior Beva allowed"],
-            "exclusion": ["Prior Immunotherapy", "Bowel obstruction history"],
-            "ref": "JCO 2025; OCCC Cohort Data"
+            "outcomes": {"ORR": "40.2% (OCCC)", "mPFS": "8.2m", "mOS": "N/A", "HR": "0.58", "CI": "95% CI: 0.42-0.79", "AE": "Hypertension, Fatigue"},
+            "inclusion": ["Clear Cell Carcinoma > 50% histology", "Platinum-resistant (PD < 12m)", "Prior Bevacizumab allowed"],
+            "exclusion": ["Prior Immunotherapy (PD-1/L1)", "Bowel obstruction history"],
+            "ref": "JCO 2025; APGOT-OV07 Data"
         },
         {
             "cancer": "Ovarian", "name": "DS8201-772", "pharma": "AstraZeneca",
             "drug": "Enhertu (T-DXd)", "pos": "Post-Recurr Maint",
-            "summary": "復發救援化療後的維持治療。針對 HER2 Low 族群療效卓越。",
-            "rationale": "HER2 標靶 ADC。高 DAR 具強力旁觀者效應，對 IHC 1+/2+ 腫瘤有效。",
+            "summary": "復發後救援化療達穩定後之維持治療。針對 HER2 Low 族群表現極佳。",
+            "rationale": "標靶 HER2 之 ADC。高 DAR 具備強大旁觀者效應，對於 IHC 1+/2+ 之腫瘤細胞亦有顯著殺傷力。",
             "dosing": {
-                "Mono": "T-DXd 5.4 mg/kg IV Q3W.",
-                "Combo": "T-DXd + Beva 15 mg/kg Q3W."
+                "Experimental": "T-DXd 5.4 mg/kg IV Q3W.",
+                "Combination": "T-DXd + Bevacizumab 15 mg/kg Q3W."
             },
             "outcomes": {"ORR": "46.3% (IHC 3+)", "mPFS": "10.4m", "mOS": "N/A", "HR": "0.42", "CI": "95% CI: 0.30-0.58", "AE": "ILD Risk (6.2%)"},
             "inclusion": ["HER2 IHC 1+/2+/3+", "Recurrent s/p rescue chemo", "LVEF ≥ 50%"],
-            "exclusion": ["History of ILD", "Prior HER2-directed ADC"],
-            "ref": "JCO 2024 Final Analysis"
+            "exclusion": ["History of Interstitial Lung Disease (ILD)", "Prior HER2-directed ADC"],
+            "ref": "JCO 2024; DESTINY-PanTumor 02 Final"
         }
     ]
 
-# --- 2. 側邊欄 ---
+# --- 2. 狀態同步 ---
 if 'selected_trial' not in st.session_state:
     st.session_state.selected_trial = st.session_state.trials_db[0]['name']
 
+# --- 3. 側邊欄：AI 決策助理 ---
 with st.sidebar:
-    st.markdown("<h3 style='color: #6A1B9A;'>🤖 AI 專家決策助理</h3>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color: #6A1B9A;'>🤖 AI 專家助理</h2>", unsafe_allow_html=True)
     api_key = st.text_input("Gemini API Key", type="password")
-    with st.expander("✨ 患者媒合判定", expanded=False):
+    with st.expander("✨ 患者條件媒合分析", expanded=False):
         patient_notes = st.text_area("輸入病歷摘要", height=300)
-        if st.button("🚀 開始分析"):
+        if st.button("🚀 開始深度分析"):
             if api_key and patient_notes:
                 try:
                     genai.configure(api_key=api_key)
@@ -168,14 +179,17 @@ with st.sidebar:
                     st.write(response.text)
                 except Exception as e: st.error(f"AI 異常: {e}")
 
-# --- 3. 主頁面 ---
-st.markdown("<div class='main-title'>婦癌臨床試驗導航儀表板</div>", unsafe_allow_html=True)
+# --- 4. 主頁面：區塊導航 ---
+st.markdown("<div class='main-title'>婦癌臨床試驗導航地圖</div>", unsafe_allow_html=True)
+
+# 顯示病程路徑參考圖
+
+
 cancer_type = st.radio("第一步：選擇癌症類型", ["Endometrial", "Ovarian"], horizontal=True)
 
-st.subheader("第二步：點擊下方標記查看亮點，或下拉查看深度報告")
+st.subheader("第二步：點擊下方標記查看亮點摘要")
 c1, c2, c3, c4 = st.columns(4)
 
-# 階段主題配置
 stages = {
     "1L": {"label": "第一線 (1L)", "col": c1, "pos": "1L", "css": "1l"},
     "1LM": {"label": "一線維持 (Maint)", "col": c2, "pos": "1L Maintenance", "css": "1lm"},
@@ -192,30 +206,34 @@ for key, info in stages.items():
             st.caption("無匹配試驗")
         else:
             for t in relevant_trials:
-                btn_label = f"📍 {t['pharma']} | {t['name']} | {t['drug']}"
-                with st.popover(btn_label, use_container_width=True):
-                    st.markdown(f"**✨ {t['name']} 亮點**")
+                label = f"📍 {t['pharma']} | {t['name']} | {t['drug']}"
+                with st.popover(label, use_container_width=True):
+                    st.markdown(f"### ✨ {t['name']} 核心重點")
                     st.info(t['summary'])
-                    if st.button("📊 查看數據全覽", key=f"go_{t['name']}"):
+                    if st.button("📊 開啟深度分析報告", key=f"go_{t['name']}"):
                         st.session_state.selected_trial = t['name']
         st.markdown("</div>", unsafe_allow_html=True)
 
-# --- 4. 深度報告看板 ---
+# --- 5. 深度分析報告看板 ---
 st.divider()
 t_options = [t["name"] for t in st.session_state.trials_db if t["cancer"] == cancer_type]
 try: curr_idx = t_options.index(st.session_state.selected_trial)
 except: curr_idx = 0
 
-selected_name = st.selectbox("🎯 快速搜尋或切換詳細報告：", t_options, index=curr_idx)
+selected_name = st.selectbox("🎯 快速搜尋或切換詳細試驗報告：", t_options, index=curr_idx)
 t = next(it for it in st.session_state.trials_db if it["name"] == selected_name)
 
+# 深度報告容器
 st.markdown(f"<div class='detail-section-container'>", unsafe_allow_html=True)
 st.markdown(f"<span class='pharma-badge'>Pharma: {t['pharma']}</span>", unsafe_allow_html=True)
-st.markdown(f"<h2 style='color:#005662; border-bottom:2px solid #E0E0E0; padding-bottom:10px;'>📋 {t['name']} 深度分析報告</h2>", unsafe_allow_html=True)
+st.markdown(f"<h2 style='color:#004D40; border-bottom:3px solid #E0E0E0; padding-bottom:15px; font-weight:900;'>📋 {t['name']} 深度分析報告</h2>", unsafe_allow_html=True)
+
+# 藥物機轉視覺
+
 
 r1_c1, r1_c2 = st.columns([1.3, 1])
 with r1_c1:
-    st.markdown("<div class='info-box-blue'><b>💉 Dosing & Rationale</b></div>", unsafe_allow_html=True)
+    st.markdown("<div class='info-box-blue'><b>💉 Dosing Protocol & Rationale</b></div>", unsafe_allow_html=True)
     st.write(f"**核心藥物:** {t['drug']}")
     for arm, details in t['dosing'].items():
         st.write(f"🔹 **{arm}**: {details}")
@@ -223,23 +241,28 @@ with r1_c1:
     st.write(f"**機轉 Rationale:** {t['rationale']}")
 
 with r1_c2:
-    st.markdown("<div class='info-box-gold'><b>📈 Efficacy & Outcomes</b></div>", unsafe_allow_html=True)
+    st.markdown("<div class='info-box-gold'><b>📈 Efficacy & Outcomes (Hazard Ratio)</b></div>", unsafe_allow_html=True)
     st.markdown(f"""
         <div class='hr-display-box'>
-            <div style='font-size: 13px; color: #8D6E63; margin-bottom:5px; font-weight:700;'>Hazard Ratio (HR)</div>
+            <div class='hr-label-text'>Hazard Ratio (HR)</div>
             <div class='hr-big-val'>{t['outcomes']['HR']}</div>
             <div class='hr-ci-small'>{t['outcomes']['CI']}</div>
         </div>
     """, unsafe_allow_html=True)
+    
+    # KM 曲線參考
+    
+    
     st.write(f"**ORR:** {t['outcomes']['ORR']} | **mPFS:** {t['outcomes']['mPFS']}")
+    st.error(f"**Safety / AE:** {t['outcomes']['AE']}")
     st.caption(f"Ref: {t['ref']}")
 
 st.divider()
 r2_c1, r2_c2 = st.columns(2)
 with r2_c1:
     st.markdown("<div class='inc-box'><b>✅ Inclusion Criteria</b></div>", unsafe_allow_html=True)
-    for inc in t['inclusion']: st.write(f"• {inc}")
+    for inc in t['inclusion']: st.write(f"• **{inc}**")
 with r2_c2:
     st.markdown("<div class='exc-box'><b>❌ Exclusion Criteria</b></div>", unsafe_allow_html=True)
-    for exc in t['exclusion']: st.write(f"• {exc}")
+    for exc in t['exclusion']: st.write(f"• **{exc}**")
 st.markdown("</div>", unsafe_allow_html=True)
