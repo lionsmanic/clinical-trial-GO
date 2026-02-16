@@ -1,7 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 
-# --- 🏥 婦癌臨床試驗專家導航系統 (完整全集版) ---
+# --- 🏥 婦癌臨床試驗專家導航系統 (2026 FRAmework-01 更新版) ---
 st.set_page_config(page_title="婦癌臨床試驗導航系統", layout="wide")
 
 st.markdown("""
@@ -84,10 +84,25 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 1. 完整臨床資料庫 (已救回舊試驗並加入新 SIV 試驗) ---
+# --- 1. 完整臨床資料庫 (已納入所有舊試驗與最新 FRAmework-01) ---
 if 'trials_db' not in st.session_state:
     st.session_state.trials_db = [
         # --- Ovarian Cancer ---
+        {
+            "cancer": "Ovarian", "name": "FRAmework-01 (LY4170156)", "pharma": "Eli Lilly (禮來)",
+            "drug": "LY4170156 + Bevacizumab", "pos": "Recurrence",
+            "summary": "針對 FRα 陽性患者之 Phase 3 試驗。區分 PROC 與 PSOC 族群，探討 ADC 聯手 Beva 之療效。",
+            "rationale": "葉酸受體 alpha (FRα) 標靶 ADC。利用強效載荷結合 Bevacizumab 的抗血管生成協同作用，解決 PARPi 失敗後之需求。",
+            "dosing": {
+                "Experimental": "LY4170156 3 mg/kg + Bevacizumab 15 mg/kg Q3W.",
+                "Control (PROC)": "TPC (Paclitaxel/PLD/Gem/Top) or Mirvetuximab (MIRV).",
+                "Control (PSOC)": "Platinum Doublet + Bevacizumab."
+            },
+            "outcomes": {"ORR": "Promising Ph1/2 Data", "mPFS": "Primary Endpoint", "mOS": "Secondary Endpoint", "HR": "Phase 3 Ongoing", "CI": "NCT06536348", "AE": "Proteinuria, ILD monitoring"},
+            "inclusion": ["High-grade Serous / Carcinosarcoma", "FRα表達陽性", "Part A: PROC (復發≤6m)", "Part B: PSOC (復發>6m)"],
+            "exclusion": ["ILD 肺纖維化病史", "曾用過 Topo I 抑制劑 ADC (如 DS-8201)", "顯著蛋白尿"],
+            "ref": "Source: ClinicalTrials.gov 2026; Lilly Oncology Research"
+        },
         {
             "cancer": "Ovarian", "name": "REJOICE-Ovarian01", "pharma": "Daiichi Sankyo",
             "drug": "R-DXd (Raludotatug Deruxtecan)", "pos": "Recurrence",
@@ -206,7 +221,7 @@ for key, info in stages.items():
                         st.session_state.selected_trial = t['name']
         st.markdown("</div>", unsafe_allow_html=True)
 
-# --- 5. 深度分析看板 ---
+# --- 5. 深度分析報告看板 ---
 st.divider()
 t_options = [t["name"] for t in st.session_state.trials_db if t["cancer"] == cancer_type]
 try: curr_idx = t_options.index(st.session_state.selected_trial)
@@ -219,13 +234,12 @@ st.markdown(f"<div class='detail-section'>", unsafe_allow_html=True)
 st.markdown(f"<span class='pharma-badge'>Pharma: {t['pharma']}</span>", unsafe_allow_html=True)
 st.markdown(f"<h2 style='color:#004D40; border-bottom:3px solid #E0E0E0; padding-bottom:15px; font-weight:900;'>📋 {t['name']} 深度分析報告</h2>", unsafe_allow_html=True)
 
-
-
 r1_c1, r1_c2 = st.columns([1.3, 1])
 with r1_c1:
     st.markdown("<div class='info-box-blue'><b>💉 Dosing Protocol & Rationale</b></div>", unsafe_allow_html=True)
     st.write(f"**核心藥物:** {t['drug']}")
     for arm, details in t['dosing'].items(): st.write(f"🔹 **{arm}**: {details}")
+    st.markdown("---")
     st.success(f"**機轉 Rationale:** {t['rationale']}")
 
 with r1_c2:
@@ -239,7 +253,6 @@ with r1_c2:
     """, unsafe_allow_html=True)
     st.write(f"**ORR:** {t['outcomes']['ORR']} | **mPFS:** {t['outcomes']['mPFS']}")
     st.error(f"**Safety / AE:** {t['outcomes']['AE']}")
-    
 
 st.divider()
 r2_c1, r2_c2 = st.columns(2)
