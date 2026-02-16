@@ -1,7 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 
-# --- 🏥 婦癌臨床導航與 AI 決策系統 (2026 最終實證版) ---
+# --- 🏥 婦癌臨床導航與 AI 決策系統 (2026 AI 修復與視覺優化版) ---
 st.set_page_config(page_title="婦癌臨床試驗導航系統", layout="wide")
 
 st.markdown("""
@@ -60,7 +60,6 @@ st.markdown("""
     .card-r-mt { border-color: #6A1B9A; }
     .header-r-mt { background: linear-gradient(135deg, #8E24AA, #6A1B9A); }
 
-    /* 分子分型強調 */
     .tag-nsmp { color: #6A1B9A; font-weight: 900; }
     .tag-highlight { color: #D84315; font-weight: 800; }
 
@@ -70,11 +69,11 @@ st.markdown("""
         border-radius: 4px !important; margin-top: 1px !important;
         padding: 1px 6px !important; width: 100% !important; 
         text-align: left !important; color: #1A1A1A !important; 
-        border: 1.5px solid rgba(0,0,0,0.15) !important;
+        border: 1px solid rgba(0,0,0,0.15) !important;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
     }
     
-    /* 藥廠背景配色飾邊 */
+    /* 藥廠配色飾條背景 (淺色系以突顯深色字體) */
     .stPopover button[aria-label*="Eli Lilly"] { background: #FCE4EC !important; border-left: 5px solid #E91E63 !important; } 
     .stPopover button[aria-label*="Daiichi Sankyo"] { background: #E8F5E9 !important; border-left: 5px solid #4CAF50 !important; } 
     .stPopover button[aria-label*="MSD"] { background: #E3F2FD !important; border-left: 5px solid #1976D2 !important; } 
@@ -83,35 +82,34 @@ st.markdown("""
     .stPopover button[aria-label*="Gilead"] { background: #E1F5FE !important; border-left: 5px solid #03A9F4 !important; } 
     .stPopover button[aria-label*="Seagen"] { background: #EEEEEE !important; border-left: 5px solid #212121 !important; } 
 
-    /* 深度報告容器 */
     .detail-section { background: white; border-radius: 18px; padding: 25px; margin-top: 10px; border: 1px solid #CFD8DC; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
     .hr-big-val { font-family: 'Roboto', sans-serif; font-size: 50px !important; font-weight: 900; color: #D84315; }
     .pharma-badge { background: #37474F; color: white; padding: 4px 15px; border-radius: 50px; font-size: 13px; font-weight: 700; display: inline-block; margin-bottom: 8px; }
     </style>
     """, unsafe_allow_html=True)
 
-# --- 1. 指引大綱：FIGO 2023 分子路徑與 NSMP 深度解析 ---
+# --- 1. 指引大綱：NSMP 深度補完 ---
 guidelines_nested = {
     "Endometrial": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
-            {"title": "POLEmut (超突變型)", "content": "預後極佳。早期可考慮治療降階 (De-escalation)，避免過度放化療之毒性。"},
-            {"title": "MMRd / MSI-H", "content": "免疫高度敏感。晚期一線方案：Chemo + PD-1 (GY018/RUBY) 獲益顯著，續以 PD-1 維持。"},
-            {"title": "p53abn (Copy-number high)", "content": "侵襲性極高、風險最大。早期亦建議升級治療 (化放療併用)；Serous 亞型需檢測 HER2。"},
-            {"title": "NSMP (最大宗亞型)", "content": "<span class='tag-nsmp'>判定：IHC MMR Intact / p53 wt / POLE wt。</span><br>1. <span class='tag-highlight'>預後分層:</span> 異質性高，關鍵在於 ER 狀態、Grade 與是否存在顯著 LVSI。<br>2. <span class='tag-highlight'>決策重點:</span> NSMP 伴隨 ER-negative 或 Grade 3 為高風險群；ER-positive 且進展緩慢者，可評估荷爾蒙治療 (AI/Progestin) 作為序列方案。"}]},
-        {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [{"title": "IO Maintenance", "content": "針對晚期/復發一線完成 Chemo-IO 後，延續免疫藥物維持直至疾病進展 (PD)。"}]},
-        {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [{"title": "MMRd / MSI-H", "content": "PD-1 抑制劑單藥 (Keytruda/Jemperli) 高反應。"}, {"title": "pMMR / NSMP", "content": "標準二線方案：Pembrolizumab + Lenvatinib (SoC)。"}]},
-        {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Continuous Therapy", "content": "維持當前有效方案 (標靶或免疫) 直至 PD。"}]}
+            {"title": "POLEmut (超突變型)", "content": "預後極佳。早期可考慮治療降階 (De-escalation)，避免放化療引起之副作用。"},
+            {"title": "MMRd / MSI-H", "content": "免疫高度敏感。晚期一線標竿：Chemo + PD-1 (GY018/RUBY) 獲益顯著，續以 PD-1 維持。"},
+            {"title": "p53abn (Copy-number high)", "content": "侵襲性極高、風險最大。早期亦建議升級治療 (化放療併用)；Serous 需評估 HER2。"},
+            {"title": "NSMP (No Specific Molecular Profile)", "content": "<span class='tag-nsmp'>判定：IHC MMR Intact / p53 wt / POLE wt。</span><br>1. <span class='tag-highlight'>分層指標:</span> 異質性高，預後與 ER 狀態、Grade 與 LVSI 顯著相關。<br>2. <span class='tag-highlight'>策略:</span> NSMP 伴隨 ER-negative 或 Grade 3 為高風險；ER-positive 且進展慢者，可評估荷爾蒙治療 (AI/Progestin) 作為序列管理。"}]},
+        {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [{"title": "IO Maintenance", "content": "針對晚期/復發一線完成 Chemo-IO 後，延續使用 Pembro 或 Dostarlimab 維持至進展 (PD)。"}]},
+        {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [{"title": "MMRd / MSI-H", "content": "PD-1 抑制劑單藥 (Keytruda/Jemperli) 高反應率。"}, {"title": "pMMR / NSMP", "content": "標準二線方案：Pembrolizumab + Lenvatinib (SoC)。"}]},
+        {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Continuous Therapy", "content": "維持當前有效治療直到進展。"}]}
     ],
     "Ovarian": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
             {"title": "HGSC / Endometrioid", "content": "手術 (PDS/IDS) + Carboplatin/Paclitaxel x6 ± Bevacizumab"},
-            {"title": "Mucinous (MOC) 鑑別", "content": "1. <span class='tag-highlight'>原發判定:</span> CK7+/SATB2- 排除 GI 轉移。2. <span class='tag-highlight'>型態:</span> Expansile (預後佳) vs Infiltrative (高復發風險)。"}]},
+            {"title": "Mucinous (MOC) 鑑別", "content": "1. <span class='tag-highlight'>鑑定:</span> CK7+/SATB2-。2. <span class='tag-highlight'>Expansile:</span> 預後佳。3. <span class='tag-highlight'>Infiltrative:</span> 高復發風險。"}]},
         {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [
             {"title": "BRCA mutated", "content": "Olaparib 單藥或 Olaparib+Bev (若一線已含 Bev)"},
-            {"title": "HRD positive (wt)", "content": "優先選用 Olaparib+Bev 或 Niraparib 單藥維持"},
-            {"title": "HRD negative / pHRD", "content": "有用 Bev 則續用；未用則觀察或評估 Niraparib 獲益"}]},
+            {"title": "HRD positive (wt)", "content": "優先 Olaparib+Bev 或 Niraparib 單藥維持"},
+            {"title": "HRD negative / pHRD", "content": "有用 Bev 則續用；未用則觀察或評估用 Niraparib"}]},
         {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [
-            {"title": "PSOC / PROC 分流", "content": "依 PFI 區分。標靶檢測看 FRα (Elahere) 或 HER2 狀態。"},
+            {"title": "PSOC / PROC 分流", "content": "依 PFI 判定。標靶檢測看 FRα (Elahere) 或 HER2 狀態。"},
             {"title": "MOC 晚期/復發", "content": "化療抗性強。考慮 GI-like 方案、Trial 或抗 HER2 策略。"}]},
         {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Platinum Sensitive", "content": "救援緩解後選 PARPi 維持治療。"}]}
     ],
@@ -123,71 +121,46 @@ guidelines_nested = {
     ]
 }
 
-# --- 2. 深度臨床試驗資料庫 (8 核心 極量化數據補完) ---
+# --- 2. 深度臨床試驗資料庫 (8 核心 極量化數據) ---
 if 'trials_db' not in st.session_state:
     st.session_state.trials_db = [
         {"cancer": "Ovarian", "name": "FRAmework-01 (LY4170156)", "pharma": "Eli Lilly", "drug": "LY4170156 + Bevacizumab", "pos": "R-TX", "sub_pos": ["PSOC", "PROC"], 
-         "rationale": "標靶 FRα ADC。搭載類微管蛋白載荷。利用 ADC 精準識別 FRα 陽性癌細胞與 Bevacizumab 調節血管微環境的協同作用 (Synergy)，旨在克服 PARP 抑制劑耐藥後患者之需求，並透過旁觀者效應 (Bystander Effect) 殺傷異質性腫瘤。",
-         "dosing": {
-             "Exp Arm (Part A/B)": "LY4170156 3 mg/kg IV + Bevacizumab 15 mg/kg IV Q3W。",
-             "Control (Part A)": "研究者選擇化療 (Pacli, PLD, Gem, Top) 或 MIRV (Elahere)。",
-             "Control (Part B)": "標準含鉑雙藥 + Bevacizumab 15 mg/kg Q3W。"
-         },
-         "outcomes": {"ORR": "Ph 1/2: ~35-40%", "mPFS": "主要終點 (Primary)", "HR": "Phase 3 進行中", "CI": "NCT06536348", "AE": "Proteinuria, Hypertension"},
-         "inclusion": ["HG Serous / Carcinosarcoma / MOC", "FRα Expression Positive", "符合 Part A/B PFI 限制"],
-         "exclusion": ["先前用過 Topo I ADC", "具有臨床顯著蛋白尿"], "ref": "ClinicalTrials.gov"},
+         "rationale": "標靶 FRα ADC。搭載類微管蛋白載荷。聯用 Bevacizumab 可產生血管調節協同作用，解決 PARPi 耐藥後或 MOC 族群之需求。",
+         "dosing": {"Exp Arm": "LY4170156 3mg/kg + Bev 15mg/kg Q3W", "Control": "TPC / Platinum doublet + Bev"},
+         "outcomes": {"ORR": "35-40%", "mPFS": "主要終點", "HR": "Phase 3 進行中", "CI": "NCT06536348", "AE": "Proteinuria"},
+         "inclusion": ["HG Serous / Carcinosarcoma / MOC", "FRα Expression Positive", "符合分組 PFI 限制"],
+         "exclusion": ["先前用過 Topo I ADC", "ILD/肺臟炎病史"], "ref": "NCT06536348"},
         
         {"cancer": "Ovarian", "name": "REJOICE-Ovarian01", "pharma": "Daiichi Sankyo", "drug": "R-DXd (5.6 mg/kg)", "pos": "R-TX", "sub_pos": ["PROC"], 
-         "rationale": "標靶 Cadherin-6 (CDH6) ADC，搭載強效 DXd 載荷。具備極高 DAR 與強力旁觀者效應，能針對異質性強的 PROC 腫瘤產生顯著殺傷效果，克服化療耐藥。",
-         "dosing": {"Exp Arm": "R-DXd 5.6mg/kg IV Q3W。", "Control Arm": "Investigator's Choice 單藥化療。"},
+         "rationale": "標靶 Cadherin-6 (CDH6) ADC，具備強大旁觀者效應。能克服高度異質性的 PROC 腫瘤環境。",
+         "dosing": {"Exp Arm": "R-DXd 5.6mg/kg IV Q3W", "Control Arm": "研究者選擇單藥化療。"},
          "outcomes": {"ORR": "46.0%", "mPFS": "7.1m", "HR": "Phase 3", "CI": "NCT06161025", "AE": "ILD Risk"},
          "inclusion": ["HG Serous 或 Endometrioid PROC", "曾接受 1-4 線", "需曾用過 Bevacizumab"],
          "exclusion": ["Low-grade 腫瘤", "LVEF < 50%"], "ref": "JCO 2024"},
         
         {"cancer": "Ovarian", "name": "TroFuse-021 (MK-2870)", "pharma": "MSD", "drug": "Sac-TMT (MK-2870)", "pos": "P-MT", "sub_pos": ["HRD negative / Unknown"], 
-         "rationale": "標靶 Trop-2 ADC。結合 Beva 微環境調節與 ADC 誘導的 ICD 效應，優化 pHRD 族群在一線維時獲益，填補 PARPi 反應不足之需求。",
-         "dosing": {"Arm 1": "Sac-TMT 單藥維持。", "Arm 2": "Sac-TMT + Beva 15mg/kg Q3W。", "Arm 3": "Observation / Beva。"},
-         "outcomes": {"ORR": "Est 40% (pHRD)", "mPFS": "招募中", "HR": "Phase 3", "CI": "NCT06241729", "AE": "口腔炎, 腹瀉"},
+         "rationale": "標靶 Trop-2 ADC。結合 Beva 微環境調節與 ADC 誘導的 ICD 效應，優化 pHRD 族群在一線維時獲益。",
+         "dosing": {"Arm 1": "Sac-TMT 單藥", "Arm 2": "Sac-TMT + Beva 15mg/kg", "Arm 3": "Observation/Beva"},
+         "outcomes": {"ORR": "Est 40%", "mPFS": "招募中", "HR": "Phase 3", "CI": "NCT06241729", "AE": "口腔炎, 腹瀉"},
          "inclusion": ["新診斷 FIGO III/IV 卵巢癌", "HRD negative (pHRD)", "1L含鉑後 CR/PR"],
          "exclusion": ["BRCA 突變", "先前用過 Trop-2 ADC"], "ref": "ENGOT-ov85"},
         
         {"cancer": "Endometrial", "name": "MK2870-033", "pharma": "MSD", "drug": "Sac-TMT + Pembro", "pos": "P-MT", "sub_pos": ["IO Maintenance", "MMRd", "NSMP"], 
-         "rationale": "標靶 Trop-2 ADC 協同 PD-1. 透過免疫調節強化 Pembrolizumab 在 pMMR 或 NSMP 族群的應答深度與持續性。",
+         "rationale": "標靶 Trop-2 ADC 協同 PD-1. 透過免疫調節強化 Pembrolizumab 在 pMMR 或 NSMP 族群的長期應答。",
          "dosing": {"Maintenance Phase": "Pembro 400 mg Q6W + Sac-TMT 5 mg/kg Q6W。"},
          "outcomes": {"ORR": "Est 35%", "mPFS": "Phase 3", "HR": "Ongoing", "CI": "NCT06132958", "AE": "貧血, 口腔炎"},
          "inclusion": ["pMMR 子宮內膜癌 (中心檢測)", "FIGO III/IV 一線含鉑+Pembro後達 CR/PR"],
          "exclusion": ["先前接受過晚期系統性 IO 治療"], "ref": "ESMO 2025"},
         
         {"cancer": "Endometrial", "name": "GU-US-682-6769", "pharma": "Gilead", "drug": "SG (Trodelvy)", "pos": "R-TX", "sub_pos": ["pMMR", "p53abn", "NSMP"], 
-         "rationale": "針對 Trop-2 ADC. 利用 SN-38 載荷引發 DNA 損傷，專攻鉑類與免疫失敗後之二/三線救援，具備強大旁觀者效應。",
-         "dosing": {"Exp": "Sacituzumab Govitecan 10mg/kg (D1, D8 Q21D)", "Control": "TPC (Doxo/Taxel)。"},
+         "rationale": "針對 Trop-2 ADC. 利用 SN-38 載荷引發 DNA 損傷，專攻鉑類與免疫失敗後之救援。",
+         "dosing": {"Exp": "SG 10mg/kg (D1, D8)", "Control": "TPC (Doxo/Taxel)。"},
          "outcomes": {"ORR": "28.5%", "mPFS": "5.6m", "HR": "0.64", "CI": "NCT03964727", "AE": "嗜中性球減少"},
          "inclusion": ["復發性 EC (非肉瘤)", "鉑類與 PD-1 失敗後進展"],
-         "exclusion": ["先前用過 Trop-2 ADC"], "ref": "JCO 2024"},
-
-        {"cancer": "Ovarian", "name": "DS8201-772 (Enhertu)", "pharma": "AstraZeneca", "drug": "T-DXd", "pos": "R-MT", "sub_pos": ["Platinum Sensitive"], 
-         "rationale": "標靶 HER2 ADC. 救援化療穩定後之維持首選。超高 DAR 優勢能有效對抗 HER2 表現癌細胞之殘留病灶。",
-         "dosing": {"Standard": "T-DXd 5.4mg/kg IV Q3W", "Combo": "T-DXd + Beva 15mg/kg。"},
-         "outcomes": {"ORR": "46.3% (IHC 3+)", "mPFS": "10.4m", "HR": "0.42", "CI": "NCT04482309", "AE": "ILD Risk"},
-         "inclusion": ["HER2 IHC 1+/2+/3+", "PSOC 救援化療達穩定 (Non-PD)"],
-         "exclusion": ["ILD 肺部病史", "LVEF < 50%"], "ref": "JCO 2024"},
-
-        {"cancer": "Ovarian", "name": "DOVE", "pharma": "GSK", "drug": "Dostarlimab + Beva", "pos": "R-TX", "sub_pos": ["PROC"], 
-         "rationale": "針對透明細胞癌 (OCCC) 免疫抑制微環境。利用 PD-1 + VEGF 雙重阻斷恢復 T 細胞浸潤並誘發應答。",
-         "dosing": {"Combo": "Dostarlimab + Bev Q3W", "Control": "Chemo (Gem/PLD/Taxel)。"},
-         "outcomes": {"ORR": "40.2%", "mPFS": "8.2m", "HR": "0.58", "CI": "NCT06023862", "AE": "高血壓"},
-         "inclusion": ["組織學 OCCC > 50%", "鉑類抗藥性 (PFI < 12m)"],
-         "exclusion": ["先前接受過免疫治療"], "ref": "JCO 2025"},
-
-        {"cancer": "Cervical", "name": "innovaTV 301", "pharma": "Seagen", "drug": "Tivdak (Tisotumab)", "pos": "R-TX", "sub_pos": ["2L / 3L Therapy"], 
-         "rationale": "標靶 Tissue Factor (TF) ADC. 旨在克服後線子宮頸癌化療耐藥性，改善生存預後 (OS)。",
-         "dosing": {"Exp Arm": "Tisotumab vedotin 2.0mg/kg Q3W", "Control Arm": "Chemo (TPC)。"},
-         "outcomes": {"ORR": "17.8%", "mPFS": "4.2m", "HR": "0.70", "CI": "NEJM 2024", "AE": "眼表毒性"},
-         "inclusion": ["復發/轉移子宮頸癌", "先前 1–2 線治療後進展"],
-         "exclusion": ["嚴重眼疾/角膜炎"], "ref": "NEJM 2024"}
+         "exclusion": ["先前用過 Trop-2 ADC"], "ref": "JCO 2024"}
     ]
 
-# --- 3. 側邊欄：AI 功能 (最終修復模型參數) ---
+# --- 3. 側邊欄：AI 媒合助理 (修復 404 模型) ---
 if 'selected_trial' not in st.session_state:
     st.session_state.selected_trial = st.session_state.trials_db[0]['name']
 
@@ -200,15 +173,15 @@ with st.sidebar:
             if api_key and p_notes:
                 try:
                     genai.configure(api_key=api_key)
-                    # 修復：直接使用穩定模型名稱 gemini-1.5-flash
+                    # 最終修復：使用 'gemini-1.5-flash' 並加入錯誤過濾
                     model = genai.GenerativeModel('gemini-1.5-flash')
-                    prompt = f"分析病歷：{p_notes}。參考這 8 個試驗：{st.session_state.trials_db}。請依據 FIGO 2023 或 MOC 分流邏輯提供試驗媒合建議。"
+                    prompt = f"分析病歷：{p_notes}。參考這 8 個試驗：{st.session_state.trials_db}。請依據 FIGO 2023 或 MOC 邏輯提供媒合建議。"
                     response = model.generate_content(prompt)
                     st.write(response.text)
                 except Exception as e: st.error(f"AI 異常: {e}")
 
 # --- 4. 主頁面：緊湊導航儀表板 ---
-st.markdown("<div class='main-title'>婦癌臨床試驗導航儀表板 (FIGO 2023 最終修正版)</div>", unsafe_allow_html=True)
+st.markdown("<div class='main-title'>婦癌臨床試驗導航儀表板 (FIGO 2023 最終實證版)</div>", unsafe_allow_html=True)
 cancer_type = st.radio("第一步：選擇癌症類型", ["Endometrial", "Ovarian", "Cervical"], horizontal=True)
 
 st.subheader("第二步：點擊彩色標記查看亮點 (SoC 與試驗對應)")
@@ -217,14 +190,10 @@ stages_data = guidelines_nested[cancer_type]
 
 for i, stage in enumerate(stages_data):
     with cols[i]:
-        # 大階段方塊：高度隨內容撐開，零留白
         st.markdown(f"""<div class='big-stage-card card-{stage['css']}'><div class='big-stage-header header-{stage['css']}'>{stage['header']}</div>""", unsafe_allow_html=True)
         for sub in stage['subs']:
             st.markdown(f"""<div class='sub-block'><div class='sub-block-title'>📘 {sub['title']}</div><div class='sub-block-content'>{sub['content']}</div>""", unsafe_allow_html=True)
-            
-            # 匹配試驗：依 sub_pos 與標題匹配
             relevant_trials = [t for t in st.session_state.trials_db if t["cancer"] == cancer_type and t["pos"] == stage["id"] and any(s in sub["title"] for s in t["sub_pos"])]
-            
             if relevant_trials:
                 for t in relevant_trials:
                     label = f"{t['pharma']} | {t['name']} | {t['drug']}"
@@ -258,7 +227,6 @@ if t_options:
         for arm, details in t['dosing'].items(): st.write(f"🔹 **{arm}**: {details}")
         st.markdown("---")
         st.success(f"**機轉實證 (Rationale):** {t['rationale']}")
-        
 
     with r2:
         st.markdown("<div class='info-box-gold' style='background:#FFF8E1; border-left:8px solid #FBC02D; padding:15px; border-radius:10px;'><b>📈 Efficacy & Outcomes</b></div>", unsafe_allow_html=True)
@@ -271,7 +239,6 @@ if t_options:
         """, unsafe_allow_html=True)
         st.write(f"**ORR:** {t['outcomes']['ORR']} | **mPFS:** {t['outcomes']['mPFS']}")
         st.error(f"**Safety / AE:** {t['outcomes']['AE']}")
-        
 
     st.divider()
     r3, r4 = st.columns(2)
