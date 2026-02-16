@@ -94,9 +94,9 @@ st.markdown("""
 guidelines_nested = {
     "Endometrial": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
-            {"title": "POLEmut (超突變型)", "content": "預後最佳族群。早期 (I-II期) 建議考慮治療降階 (De-escalation)，可避免放化療引起之長期併發症。"},
+            {"title": "POLEmut (超突變型)", "content": "預後最佳族群。FIGO 2023 建議早期可考慮降階 (De-escalation)，可避免過度放化療。"},
             {"title": "MMRd / MSI-H", "content": "免疫高度敏感。晚期一線方案：Chemo + PD-1 (GY018/RUBY) 顯著改善 OS，接續 PD-1 持續維持。"},
-            {"title": "p53abn (Copy-number high)", "content": "侵襲性最強、復發風險最高。早期亦需積極升級治療 (如化放療併用)；Serous 亞型需檢測 HER2 評估標靶介入。"},
+            {"title": "p53abn (Copy-number high)", "content": "侵襲性最強、復發風險最高。早期亦建議升級治療 (如化放療併用)；Serous 亞型需檢測 HER2 評估標靶介入。"},
             {"title": "NSMP (No Specific Molecular Profile)", "content": "<span class='tag-nsmp'>判定準則：IHC MMR Intact / p53 wt / POLE 定序無致病突變。</span><br>1. <span class='tag-highlight'>預後分層:</span> 此亞型異質性最高，需結合 ER 狀態、Grade 與是否具備顯著 LVSI 進行加權。<br>2. <span class='tag-highlight'>臨床策略:</span> NSMP 伴隨 ER-negative 或 Grade 3 為高風險；ER-positive 且進展較慢者，可考慮荷爾蒙治療 (AI/Progestin) 作為序列或輔助方案。"}]},
         {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [{"title": "IO Maintenance", "content": "針對晚期/復發一線完成含鉑化療併用免疫後，延續使用 Pembro 或 Dostarlimab 直至進展。"}]},
         {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [{"title": "MMRd / MSI-H", "content": "PD-1 抑制劑單藥具高應答深度。"}, {"title": "pMMR / NSMP", "content": "標準二線方案：Pembrolizumab + Lenvatinib (SoC)。"}]},
@@ -105,7 +105,7 @@ guidelines_nested = {
     "Ovarian": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
             {"title": "HGSC / Endometrioid", "content": "手術 (PDS/IDS) + Carboplatin/Paclitaxel x6 ± Bevacizumab"},
-            {"title": "Mucinous (MOC) 鑑別", "content": "1. <span class='tag-highlight'>鑑定:</span> CK7+/SATB2- (原發) 排除胃腸轉移。2. <span class='tag-highlight'>Expansile:</span> 預後佳。3. <span class='tag-highlight'>Infiltrative:</span> 高復發風險。"}]},
+            {"title": "Mucinous (MOC) 鑑別", "content": "1. <span class='tag-highlight'>鑑定:</span> CK7+/SATB2- (原發) 排除胃腸轉移。2. <span class='tag-highlight'>型態:</span> Expansile (預後佳) vs Infiltrative (高復發風險)。"}]},
         {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [
             {"title": "BRCA mutated", "content": "Olaparib 單藥或 Olaparib+Bev (若一線已含Bev)"},
             {"title": "HRD positive (wt)", "content": "優先選用 Olaparib+Bev 或 Niraparib 單藥維持"},
@@ -135,7 +135,7 @@ if 'trials_db' not in st.session_state:
         
         {"cancer": "Ovarian", "name": "REJOICE-Ovarian01", "pharma": "Daiichi Sankyo", "drug": "R-DXd (5.6 mg/kg)", "pos": "R-TX", "sub_pos": ["PROC"], 
          "rationale": "標靶 Cadherin-6 (CDH6) ADC，具備強大旁觀者效應。能克服高度異質性的 PROC 腫瘤環境。",
-         "dosing": {"Exp Arm": "R-DXd 5.6mg/kg IV Q3W", "Control Arm": "TPC (Paclitaxel/PLD/Topotecan)。"},
+         "dosing": {"Exp Arm": "R-DXd 5.6mg/kg IV Q3W。", "Control Arm": "研究者選擇化療 (Paclitaxel, PLD, or Topotecan)。"},
          "outcomes": {"ORR": "46.0%", "mPFS": "7.1m", "HR": "Phase 3", "CI": "NCT06161025", "AE": "ILD Risk"},
          "inclusion": ["PROC 卵巢癌", "曾接受 1-4 線", "需曾用過 Bevacizumab"],
          "exclusion": ["Low-grade 腫瘤", "LVEF < 50%"], "ref": "JCO 2024"},
@@ -148,35 +148,35 @@ if 'trials_db' not in st.session_state:
          "exclusion": ["BRCA 突變或 HRD 陽性", "先前用過 Trop-2 ADC"], "ref": "ENGOT-ov85"},
         
         {"cancer": "Endometrial", "name": "MK2870-033", "pharma": "MSD", "drug": "Sac-TMT + Pembro", "pos": "P-MT", "sub_pos": ["IO Maintenance", "MMRd", "NSMP"], 
-         "rationale": "標靶 Trop-2 ADC 協同 PD-1。透過免疫調節強化 Pembrolizumab 在 pMMR 或 NSMP 族群的長期應答。",
-         "dosing": {"Maintenance": "Pembro 400 mg Q6W + Sac-TMT 5 mg/kg Q6W。"},
-         "outcomes": {"ORR": "Est 35%", "mPFS": "Phase 3", "HR": "Ongoing", "CI": "NCT06132958", "AE": "貧血, 口腔炎"},
-         "inclusion": ["pMMR 子宮內膜癌", "FIGO III/IV 一線含鉑+Pembro後達 CR/PR"],
+         "rationale": "標靶 Trop-2 ADC 協同 PD-1. 透過免疫調節強化 Pembrolizumab 在 pMMR 或 NSMP 族群的長期應答。",
+         "dosing": {"Maintenance Phase": "Pembro 400 mg Q6W + Sac-TMT 5 mg/kg Q6W。"},
+         "outcomes": {"ORR": "Est 35% Ph 2", "mPFS": "Phase 3", "HR": "Ongoing", "CI": "NCT06132958", "AE": "貧血, 口腔炎"},
+         "inclusion": ["pMMR 子宮內膜癌 (中心檢測)", "FIGO III/IV 一線含鉑+Pembro後達 CR/PR"],
          "exclusion": ["先前接受過晚期系統性 IO 治療", "子宮肉瘤"], "ref": "ESMO 2025"},
         
         {"cancer": "Endometrial", "name": "GU-US-682-6769", "pharma": "Gilead", "drug": "SG (Trodelvy)", "pos": "R-TX", "sub_pos": ["pMMR", "p53abn", "NSMP"], 
-         "rationale": "標靶 Trop-2 ADC。利用 SN-38 載荷引發 DNA 損傷，專攻鉑類與免疫失敗後之救援。",
+         "rationale": "針對 Trop-2 ADC. 利用 SN-38 載荷引發 DNA 損傷，專攻鉑類與免疫失敗後之救援。",
          "dosing": {"Exp": "Sacituzumab Govitecan 10mg/kg (D1, D8 Q21D)", "Control": "TPC (Doxo/Taxel)。"},
          "outcomes": {"ORR": "28.5%", "mPFS": "5.6m", "HR": "0.64", "CI": "NCT03964727", "AE": "嗜中性球減少"},
          "inclusion": ["復發性 EC (非肉瘤)", "鉑類與 PD-1 失敗後進展"],
          "exclusion": ["先前用過 Trop-2 ADC", "活動性 CNS 轉移"], "ref": "JCO 2024"},
 
         {"cancer": "Ovarian", "name": "DS8201-772 (Enhertu)", "pharma": "AstraZeneca", "drug": "T-DXd", "pos": "R-MT", "sub_pos": ["Platinum Sensitive"], 
-         "rationale": "標靶 HER2 ADC。救援化療穩定後之維持首選。超高 DAR 優勢能有效殺傷 HER2 表現癌細胞。",
+         "rationale": "標靶 HER2 ADC. 救援化療穩定後之維持首選。超高 DAR 優勢能有效殺傷 HER2 表現癌細胞。",
          "dosing": {"Standard": "T-DXd 5.4mg/kg IV Q3W", "Combo": "T-DXd + Beva 15mg/kg。"},
          "outcomes": {"ORR": "46.3% (IHC 3+)", "mPFS": "10.4m", "HR": "0.42", "CI": "NCT04482309", "AE": "ILD Risk"},
          "inclusion": ["HER2 IHC 1+/2+/3+", "PSOC 救援化療達穩定 (Non-PD)"],
          "exclusion": ["ILD 肺部病史", "LVEF < 50%"], "ref": "JCO 2024"},
 
         {"cancer": "Ovarian", "name": "DOVE", "pharma": "GSK", "drug": "Dostarlimab + Beva", "pos": "R-TX", "sub_pos": ["PROC"], 
-         "rationale": "針對透明細胞癌 (OCCC)。PD-1 + VEGF 雙重阻斷改善微環境。",
+         "rationale": "針對透明細胞癌 (OCCC). PD-1 + VEGF 雙重阻斷改善微環境。",
          "dosing": {"Combo": "Dostarlimab + Bev Q3W", "Control": "Chemo (Gem/PLD/Taxel)。"},
          "outcomes": {"ORR": "40.2%", "mPFS": "8.2m", "HR": "0.58", "CI": "NCT06023862", "AE": "高血壓"},
          "inclusion": ["組織學 OCCC > 50%", "鉑類抗藥性 (PFI < 12m)"],
-         "exclusion": ["先前用過任何免疫治療"], "ref": "JCO 2025"},
+         "exclusion": ["先前接受過任何免疫治療"], "ref": "JCO 2025"},
 
         {"cancer": "Cervical", "name": "innovaTV 301", "pharma": "Seagen", "drug": "Tivdak", "pos": "R-TX", "sub_pos": ["2L / 3L Therapy"], 
-         "rationale": "標靶 Tissue Factor (TF) ADC。旨在克服後線子宮頸癌化療耐藥性。",
+         "rationale": "標靶 Tissue Factor (TF) ADC. 旨在克服後線子宮頸癌化療耐藥性，改善 OS。",
          "dosing": {"Exp Arm": "Tisotumab vedotin 2.0mg/kg Q3W", "Control Arm": "Chemo (TPC)。"},
          "outcomes": {"ORR": "17.8%", "mPFS": "4.2m", "HR": "0.70", "CI": "NEJM 2024", "AE": "眼表毒性"},
          "inclusion": ["復發/轉移子宮頸癌", "先前 1–2 線治療後進展"],
@@ -202,7 +202,7 @@ with st.sidebar:
                     st.write(model.generate_content(prompt).text)
                 except Exception as e: st.error(f"AI 異常: {e}")
 
-# --- 4. 主頁面：極致緊湊導航儀表板 ---
+# --- 4. 主頁面：緊湊導航儀表板 ---
 st.markdown("<div class='main-title'>婦癌臨床試驗導航儀表板 (2026 SoC & Molecular)</div>", unsafe_allow_html=True)
 cancer_type = st.radio("第一步：選擇癌症類型", ["Endometrial", "Ovarian", "Cervical"], horizontal=True)
 
@@ -212,10 +212,14 @@ stages_data = guidelines_nested[cancer_type]
 
 for i, stage in enumerate(stages_data):
     with cols[i]:
+        # 大階段方塊：高度隨內容撐開，零留白
         st.markdown(f"""<div class='big-stage-card card-{stage['css']}'><div class='big-stage-header header-{stage['css']}'>{stage['header']}</div>""", unsafe_allow_html=True)
         for sub in stage['subs']:
             st.markdown(f"""<div class='sub-block'><div class='sub-block-title'>📘 {sub['title']}</div><div class='sub-block-content'>{sub['content']}</div>""", unsafe_allow_html=True)
+            
+            # 尋找匹配試驗：依 sub_pos 與標題匹配
             relevant_trials = [t for t in st.session_state.trials_db if t["cancer"] == cancer_type and t["pos"] == stage["id"] and any(s in sub["title"] for s in t["sub_pos"])]
+            
             if relevant_trials:
                 for t in relevant_trials:
                     label = f"{t['pharma']} | {t['name']} | {t['drug']}"
@@ -249,6 +253,7 @@ if t_options:
         for arm, details in t['dosing'].items(): st.write(f"🔹 **{arm}**: {details}")
         st.markdown("---")
         st.success(f"**機轉實證 (Rationale):** {t['rationale']}")
+        
 
     with r2:
         st.markdown("<div class='info-box-gold' style='background:#FFF8E1; border-left:8px solid #FBC02D; padding:15px; border-radius:10px;'><b>📈 Efficacy & Outcomes</b></div>", unsafe_allow_html=True)
@@ -261,6 +266,7 @@ if t_options:
         """, unsafe_allow_html=True)
         st.write(f"**ORR:** {t['outcomes']['ORR']} | **mPFS:** {t['outcomes']['mPFS']}")
         st.error(f"**Safety / AE:** {t['outcomes']['AE']}")
+        
 
     st.divider()
     r3, r4 = st.columns(2)
