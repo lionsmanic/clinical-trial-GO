@@ -359,7 +359,7 @@ all_trials_db = [
 
     {"cancer": "Cervical", 
         "pos": ["P-TX"], 
-        "sub_pos": ["Locally Advanced (CCRT)"], 
+        "sub_pos": ["Locally Advanced (NIC)"], 
         "name": "📚 NACI Study", "pharma": "Henlius", "drug": "Camrelizumab + NACT", 
         "pop_results": "新輔助免疫強效應：針對局部晚期 (LACC)，pCR（病理完全緩解）率高達 38.6%，顯著優於傳統新輔助化療。",
         "rationale": "利用 PD-1 抑制劑與化療聯用作為手術前的前導治療，旨在縮小腫瘤體積並清除微小轉移病灶，提高手術切除率與長期存活。",
@@ -379,7 +379,7 @@ all_trials_db = [
     
     {"cancer": "Cervical", 
         "pos": ["P-TX"], 
-        "sub_pos": ["Locally Advanced (CCRT)"], 
+        "sub_pos": ["Locally Advanced (NIC)"], 
         "name": "📚 NATIC Trial", "pharma": "BeiGene / SYSU", "drug": "Tislelizumab + NACT", 
         "pop_results": "新輔助免疫新選擇：Tislelizumab 聯用化療達成 41% 的 pCR 率，展現強大的術前腫瘤降階能力。",
         "rationale": "探索 PD-1 抑制劑 Tislelizumab 在局部晚期患者手術前的應用，以評估其對後續手術病理結果的改善程度。",
@@ -389,7 +389,7 @@ all_trials_db = [
     
     {"cancer": "Cervical", 
         "pos": ["P-TX"], 
-        "sub_pos": ["Locally Advanced (CCRT)"], 
+        "sub_pos": ["Locally Advanced (NIC)"], 
         "name": "📍 Cadonilimab + NACT → Surgery", "pharma": "Akeso", "drug": "Cadonilimab + NACT", 
         "pop_results": "雙特異性抗體領航：PD-1/CTLA-4 雙特異性抗體聯用化療作為新輔助治療，展現出比單免疫更高的臨床獲益潛力。",
         "rationale": "利用雙靶點阻斷機制強化腫瘤微環境的免疫活化，為高復發風險的 LACC 患者提供手術前的強力介入方案。",
