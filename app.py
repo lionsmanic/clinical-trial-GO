@@ -189,7 +189,6 @@ all_trials_db = [
         "rationale": "利用免疫檢查點抑制劑與化療產生協同效應，並透過後續單藥免疫維持治療，持續活化免疫系統以控制腫瘤進展。",
         "regimen": "Arm 1: Pembrolizumab 200mg Q3W + Chemo (Pacli+Cis/Carbo) ± Bevacizumab 15mg/kg Q3W。 Arm 2: Placebo + Chemo ± Bev。",
         "outcomes": "CPS≥1 族群 mOS: 28.6m vs 16.5m (HR 0.60); ITT 全人群 OS HR 0.63。"},
-    
 
     {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], "name": "📚 innovaTV 301 (ENGOT-cx12)", "pharma": "Genmab", "drug": "Tisotumab Vedotin (ADC)", 
      "pop_results": "Tisotumab vedotin相較醫師選擇化療改善OS（OS HR 0.70），代表ADC在復發/轉移頸癌的里程碑，後線 ADC 突破：OS HR 0.70; ORR 17.8%",
@@ -211,7 +210,7 @@ all_trials_db = [
     
     { "cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], 
         "name": "📚 BEATcc", "pharma": "Roche", "drug": "Atezolizumab + Chemo + Bev", 
-        "pop_results": "一線 R/M 子宮頸癌：在化療+標靶基礎上加入 Atezolizumab，顯著延長 PFS (13.7m vs 10.4m) 與 OS (32.1m vs 22.8m)。",
+        "pop_results": "一線 R/M 子宮頸癌：在化療+標靶基礎上加入 Atezolizumab，顯著延長 PFS (13.7m vs 10.4m) 與 OS (32.1m vs 22.8m)，PFS HR 0.62；OS HR 0.68）。",
         "rationale": "PD-L1 阻斷併用 VEGF 抑制劑與化療，三軌聯用強化腫瘤微環境之殺傷力。",
         "outcomes": "mPFS HR 0.62; mOS HR 0.68 (95% CI 0.52-0.88)。"},
     
@@ -231,26 +230,26 @@ all_trials_db = [
     # === Ovarian Published ===
     # ==========================
     {"cancer": "Ovarian", "pos": "R-TX", "sub_pos": ["PROC (Resistant Recur)"], "name": "📚 MIRASOL (GOG-3045)", "pharma": "ImmunoGen", "drug": "Mirvetuximab Soravtansine", 
-     "results_short": "PROC OS 突破：OS HR 0.67; ORR 42.3%",
+     "pop_results": "在FRα高表現、鉑抗藥卵巢癌中，Mirvetuximab較化療改善PFS與OS（PFS HR 0.65；OS HR 0.67），確立FRα ADC的關鍵地位，PROC OS 突破：OS HR 0.67; ORR 42.3%",
      "rationale": "針對 FRα 高表現 PROC 患者，首個 ADC 生存獲益研究。",
      "regimen": "Arm A: Mirvetuximab 6.0 mg/kg (AIBW) IV Q3W 直至進展。 Arm B: 醫師選擇化療 (Pacli/PLD/Topo)。",
      "outcomes": "mOS: 16.4m vs 12.7m (HR 0.67); mPFS 5.6m vs 4.0m (HR 0.65)。"},
 
     {"cancer": "Ovarian", "pos": "R-TX", "sub_pos": ["PSOC (Sensitive Recur)"], "name": "📚 DESKTOP III", "pharma": "AGO", "drug": "Secondary Cytoreduction Surgery", 
-     "results_short": "二次手術價值：R0 切除 mOS 53.7m",
+     "pop_results": "復發卵巢癌在嚴格選人（如AGO score）下，次減積手術帶來OS改善（死亡HR 0.75），奠定「選對人做手術」的價值，二次手術價值：R0 切除 mOS 53.7m",
      "rationale": "證明嚴選患者 (AGO Score+) 二次手術具生存獲益。",
      "regimen": "手術組: 腫瘤完全切除手術後接續含鉑化療。 化療組: 單純含鉑複方化療。",
      "inclusion": ["首次鉑類敏感復發 (PFI > 6m)。", "AGO Score 陽性 (ECOG 0/大量腹水除外/R0 完全切除潛力)。"],
      "outcomes": "ITT mOS: 53.7m vs 46.0m (HR 0.75, 95% CI 0.59-0.96); R0 切除者 mOS 達 61.9m。"},
 
     {"cancer": "Ovarian", "pos": "P-TX", "sub_pos": ["HGSC / Endometrioid"], "name": "📚 van Driel HIPEC", "pharma": "NEJM", "drug": "Surgery + HIPEC (Cisplatin)", 
-     "results_short": "IDS 加溫：mOS 延長 12 個月 (HR 0.67)",
+     "pop_results": "間隔減積手術加入HIPEC可改善OS（死亡風險下降：OS HR 0.67），為「特定一線手術情境」引入HIPEC的重要證據，IDS 加溫：mOS 延長 12 個月 (HR 0.67)",
      "rationale": "術中加溫腹腔化療強化物理殺傷與滲透力。",
      "regimen": "間歇減積手術 (IDS) 時同步進行加溫 (42°C) 腹腔灌注 Cisplatin (100 mg/m2) 90 分鐘。",
      "outcomes": "mOS: 45.7m vs 33.9m (HR 0.67, 95% CI 0.48-0.94)。"},
 
     {"cancer": "Ovarian", "pos": "P-TX", "sub_pos": ["HGSC / Endometrioid"], "name": "📚 LION", "pharma": "NEJM", "drug": "No Lymphadenectomy", 
-     "results_short": "臨床 LN 陰性免清掃：OS 無差異 (HR 1.06)",
+     "pop_results": "系統性淋巴清掃不改善存活（OS HR 1.06；PFS HR 1.11）且併發症增加，改變了「外觀正常淋巴結」患者的手術範式，臨床 LN 陰性免清掃：OS 無差異 (HR 1.06)",
      "outcomes": "mOS: 65.5m vs 69.2m (HR 1.06)。臨床 LN(-) 者免清掃。"},
     
     {"cancer": "Ovarian", 
@@ -259,7 +258,7 @@ all_trials_db = [
     "name": "📚 DUO-O (ENGOT-OV46)", 
     "pharma": "AstraZeneca", 
     "drug": "Durvalumab + Olaparib + Bev",
-    "results_short": "HRD+ 三藥組 PFS HR 0.49; ITT HR 0.63",
+    "pop_results": "一線合併免疫/抗血管/（部分族群加PARPi）帶來PFS改善；發表資料顯示「Durvalumab＋Bev」組合對比對照PFS HR 0.49，加入Olaparib後PFS HR 0.61，凸顯多機轉一線策略的方向，HRD+ 三藥組 PFS HR 0.49; ITT HR 0.63",
     "rationale": "利用 IO + PARPi + anti-VEGF 三藥聯用，於一線反應後清除微小殘留病灶並延緩復發。",
     "regimen": "Arm 3: Bevacizumab + Durvalumab + Olaparib (300mg bid) 維持直至疾病進展。",
     "inclusion": ["新診斷 FIGO III-IV 期上皮性卵巢癌。", "接受 PDS 或 IDS 且對鉑類有反應。"],
@@ -267,7 +266,7 @@ all_trials_db = [
     "outcomes": "HRD+ (non-BRCAm) PFS HR 0.49 (95% CI 0.34-0.69); ITT ITT HR 0.63。"},
     
     {"cancer": "Ovarian", "pos": "PR-Maint", "sub_pos": ["PARPi Maint"], "name": "📚 SOLO2", "pharma": "AZ", "drug": "Olaparib 復發維持", 
-     "results_short": "BRCAm 長期 mOS 51.7m (HR 0.74)",
+     "pop_results": "Olaparib維持可延長PFS（HR 0.30），但最終OS優勢不明顯（OS HR 0.74、未達顯著），是解讀「交叉治療/後線PARPi使用」影響OS的代表案例，BRCAm 長期 mOS 51.7m (HR 0.74)",
      "outcomes": "mOS: 51.7m vs 38.8m (HR 0.74)。"},
 
     # ==========================
