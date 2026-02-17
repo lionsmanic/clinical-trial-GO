@@ -97,7 +97,8 @@ guidelines_nested = {
         {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [
             {"title": "BRCA mutation", "content": "Olaparib 單藥維持 2年 (SOLO-1)。"}, 
             {"title": "HRD positive (wt)", "content": "PAOLA-1 (Ola+Bev) 或 PRIMA (Nira)。"},
-            {"title": "HRD negative (pHRD)", "content": "Niraparib 維持 (PRIMA ITT) 或 Bevacizumab。"}]},
+            {"title": "HRD negative (pHRD)", "content": "Niraparib 維持 (PRIMA ITT) 或 Bevacizumab。"},
+            {"title": "Clear Cell Carcinoma", "content": "OCCC。"}]},
         {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [
             {"title": "PSOC (Sensitive Recur)", "content": "PFI > 6m。評估二次手術 (DESKTOP III) 或含鉑複方。"},
             {"title": "PROC (Resistant Recur)", "content": "PFI < 6m。單藥化療 ± Bev 或標靶 ADC (MIRASOL)。"},
@@ -689,7 +690,7 @@ all_trials_db = [
         "outcomes": "2yr PFS: 63.0% (CP) vs 67.3% (TC); mOS HR: 1.06 (P=0.72)。"},
     
     {"cancer": "Ovarian", 
-        "pos": ["P-TX"], 
+        "pos": ["P-MT"], 
         "sub_pos": ["Clear Cell Carcinoma"], 
         "name": "📚 Temsirolimus + TC (Phase II)", "pharma": "GOG / NCI", "drug": "TC + Temsirolimus → Maint", 
         "pop_results": "OCCC 維持治療探索：在一線 TC 化療基礎上加入 mTOR 抑制劑並接續維持，結果顯示耐受性良好但未達預期之顯著 PFS 延長。",
@@ -1053,7 +1054,7 @@ all_trials_db = [
      "regimen": "Sacituzumab govitecan 10mg/kg (Day 1, Day 8) 每 21 天為一週期 (Q21D) 直至疾病進展。",
      "inclusion": ["復發性 EC (不含肉瘤)。", "先前曾接受過至少一次含鉑化療及 PD-1/L1 失敗進展者。", "ECOG 0-1。"]},
 
-    {"cancer": "Ovarian", "name": "📍 DOVE", "pharma": "GSK", "drug": "Dostarlimab + Bevacizumab", "pos": "R-TX", "sub_pos": ["PROC (Resistant Recur)"], "type": "Ongoing",
+    {"cancer": "Ovarian", "name": "📍 DOVE", "pharma": "GSK", "drug": "Dostarlimab + Bevacizumab", "pos": "R-TX", "sub_pos": ["Clear Cell Carcinoma"], "type": "Ongoing",
      "pop_results": "用 **PD-1 抑制（dostarlimab）**單用或合併 抗血管新生（bevacizumab），想把「對化療特別不敏感、復發後選擇很少」的透明細胞癌，從傳統化療導向轉成免疫/免疫合併抗血管新生的新策略。",
      "rationale": "針對 OCCC 透明細胞癌。利用 PD-1 + anti-VEGF 雙重阻斷改善其特有且高度免疫抑制之微環境。",
      "regimen": "Dostarlimab 1000mg Q6W + Bevacizumab 15mg/kg Q3W 直至進展。"},
