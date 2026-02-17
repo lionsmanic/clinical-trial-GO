@@ -87,7 +87,8 @@ guidelines_nested = {
     ],
     "Ovarian": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
-            {"title": "Neoadjuvant Setting", "content": "MAC + IDS + HIPEC (van Driel)。"},
+            {"title": "Neoadjuvant Setting", "content": "NAC + IDS + HIPEC (van Driel)。"},
+            {"title": "IP Setting", "content": "NAC-IDS/PDS + IP chemo。"},
             {"title": "HGSC / Endometrioid", "content": "手術 (PDS/IDS) + Carbo/Pacli ± Bev。"},
             {"title": "Low grade serous carcinoma", "content": "AI, MEK, CDK 4/6"},
             {"title": "Mucinous (MOC) 鑑定", "content": "判定：CK7+/SATB2- (原發)。IA 期可保守。侵襲型建議積極化療。"}]},
