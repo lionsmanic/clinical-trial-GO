@@ -1,3 +1,8 @@
+new
+
+
+
+
 import streamlit as st
 import google.generativeai as genai
 
@@ -88,16 +93,14 @@ guidelines_nested = {
     "Ovarian": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
             {"title": "HGSC / Endometrioid", "content": "手術 (PDS/IDS) + Carbo/Pacli ± Bev。IDS 加 HIPEC (van Driel)。"},
-            {"title": "Mucinous (MOC) 鑑定", "content": "判定：CK7+/SATB2- (原發)。IA 期可保守。侵襲型建議積極化療。"},
-            {"title": "Low grade serous carcinoma", "content": "MEK, AI, CDK4/6"}]},
+            {"title": "Mucinous (MOC) 鑑定", "content": "判定：CK7+/SATB2- (原發)。IA 期可保守。侵襲型建議積極化療。"}]},
         {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [
             {"title": "BRCA mutation", "content": "Olaparib 單藥維持 2年 (SOLO-1)。"}, 
             {"title": "HRD positive (wt)", "content": "PAOLA-1 (Ola+Bev) 或 PRIMA (Nira)。"},
             {"title": "HRD negative (pHRD)", "content": "Niraparib 維持 (PRIMA ITT) 或 Bevacizumab。"}]},
         {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [
             {"title": "PSOC (Sensitive Recur)", "content": "PFI > 6m。評估二次手術 (DESKTOP III) 或含鉑複方。"},
-            {"title": "PROC (Resistant Recur)", "content": "PFI < 6m。單藥化療 ± Bev 或標靶 ADC (MIRASOL)。"},
-            {"title": "Low grade serous carcinoma recurrence", "content": "MEK, AI, CDK4/6"}]},
+            {"title": "PROC (Resistant Recur)", "content": "PFI < 6m。單藥化療 ± Bev 或標靶 ADC (MIRASOL)。"}]},
         {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "PARPi Maint", "content": "救援緩解後續用 PARPi (NOVA/ARIEL3/SOLO2)。"}]}
     ],
     "Cervical": [
@@ -363,9 +366,7 @@ all_trials_db = [
         "inclusion": ["platinum-sensitive recurrent ovarian cancer。", "對 platinum 有反應。", "BRCA1/2 mutation。"],
         "exclusion": ["重大共病。", "先前接受過 PARP 抑制劑。", "持續性骨髓抑制未恢復。"],
         "outcomes": "mOS: 51.7m vs 38.8m (HR 0.74)。PFS 顯著改善，HR 約 0.30，最終 OS 分析顯示 median OS +12.9 months。AE：貧血、噁心、疲倦。 "},
-]
 
-    
     # ==========================
     # === Ongoing Trials (8核心極量化) ===
     # ==========================
@@ -398,6 +399,7 @@ all_trials_db = [
      "pop_results": "用 **HER2-ADC（T-DXd）**在一線治療後做維持，並合併 bevacizumab，瞄準「HER2 表現的卵巢癌亞群缺乏明確的標靶維持標準、仍易復發」這個 unmet need，希望延長維持期控制與存活。",
      "rationale": "標靶 HER2 ADC 用於維持。利用 T-DXd 極高 DAR (8) 優勢清除化療後殘餘之 HER2 表現微小病灶。",
      "regimen": "Trastuzumab deruxtecan 5.4mg/kg IV Q3W 維持至進展。"},
+]
 
 # --- 3. AI 模型巡邏與聯動功能 ---
 def get_gemini_model():
