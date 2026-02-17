@@ -103,6 +103,7 @@ guidelines_nested = {
     "Cervical": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
             {"title": "Locally Advanced (CCRT)", "content": "同步化放療 ± 同步 IO (A18) 或 誘導化療 (INTERLACE)。"},
+            {"title": "Locally Advanced (NIC)", "content": "MIC then Surgery。"},
             {"title": "Early Stage (Surgery)", "content": "根治術 (LACC) 或單純切除 (SHAPE)。"}]},
         {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [{"title": "Maintenance", "content": "1L 方案後接續維持 (KEYNOTE-826)。"}]},
         {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [
