@@ -130,7 +130,7 @@ all_trials_db = [
      "outcomes": "dMMR PFS HR 0.30 (95% CI 0.19-0.48); pMMR PFS HR 0.54 (95% CI 0.41-0.71, P<0.001)。"},
 
     {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["pMMR / NSMP / MSS"], "name": "📚 DUO-E (ENGOT-EN9)", "pharma": "AZ", "drug": "Durvalumab + CP →維持 ± Olaparib", 
-     "results_short": "一線治療中，Durvalumab＋化療可改善PFS（HR 0.71），而「Durvalumab＋化療→維持加上Olaparib」效益更大（PFS HR 0.55）；pMMR亦有PFS獲益（Durva+Ola vs control：HR 0.57），且OS期中分析支持（Durva+Ola vs control：HR 0.59）。",
+     "pop_results": "一線治療中，Durvalumab＋化療可改善PFS（HR 0.71），而「Durvalumab＋化療→維持加上Olaparib」效益更大（PFS HR 0.55）；pMMR亦有PFS獲益（Durva+Ola vs control：HR 0.57），且OS期中分析支持（Durva+Ola vs control：HR 0.59）。",
      "rationale": "探索 PARP 抑制劑 (PARPi) 與 PD-L1 抑制劑在維持階段的協同效果，PARPi 誘導的 DNA 損傷可增加新抗原負荷，強化免疫應答。",
      "regimen": "Arm 1: CP 僅化療 (對照組); Arm 2: CP+Durvalumab -> Durva 1500mg Q4W 維持; Arm 3: CP+Durvalumab -> Durva 1500mg Q4W + Olaparib 300mg bid 維持直到疾病進展。",
      "outcomes": "pMMR Arm 3 (Ola+Durva) vs Arm 1: PFS HR 0.57 (95% CI 0.42-0.79); dMMR Arm 2 vs Arm 1: HR 0.42 (95% CI 0.22-0.80)。"},
