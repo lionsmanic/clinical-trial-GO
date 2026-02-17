@@ -117,7 +117,7 @@ all_trials_db = [
     # === Endometrial Published ===
     # ==========================
     {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H / MMRd"], "name": "📚 RUBY (ENGOT-EN6/GOG-3031)", "pharma": "GSK", "drug": "Dostarlimab + Carboplatin/Paclitaxel", 
-     "pop_results": "dMMR/MSS（pMMR）皆顯著延長PFS（dMMR：HR 0.28；全體：HR 0.64），且更新分析顯示OS亦改善（dMMR：HR 0.32；全體：HR 0.69），奠定一線「免疫＋化療」新標準。",
+     "pop_results": "晚期轉移第一線或復發者，dMMR/MSS（pMMR）皆顯著延長PFS（dMMR：HR 0.28；全體：HR 0.64），且更新分析顯示OS亦改善（dMMR：HR 0.32；全體：HR 0.69），奠定一線「免疫＋化療」新標準。",
      "rationale": "PD-1 阻斷 (PD-1 blockade) 與含鉑化療 (Carbo/Pacli) 具備協同免疫原性細胞死亡 (ICD) 效應。藉由化療誘導腫瘤抗原釋放，釋放免疫微環境壓力並針對 MMRd 族群達成極高持久應答率。",
      "regimen": "Arm 1 (Dostarlimab 組): 誘導期: Dostarlimab 500mg Q3W + Carboplatin (AUC 5) + Paclitaxel (175 mg/m2) x6 週期；維持期: Dostarlimab 1000mg Q6W (持續 3年)。 Arm 2 (Placebo 組): 生理鹽水對照 + 同劑量 CP 化療 x6 週期。",
      "inclusion": ["新診斷 FIGO Stage III-IV 或首次復發之子宮內膜癌 (EC)。", "ECOG 0-1。", "含 Carcinosarcoma / Clear cell / Serous 等組織型態。"],
@@ -125,7 +125,7 @@ all_trials_db = [
      "outcomes": "dMMR 族群 24個月 PFS 率: 61.4% vs 15.7% (HR 0.28, 95% CI 0.16-0.50); ITT 全人群 mOS HR 0.64 (95% CI 0.46-0.87, P=0.0021)。"},
 
     {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H / MMRd", "pMMR / NSMP / MSS"], "name": "📚 NRG-GY018 (KEYNOTE-868)", "pharma": "MSD", "drug": "Pembrolizumab + Carboplatin/Paclitaxel", 
-     "pop_results": "Pembrolizumab＋化療在一線顯著延長PFS（dMMR：HR 0.30；pMMR：HR 0.54），是另一個改變臨床實務的一線免疫＋化療關鍵試驗。",
+     "pop_results": "晚期轉移第一線或復發者，Pembrolizumab＋化療在一線顯著延長PFS（dMMR：HR 0.30；pMMR：HR 0.54），是另一個改變臨床實務的一線免疫＋化療關鍵試驗。",
      "rationale": "利用免疫檢查點抑制劑 (ICI) 重塑腫瘤微環境，Pembrolizumab 強化一線含鉑化療反應後的持久性。",
      "regimen": "Arm A: Pembrolizumab 200mg Q3W + Carboplatin (AUC 5) + Paclitaxel (175 mg/m2) x6 週期 -> 維持期: Pembrolizumab 400mg Q6W (持續 2年)。 Arm B: Placebo + CP x6 週期。",
      "inclusion": ["Stage III/IV 或復發 EC。", "提供 MMR 檢測 (IHC) 報告，分為 dMMR vs pMMR 兩個主要分析 cohort。", "ECOG 0-1。"],
@@ -143,7 +143,7 @@ all_trials_db = [
                   "AE（臨床重點）：加上 olaparib 後，需特別注意 貧血/血球下降、疲倦 等 PARP 典型毒性疊加。"]},
 
     {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H / MMRd"], "name": "📚 AtTEnd (ENGOT-EN7)", "pharma": "Roche", "drug": "Atezolizumab + CP", 
-     "pop_results": "Atezolizumab＋化療在dMMR族群PFS顯著改善（HR 0.36），訊息重點是「效益主要集中在dMMR」，pMMR整體效益相對不明顯，dMMR PFS HR 0.36; ITT OS HR 0.82",
+     "pop_results": "晚期轉移第一線或復發者，Atezolizumab＋化療在dMMR族群PFS顯著改善（HR 0.36），訊息重點是「效益主要集中在dMMR」，pMMR整體效益相對不明顯，dMMR PFS HR 0.36; ITT OS HR 0.82",
      "rationale": "驗證一線 PD-L1 抑制劑併用化療對晚期或復發患者之生存優勢。",
      "regimen": "Arm A: Atezolizumab 1200mg Q3W + CP x6-8 週期 -> 維持 Atezolizumab 1200mg Q3W。 Arm B: Placebo + CP x6-8 週期。",
      "inclusion": ["advanced 或 recurrent endometrial carcinoma。", "一線接受 CP。", "評估 dMMR 亞群獲益。"],
@@ -152,7 +152,7 @@ all_trials_db = [
 
     {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["p53 mutation (高拷貝型)", "pMMR / NSMP / MSS", "dMMR / MSI-H / MMRd"], 
         "name": "📚 KEYNOTE-B21 (ENGOT-en11)", "pharma": "MSD", "drug": "Pembrolizumab + Chemo ± RT", 
-        "pop_results": "高風險輔助治療挑戰：在輔助化療（±放療）中加入 Pembrolizumab 並未顯著改善 DFS (HR 1.02)，目前不建議常規加入。",
+        "pop_results": "高風險輔助治療挑戰：手術清完後輔助化療（±放療）中加入 Pembrolizumab 並未顯著改善 DFS (HR 1.02)，目前不建議常規加入。",
         "rationale": "旨在驗證對於高風險、已手術切除的新診斷 EC 患者，在標準輔助化療基礎上加上免疫檢查點抑制劑是否能進一步降低復發風險。",
         "regimen": "試驗組: Pembrolizumab (200mg Q3W x6 週期) 併用化療 (CP) ± 放射治療，隨後 Pembrolizumab (400mg Q6W) 維持至 14 週期。",
         "inclusion": [
