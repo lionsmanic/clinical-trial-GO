@@ -144,6 +144,8 @@ all_trials_db = [
      "pop_results": "Atezolizumab＋化療在dMMR族群PFS顯著改善（HR 0.36），訊息重點是「效益主要集中在dMMR」，pMMR整體效益相對不明顯，dMMR PFS HR 0.36; ITT OS HR 0.82",
      "rationale": "驗證一線 PD-L1 抑制劑併用化療對晚期或復發患者之生存優勢。",
      "regimen": "Arm A: Atezolizumab 1200mg Q3W + CP x6-8 週期 -> 維持 Atezolizumab 1200mg Q3W。 Arm B: Placebo + CP x6-8 週期。",
+     "inclusion": ["advanced 或 recurrent endometrial carcinoma。", "一線接受 CP。", "評估 dMMR 亞群獲益。"],
+     "exclusion": ["既往 PD-(L)1 抑制劑。", "活動性自體免疫需治療。", "未控制感染。", "其他研究者判定不適合等。"],
      "outcomes": "dMMR PFS: 未達到 vs 6.9m (HR 0.36, 95% CI 0.23-0.57); 全人群 mOS HR 0.82 (P=0.048)。"},
     
     {"cancer": "Endometrial", 
@@ -163,14 +165,17 @@ all_trials_db = [
      "pop_results": "Lenvatinib＋Pembrolizumab在復發/晚期子宮內膜癌相較化療同時改善PFS與OS（pMMR：PFS HR 0.60、OS HR 0.68；全體：PFS HR 0.56、OS HR 0.62），確立二線以後的重要組合",
      "rationale": "結合 VEGF-TKI 重塑血管並減輕免疫抑制，克服 MSS 腫瘤之免疫冷微環境。",
      "regimen": "Lenvatinib 20mg QD (每日口服) + Pembrolizumab 200mg Q3W (靜脈滴注) 直至疾病進展或不可耐受。",
-     "inclusion": ["先前接受過至少一次含鉑化療進展之晚期 EC (最多前線 2 次)。", "ECOG 0-1。", "不限 MMR 狀態。"],
-     "outcomes": "pMMR OS: 17.4m vs 12.0m (HR 0.68, 95% CI 0.56-0.84, P<0.001); ITT OS: 18.3m vs 11.4m (HR 0.62)。"},
+     "inclusion": ["advanced/recurrent endometrial cancer。", "先前接受過至少一次含鉑化療進展之晚期 EC (最多前線 2 次)。", "ECOG 0-1。", "不限 MMR 狀態，但pMMR 為主要族群之一。"],
+     "exclusion": ["既往 PD-1/PD-L1。", "活動性自體免疫需治療。", "未控制高血壓/重大心血管風險（lenvatinib 相關）。", "出血/廔管高風險等。"],
+     "outcomes": "pMMR OS: 17.4m vs 12.0m (HR 0.68, 95% CI 0.56-0.84, P<0.001); ITT OS: 18.3m vs 11.4m (HR 0.62)，PFS HR ~0.56; 反應率亦優於化療，但毒性較高，臨床常見：HTN、腹瀉、疲倦、體重下降、甲狀腺功能異常 等。"},
 
     {"cancer": "Endometrial", "pos": "R-TX", "sub_pos": ["Recurrent EC"], "name": "📚 GARNET", "pharma": "GSK", "drug": "Dostarlimab 單藥", 
      "pop_results": "屬單臂Dostarlimab研究（主要報ORR/持續反應），無隨機比較HR可填（HR：N/A），dMMR ORR 45.5%; DOR 持久",
      "rationale": "針對 MSI-H/dMMR 高免疫原性患者，單藥 PD-1 阻斷即可達成持久應答。",
      "regimen": "Dostarlimab 500mg Q3W x4 劑 -> 1000mg Q6W 維持直到進展。",
-     "outcomes": "dMMR/MSI-H ORR 45.5%; DOR 未達到。"},
+     "inclusion": ["recurrent/advanced endometrial cancer，先前治療後。", "分 dMMR/MSI-H 與 pMMR cohort。"],
+     "exclusion": ["既往 PD-1/PD-L1。", "活動性自體免疫需治療。", "CNS 活動性病灶等"],
+     "outcomes": "dMMR/MSI-H ORR 45.5%、且 DoR 長; DOR 未達到。pMMR ORR 較低（約 10–15% 等級，依分析集而異）"},
 
     # ==========================
     # === Cervical Published ===
