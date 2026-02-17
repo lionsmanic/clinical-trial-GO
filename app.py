@@ -290,10 +290,6 @@ all_trials_db = [
     "inclusion": ["新診斷 FIGO III-IV 期上皮性卵巢癌。", "接受 PDS 或 IDS 且對鉑類有反應。", "特別針對 non–tumor BRCA-mut（non-tBRCAm）、並以 HRD/ITT 做主要分析。"],
     "exclusion": ["不適合 bev。", "既往免疫治療 / PARP。"],
     "outcomes": "在 HRD+ 與 ITT（non-tBRCAm） 族群，含 durvalumab+olaparib 的策略達成 PFS 主要終點；OS 仍需更長追蹤，HRD+ (non-BRCAm) PFS HR 0.49 (95% CI 0.34-0.69); ITT ITT HR 0.63。"},
-    
-    {"cancer": "Ovarian", "pos": "PR-Maint", "sub_pos": ["PARPi Maint"], "name": "📚 SOLO2", "pharma": "AZ", "drug": "Olaparib 復發維持", 
-     "pop_results": "Olaparib維持可延長PFS（HR 0.30），但最終OS優勢不明顯（OS HR 0.74、未達顯著），是解讀「交叉治療/後線PARPi使用」影響OS的代表案例，BRCAm 長期 mOS 51.7m (HR 0.74)",
-     "outcomes": "mOS: 51.7m vs 38.8m (HR 0.74)。"},
 
     {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["BRCA mutation"], 
         "name": "📚 SOLO-1", "pharma": "AZ", "drug": "Olaparib", 
