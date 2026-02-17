@@ -405,7 +405,6 @@ all_trials_db = [
      "pop_results": "用 **HER2-ADC（T-DXd）**在一線治療後做維持，並合併 bevacizumab，瞄準「HER2 表現的卵巢癌亞群缺乏明確的標靶維持標準、仍易復發」這個 unmet need，希望延長維持期控制與存活。",
      "rationale": "標靶 HER2 ADC 用於維持。利用 T-DXd 極高 DAR (8) 優勢清除化療後殘餘之 HER2 表現微小病灶。",
      "regimen": "Trastuzumab deruxtecan 5.4mg/kg IV Q3W 維持至進展。"},
-]
 
 # --- 3. AI 模型巡邏與聯動功能 ---
 def get_gemini_model():
