@@ -91,6 +91,7 @@ guidelines_nested = {
             {"title": "DDCT Setting", "content": "Dose-Dense Chemotherapy。"},
             {"title": "IP Setting", "content": "NAC-IDS/PDS + IP chemo。"},
             {"title": "HGSC / Endometrioid", "content": "手術 (PDS/IDS) + Carbo/Pacli ± Bev。"},
+            {"title": "Clear Cell Carcinoma", "content": "OCCC。"},
             {"title": "Low grade serous carcinoma", "content": "AI, MEK, CDK 4/6"},
             {"title": "Mucinous (MOC) 鑑定", "content": "判定：CK7+/SATB2- (原發)。IA 期可保守。侵襲型建議積極化療。"}]},
         {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [
@@ -100,7 +101,8 @@ guidelines_nested = {
         {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [
             {"title": "PSOC (Sensitive Recur)", "content": "PFI > 6m。評估二次手術 (DESKTOP III) 或含鉑複方。"},
             {"title": "PROC (Resistant Recur)", "content": "PFI < 6m。單藥化療 ± Bev 或標靶 ADC (MIRASOL)。"},
-            {"title": "Low grade serous carcinoma", "content": "AI, MEK, CDK 4/6"}]},
+            {"title": "Low grade serous carcinoma", "content": "AI, MEK, CDK 4/6"},
+            {"title": "Mucinous (MOC) 鑑定", "content": "判定：CK7+/SATB2- (原發)。IA 期可保守。侵襲型建議積極化療。"}]},
         {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "PARPi Maint", "content": "救援緩解後續用 PARPi (NOVA/ARIEL3/SOLO2)。"}]}
     ],
     "Cervical": [
@@ -674,6 +676,26 @@ all_trials_db = [
         "regimen": "Binimetinib 45 mg 每日口服兩次，對比醫師選擇之化療 (PLD/Pacli/Topo)。",
         "inclusion": ["復發性低惡性度漿液性卵巢癌", "先前接受過至少一線含鉑化療", "不限 KRAS/BRAF 狀態"],
         "outcomes": "mPFS: 9.1m (Binimetinib) vs 10.6m (Chemo)，HR 1.21 (未達預期獲益)。"},
+
+    {"cancer": "Ovarian", 
+        "pos": ["P-TX", "R-TX"], 
+        "sub_pos": ["Mucinous (MOC) 鑑定"], 
+        "name": "📚 mEOC / GOG-0241", "pharma": "NRG Oncology / GOG", "drug": "Pac-Carbo vs Oxal-Cape ± Bev", 
+        "pop_results": "罕見癌別標誌性研究：雖然因收案困難提前終止 (N=50)，但在確認為原發性 mEOC 的亞組中，GI 方案 (Oxal-Cape) 展現較佳的生存獲益趨勢。",
+        "rationale": "第一個針對 mEOC 進行的多國隨機試驗，對比傳統婦癌化療 (Gyn-type) 與腸胃道癌化療 (GI-type) 方案，並探索 Bevacizumab 的角色。",
+        "regimen": "1. Paclitaxel + Carboplatin ± Bevacizumab (15mg/kg) Q3W; 2. Oxaliplatin (130mg/m2) + Capecitabine (850mg/m2 bid D1-14) ± Bevacizumab。",
+        "inclusion": ["新診斷 FIGO Stage II-IV 或 Stage I 復發之原發黏液性上皮性卵巢癌", "先前未接受過針對 R/M 之化療"],
+        "outcomes": "原發性 mEOC 亞組 OS HR: 0.36 (p=0.14); PFS HR: 0.62 (p=0.40)。"},
+    
+    {"cancer": "Ovarian", 
+        "pos": ["R-TX"], 
+        "sub_pos": ["Mucinous (MOC) 鑑定"], 
+        "name": "📍 mFOLFIRINOX + Bev (NCT05665023)", "pharma": "Yonsei University", "drug": "modified FOLFIRINOX + Bevacizumab", 
+        "pop_results": "GI-style 方案前瞻探索：針對難治型 mEOC，利用高強度的三藥化療聯用標靶，旨在克服傳統化療的耐藥性。",
+        "rationale": "考量 mEOC 的 GI 遺傳特性，此試驗將轉移性胰臟癌/大腸癌的標準方案 (FOLFIRINOX) 應用於卵巢癌，並透過 Bevacizumab 強化療效。",
+        "regimen": "Bevacizumab (5mg/kg) + Oxaliplatin (85mg/m2) + Leucovorin (400mg/m2) + Irinotecan (150mg/m2) + 5-FU (2400mg/m2 46h) Q2W。",
+        "inclusion": ["復發或轉移性卵巢黏液性腺癌", "先前接受過 2 線以下之全身性治療", "排除經內視鏡診斷為 GI 來源之腫瘤"],
+        "outcomes": "試驗進行中 (Ongoing)，預計 2025 年 2 月完成主要指標收案。"},
 
     {"cancer": "Ovarian", "pos": "R-TX", "sub_pos": ["PSOC (Sensitive Recur)"], 
         "name": "📚 Calypso Trial", "pharma": "ENGOT / GOG", "drug": "Carboplatin + PLD", 
