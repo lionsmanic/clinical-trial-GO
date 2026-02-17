@@ -611,6 +611,61 @@ all_trials_db = [
      "pop_results": "用 **HER2-ADC（T-DXd）**在一線治療後做維持，並合併 bevacizumab，瞄準「HER2 表現的卵巢癌亞群缺乏明確的標靶維持標準、仍易復發」這個 unmet need，希望延長維持期控制與存活。",
      "rationale": "標靶 HER2 ADC 用於維持。利用 T-DXd 極高 DAR (8) 優勢清除化療後殘餘之 HER2 表現微小病灶。",
      "regimen": "Trastuzumab deruxtecan 5.4mg/kg IV Q3W 維持至進展。"},
+    
+    # ==========================
+    # === Uterine Sarcoma Published ===
+    # ==========================
+
+    {"cancer": "Uterine Sarcoma", 
+        "pos": ["P-TX"], 
+        "sub_pos": ["Primary Sarcoma"], 
+        "name": "📚 GOG-0277", "pharma": "GOG / NCI", "drug": "Gem/Doce vs Observation", 
+        "pop_results": "高惡性度 LMS 輔助治療：Gemcitabine + Docetaxel 輔助化療相較於觀察組，雖有 PFS 獲益趨勢但未達顯著差異。",
+        "rationale": "針對完全切除的高惡性度子宮平滑肌肉瘤 (uLMS)，探討輔助化療是否能降低極高的復發率。",
+        "regimen": "Gemcitabine (900mg/m2 D1, D8) + Docetaxel (75mg/m2 D8) 每 21 天一週期，共 4 週期。",
+        "inclusion": ["完全切除之 Stage I 子宮平滑肌肉瘤 (uLMS)", "ECOG 0-1"],
+        "outcomes": "由於收案困難提前終止，未達顯著統計學差異。"},
+    
+    {"cancer": "Uterine Sarcoma", 
+        "pos": ["P-TX"], 
+        "sub_pos": ["Primary Sarcoma"], 
+        "name": "📚 EORTC 55874", "pharma": "EORTC", "drug": "Adjuvant Radiotherapy", 
+        "pop_results": "術後放療價值：對於早期子宮肉瘤，輔助性骨盆放療能降低局部復發率，但無法改善 PFS 與 OS。",
+        "rationale": "探討 Stage I/II 子宮肉瘤患者術後接受骨盆體外放射治療 (EBRT) 的臨床獲益。",
+        "regimen": "骨盆腔體外放射治療 (EBRT)，總劑量 50.4 Gy 分 28 次照射。",
+        "inclusion": ["Stage I/II 子宮平滑肌肉瘤 (LMS) 或子宮肉瘤 (uS)", "手術完全切除後"],
+        "outcomes": "局部復發率降低；OS HR 0.94 (P=0.69) 無顯著差異。"},
+    
+    {"cancer": "Uterine Sarcoma", 
+        "pos": ["R-TX"], 
+        "sub_pos": ["Recurr / Metastatic"], 
+        "name": "📚 EORTC 62012", "pharma": "EORTC", "drug": "Doxorubicin + Ifosfamide", 
+        "pop_results": "晚期一線組合：聯用方案顯著提升 ORR (26%) 與 PFS，但在總生存期 (OS) 上與單藥 Dox 相比無顯著差異。",
+        "rationale": "針對不可切除或轉移性肉瘤，比較『加強型聯用化療』與『單藥化療』的療效權衡。",
+        "regimen": "Doxorubicin (75mg/m2) 聯用 Ifosfamide (5g/m2 + Mesna) Q3W。",
+        "inclusion": ["晚期/轉移性軟組織肉瘤 (含子宮肉瘤)", "先前未接受過系統化療"],
+        "outcomes": "mPFS: 7.4m vs 4.6m (HR 0.74); ORR: 26% vs 14%。"},
+    
+    {"cancer": "Uterine Sarcoma", 
+        "pos": ["R-TX"], 
+        "sub_pos": ["Recurr / Metastatic"], 
+        "name": "📚 GeDDiS (Phase III)", "pharma": "CRUK", "drug": "Gem/Doce vs Doxorubicin", 
+        "pop_results": "一線標準對照：Gem/Doce 與 Doxorubicin 作為一線治療，在 PFS 上無顯著差異，Dox 具備更佳的用藥便利性。",
+        "rationale": "旨在確定 Gem/Doce 是否能取代 Doxorubicin 成為晚期肉瘤的一線首選標準。",
+        "regimen": "Gemcitabine (675mg/m2 D1, D8) + Docetaxel (75mg/m2 D8) vs Doxorubicin (75mg/m2 D1) Q3W。",
+        "inclusion": ["不可切除或轉移性軟組織肉瘤", "ECOG 0-1"],
+        "outcomes": "mPFS: 23.3 週 (Gem/Doce) vs 23.3 週 (Dox)，HR 1.14 (P=0.06)。"},
+    
+    {"cancer": "Uterine Sarcoma", 
+        "pos": ["R-TX"], 
+        "sub_pos": ["Recurr / Metastatic"], 
+        "name": "📚 LMS-04 (Phase III)", "pharma": "French Sarcoma Group", "drug": "Doxorubicin + Trabectedin", 
+        "pop_results": "LMS 一線新高度：聯用 Trabectedin 顯著延長子宮平滑肌肉瘤中位 PFS 達兩倍 (12.2m vs 6.2m)。",
+        "rationale": "專對平滑肌肉瘤 (LMS)，利用 Doxorubicin 聯用 Trabectedin 挑戰傳統單藥治療瓶頸。",
+        "regimen": "Doxorubicin (60mg/m2) + Trabectedin (1.1mg/m2) Q3W，接續 Trabectedin 單藥維持。",
+        "inclusion": ["晚期/轉移性子宮或非子宮平滑肌肉瘤 (LMS)", "一線治療"],
+        "outcomes": "mPFS: 12.2m vs 6.2m (HR 0.37); mOS: 31.6m vs 24.1m。"},
+    
 ]
 
 # --- 3. AI 模型巡邏與聯動功能 ---
