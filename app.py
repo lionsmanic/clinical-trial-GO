@@ -705,7 +705,8 @@ for i, stage in enumerate(stages_data):
             st.markdown(f"""<div class='sub-block'><div class='sub-block-title'>📘 {sub['title']}</div><div class='sub-block-content'>{sub['content']}</div>""", unsafe_allow_html=True)
             
             # 合併實證渲染按鈕
-            rel_trials = [t for t in (all_trials_db) if t["cancer"] == cancer_type and t["pos"] == stage["id"] and any(s in sub["title"] for s in t["sub_pos"])]
+            rel_trials = [t for t in all_trials_db if t["cancer"] == cancer_type and stage["id"] in t["pos"] and any(s in sub["title"] for s in t["sub_pos"])]
+            
             for t in rel_trials:
                 label = f"{t.get('pharma', 'N/A')} | {t['name']} | {t['drug']}"
                 with st.popover(label, use_container_width=True):
