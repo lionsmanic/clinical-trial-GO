@@ -149,6 +149,21 @@ all_trials_db = [
      "inclusion": ["advanced 或 recurrent endometrial carcinoma。", "一線接受 CP。", "評估 dMMR 亞群獲益。"],
      "exclusion": ["既往 PD-(L)1 抑制劑。", "活動性自體免疫需治療。", "未控制感染。", "其他研究者判定不適合等。"],
      "outcomes": "dMMR PFS: 未達到 vs 6.9m (HR 0.36, 95% CI 0.23-0.57); 全人群 mOS HR 0.82 (P=0.048)。"},
+
+    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["p53 mutation (高拷貝型)", "pMMR / NSMP / MSS", "dMMR / MSI-H / MMRd"], 
+        "name": "📚 KEYNOTE-B21 (ENGOT-en11)", "pharma": "MSD", "drug": "Pembrolizumab + Chemo ± RT", 
+        "pop_results": "高風險輔助治療挑戰：在輔助化療（±放療）中加入 Pembrolizumab 並未顯著改善 DFS (HR 1.02)，目前不建議常規加入。",
+        "rationale": "旨在驗證對於高風險、已手術切除的新診斷 EC 患者，在標準輔助化療基礎上加上免疫檢查點抑制劑是否能進一步降低復發風險。",
+        "regimen": "試驗組: Pembrolizumab (200mg Q3W x6 週期) 併用化療 (CP) ± 放射治療，隨後 Pembrolizumab (400mg Q6W) 維持至 14 週期。",
+        "inclusion": [
+            "新診斷、高風險且已完全切除之子宮內膜癌",
+            "FIGO 2009 Stage I/II (Serous 或 Clear cell) 或 Stage III/IV (已切除者)",
+            "ECOG 0-1"],
+        "exclusion": [
+            "先前受過針對此癌症之全身性治療",
+            "活動性自體免疫疾病",
+            "具有多發性原發癌症病史"],
+        "outcomes": "2yr DFS Rate: 75.2% (Pembro) vs 74.2% (Placebo); HR 1.02 (95% CI 0.79-1.32), P=0.57 (未達顯著差異)。"},
     
     {"cancer": "Endometrial", 
     "pos": "P-MT", 
