@@ -88,7 +88,8 @@ guidelines_nested = {
     "Ovarian": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
             {"title": "HGSC / Endometrioid", "content": "手術 (PDS/IDS) + Carbo/Pacli ± Bev。IDS 加 HIPEC (van Driel)。"},
-            {"title": "Mucinous (MOC) 鑑定", "content": "判定：CK7+/SATB2- (原發)。IA 期可保守。侵襲型建議積極化療。"}]},
+            {"title": "Mucinous (MOC) 鑑定", "content": "判定：CK7+/SATB2- (原發)。IA 期可保守。侵襲型建議積極化療。"},
+            {"title": "Low grade serous carcinoma", "content": "MEK, AI, CDK4/6"}]},
         {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [
             {"title": "BRCA mutation", "content": "Olaparib 單藥維持 2年 (SOLO-1)。"}, 
             {"title": "HRD positive (wt)", "content": "PAOLA-1 (Ola+Bev) 或 PRIMA (Nira)。"},
@@ -96,7 +97,7 @@ guidelines_nested = {
         {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [
             {"title": "PSOC (Sensitive Recur)", "content": "PFI > 6m。評估二次手術 (DESKTOP III) 或含鉑複方。"},
             {"title": "PROC (Resistant Recur)", "content": "PFI < 6m。單藥化療 ± Bev 或標靶 ADC (MIRASOL)。"},
-            {"title": "Low grade serous carcinoma recurrence", "content": "LGSC復發治療"}]},
+            {"title": "Low grade serous carcinoma recurrence", "content": "MEK, AI, CDK4/6"}]},
         {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "PARPi Maint", "content": "救援緩解後續用 PARPi (NOVA/ARIEL3/SOLO2)。"}]}
     ],
     "Cervical": [
@@ -308,6 +309,15 @@ all_trials_db = [
         "inclusion": ["newly diagnosed advanced ovarian cancer。", "germline 或 somatic BRCA1/2 mutation。", "一線 platinum 化療後 CR/PR。"],
         "exclusion": ["先前接受過 PARP 抑制劑。", "持續性骨髓抑制未恢復。"],
         "outcomes": "mPFS: 56.0m vs 13.8m (HR 0.30)。AE：貧血、噁心、疲倦常見；需監測血球。"},
+
+        {"cancer": "Ovarian", "pos": "P-TX", "sub_pos": ["Low grade serous carcinoma"], 
+        "name": "📍 NRG-GY019", "pharma": "NRG Oncology", "drug": "Letrozole vs Chemo→Letrozole", 
+        "pop_results": "一線去化療挑戰：評估對於新診斷 LGSOC 患者，單用 Letrozole 是否不劣於傳統化療後接續維持治療。",
+        "rationale": "低惡性度漿液性癌 (LGSOC) 對傳統化療反應率較低，此研究旨在驗證初期即使用內分泌治療的臨床效益。",
+        "regimen": "Arm 1: Letrozole (2.5mg QD) 單藥治療直到進展；Arm 2: 傳統 6 週期化療 (CP) 後接續 Letrozole 維持治療。",
+        "inclusion": ["新診斷 Stage II-IV 低惡性度漿液性卵巢癌/腹膜癌", "ECOG 0-2", "需提供組織學判定報告"],
+        "exclusion": ["曾受過針對此疾病之全身性化療或標靶治療", "計畫接受維持性 PARPi 治療者"],
+        "outcomes": "招募中 (Ongoing Recruitment)。"
     
     {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["HRD positive / BRCA wt", "HRD negative (pHRD)"], 
         "name": "📚 PRIMA", "pharma": "GSK", "drug": "Niraparib", 
