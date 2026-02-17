@@ -96,7 +96,8 @@ guidelines_nested = {
             {"title": "HRD negative (pHRD)", "content": "Niraparib 維持 (PRIMA ITT) 或 Bevacizumab。"}]},
         {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [
             {"title": "PSOC (Sensitive Recur)", "content": "PFI > 6m。評估二次手術 (DESKTOP III) 或含鉑複方。"},
-            {"title": "PROC (Resistant Recur)", "content": "PFI < 6m。單藥化療 ± Bev 或標靶 ADC (MIRASOL)。"}]},
+            {"title": "PROC (Resistant Recur)", "content": "PFI < 6m。單藥化療 ± Bev 或標靶 ADC (MIRASOL)。"},
+            {"title": "Low grade serous carcinoma", "content": "AI, MEK, CDK 4/6"}]},
         {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "PARPi Maint", "content": "救援緩解後續用 PARPi (NOVA/ARIEL3/SOLO2)。"}]}
     ],
     "Cervical": [
@@ -295,7 +296,34 @@ all_trials_db = [
      "inclusion": ["advanced ovarian cancer。", "complete resection。", "淋巴結臨床陰性。"],
      "exclusion": ["明顯淋巴結病灶。", "無法耐受手術延長。"],
      "outcomes": "OS HR 1.06（無獲益）；PFS 亦無差；但手術併發症增加。mOS: 65.5m vs 69.2m (HR 1.06)。臨床 LN(-) 者免清掃。"},
+
+    {"cancer": "Ovarian", "pos": "R-TX", "sub_pos": ["Low grade serous carcinoma"], 
+        "name": "📚 GOG-281 / LOGS", "pharma": "Targeted", "drug": "Trametinib", 
+        "pop_results": "LGSOC 標靶重大突破：與醫師選擇化療相比，Trametinib 顯著降低 52% 疾病進展風險 (HR 0.48)，ORR 達 26%。",
+        "rationale": "針對低惡性度漿液性卵巢癌 (LGSOC) 中常見的 MAPK 路徑異常活化，利用 MEK 抑制劑進行精準標靶阻斷。",
+        "regimen": "Trametinib 2.0 mg 每日口服一次，持續治療直到疾病進展或不可耐受之毒性。",
+        "inclusion": ["復發性低惡性度漿液性卵巢癌/腹膜癌", "先前接受過至少一次含鉑化療", "ECOG 0-1"],
+        "exclusion": ["曾受過其他 MEK 抑制劑治療", "臨床顯著的心臟功能異常"],
+        "outcomes": "mPFS: 13.0m (vs 7.2m, HR 0.48, 95% CI 0.36-0.64)。"},
     
+    {"cancer": "Ovarian", "pos": "R-TX", "sub_pos": ["Low grade serous carcinoma"], 
+        "name": "📍 RAMP-201", "pharma": "Verastem Oncology", "drug": "Avutometinib + Defactinib", 
+        "pop_results": "LGSOC 雙重阻斷新高度：KRAS 突變族群 ORR 高達 55%；全體族群 ORR 達 45%。",
+        "rationale": "結合 RAF/MEK 雙重抑制劑 (Avutometinib) 與 FAK 抑制劑 (Defactinib)，旨在克服單一通路阻斷後產生的補償性耐藥機制。",
+        "regimen": "Avutometinib 3.2 mg (兩次/週) + Defactinib 200 mg (兩次/日)，採 3 週給藥 1 週休息之週期設計。",
+        "inclusion": ["復發性 LGSOC (不限 KRAS 狀態)", "先前接受過含鉑化療及標靶治療", "提供腫瘤組織樣品"],
+        "exclusion": ["活動性腦轉移", "曾受過同類 FAK 抑制劑治療"],
+        "outcomes": "KRAS mut ORR: 55%; 全體 ORR: 45% (初步數據亮眼)。"},
+    
+    {"cancer": "Ovarian", "pos": "R-TX", "sub_pos": ["Low grade serous carcinoma"], 
+        "name": "📚 GOG-3026", "pharma": "Novartis", "drug": "Ribociclib + Letrozole", 
+        "pop_results": "LGSOC 去化療組合：CDK4/6 抑制劑併用芳香環轉化酶抑制劑，達成 ORR 23% 與 79% 的臨床獲益率 (CBR)。",
+        "rationale": "利用內分泌治療阻斷激素受體，並協同 CDK4/6 抑制劑達成更強的細胞週期停滯效應。",
+        "regimen": "Ribociclib 400 mg QD (連服 3 週休息 1 週) + Letrozole 2.5 mg QD (持續每日口服)。",
+        "inclusion": ["復發性 LGSOC", "ER/PR 陽性表達者優先", "不限先前治療線數"],
+        "exclusion": ["無法吞嚥口服藥物者", "併用強效 CYP3A4 誘導劑"],
+        "outcomes": "mPFS: 19.1m; ORR: 23%; CBR: 79%。"},
+
     {"cancer": "Ovarian", 
     "pos": "P-MT", 
     "sub_pos": ["HRD positive (wt)", "HRD negative (pHRD)"], 
