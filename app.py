@@ -297,8 +297,17 @@ all_trials_db = [
         "inclusion": ["untreated locally advanced cervical cancer，接受根治性 CCRT。"],
         "exclusion": ["既往免疫治療。", "活動性自體免疫需治療。", "放療/化療禁忌等"],
         "outcomes": "PFS未達顯著，HR 0.84 (95% CI 0.65-1.08)，顯示「all-comers」下加 durvalumab 未能成為新標準（可能需 biomarker 精選）。"},
+    
+    {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], 
+        "name": "📚 GOG-240", "pharma": "NCI / GOG", "drug": "Chemo + Bevacizumab", 
+        "pop_results": "轉移性子宮頸癌里程碑：首個證明加入 Bevacizumab 能顯著延長 OS (16.8m vs 13.3m, HR 0.71) 的研究。",
+        "rationale": "利用抗血管新生藥物協同雙標靶化療，強化對晚期子宮頸癌的系統性控制。",
+        "regimen": "Cisplatin + Paclitaxel (或 Topotecan + Paclitaxel) 聯用 Bevacizumab 15mg/kg Q3W。",
+        "inclusion": ["復發、持久性或轉移性子宮頸癌", "先前未接受過針對 R/M 之化療", "ECOG 0-1"],
+        "exclusion": ["臨床顯著之心血管疾病", "曾受過全身性血管抑制劑治療"],
+        "outcomes": "mOS: 16.8m (vs 13.3m, HR 0.71, P=0.004)。"},
 
-{"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], 
+    {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Locally Advanced (CCRT)"], 
         "name": "📚 GOG-240", "pharma": "NCI / GOG", "drug": "Chemo + Bevacizumab", 
         "pop_results": "轉移性子宮頸癌里程碑：首個證明加入 Bevacizumab 能顯著延長 OS (16.8m vs 13.3m, HR 0.71) 的研究。",
         "rationale": "利用抗血管新生藥物協同雙標靶化療，強化對晚期子宮頸癌的系統性控制。",
