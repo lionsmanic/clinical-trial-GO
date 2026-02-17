@@ -116,7 +116,7 @@ all_trials_db = [
     # ==========================
     # === Endometrial Published ===
     # ==========================
-    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H / MMRd"], "name": "📚 RUBY (ENGOT-EN6/GOG-3031)", "pharma": "GSK", "drug": "Dostarlimab + Carboplatin/Paclitaxel", 
+    {"cancer": "Endometrial", "pos": ["P-TX", "R-TX"], "sub_pos": ["dMMR / MSI-H / MMRd", "Recurrent EC"], "name": "📚 RUBY (ENGOT-EN6/GOG-3031)", "pharma": "GSK", "drug": "Dostarlimab + Carboplatin/Paclitaxel", 
      "pop_results": "晚期轉移第一線或復發者，dMMR/MSS（pMMR）皆顯著延長PFS（dMMR：HR 0.28；全體：HR 0.64），且更新分析顯示OS亦改善（dMMR：HR 0.32；全體：HR 0.69），奠定一線「免疫＋化療」新標準。",
      "rationale": "PD-1 阻斷 (PD-1 blockade) 與含鉑化療 (Carbo/Pacli) 具備協同免疫原性細胞死亡 (ICD) 效應。藉由化療誘導腫瘤抗原釋放，釋放免疫微環境壓力並針對 MMRd 族群達成極高持久應答率。",
      "regimen": "Arm 1 (Dostarlimab 組): 誘導期: Dostarlimab 500mg Q3W + Carboplatin (AUC 5) + Paclitaxel (175 mg/m2) x6 週期；維持期: Dostarlimab 1000mg Q6W (持續 3年)。 Arm 2 (Placebo 組): 生理鹽水對照 + 同劑量 CP 化療 x6 週期。",
