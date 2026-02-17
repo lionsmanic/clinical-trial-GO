@@ -140,7 +140,20 @@ all_trials_db = [
      "rationale": "驗證一線 PD-L1 抑制劑併用化療對晚期或復發患者之生存優勢。",
      "regimen": "Arm A: Atezolizumab 1200mg Q3W + CP x6-8 週期 -> 維持 Atezolizumab 1200mg Q3W。 Arm B: Placebo + CP x6-8 週期。",
      "outcomes": "dMMR PFS: 未達到 vs 6.9m (HR 0.36, 95% CI 0.23-0.57); 全人群 mOS HR 0.82 (P=0.048)。"},
-
+    
+    {"cancer": "Endometrial", 
+    "pos": "P-MT", 
+    "sub_pos": ["Maintenance Therapy"], 
+    "name": "📚 DUO-E (Maint)", 
+    "pharma": "AstraZeneca", 
+    "drug": "Durvalumab ± Olaparib",
+    "results_short": "pMMR PFS HR 0.57; ITT OS HR 0.77",
+    "rationale": "探索 PARP 抑制劑與 PD-L1 抑制劑在維持階段對 pMMR 患者的協同增敏效應。",
+    "regimen": "Arm 2: Durvalumab 1500mg Q4W 維持; Arm 3: Durvalumab + Olaparib 300mg bid 維持。",
+    "inclusion": ["一線含鉑化療後達 CR/PR 之晚期 EC。", "提供 MMR IHC 狀態。"],
+    "exclusion": ["先前接受過系統性 IO 治療。"],
+    "outcomes": "pMMR 三藥組 (Ola+Durva) PFS HR 0.57 (95% CI 0.42-0.79)。"},
+    
     {"cancer": "Endometrial", "pos": "R-TX", "sub_pos": ["Recurrent EC"], "name": "📚 KEYNOTE-775 (Study 309)", "pharma": "MSD/Eisai", "drug": "Lenvatinib + Pembrolizumab", 
      "results_short": "pMMR/MSS 二線標準：OS 17.4m vs 12.0m",
      "rationale": "結合 VEGF-TKI 重塑血管並減輕免疫抑制，克服 MSS 腫瘤之免疫冷微環境。",
@@ -207,7 +220,20 @@ all_trials_db = [
     {"cancer": "Ovarian", "pos": "P-TX", "sub_pos": ["HGSC / Endometrioid"], "name": "📚 LION", "pharma": "NEJM", "drug": "No Lymphadenectomy", 
      "results_short": "臨床 LN 陰性免清掃：OS 無差異 (HR 1.06)",
      "outcomes": "mOS: 65.5m vs 69.2m (HR 1.06)。臨床 LN(-) 者免清掃。"},
-
+    
+    {"cancer": "Ovarian", 
+    "pos": "P-MT", 
+    "sub_pos": ["HRD positive (wt)", "HRD negative (pHRD)"], 
+    "name": "📚 DUO-O (ENGOT-OV46)", 
+    "pharma": "AstraZeneca", 
+    "drug": "Durvalumab + Olaparib + Bev",
+    "results_short": "HRD+ 三藥組 PFS HR 0.49; ITT HR 0.63",
+    "rationale": "利用 IO + PARPi + anti-VEGF 三藥聯用，於一線反應後清除微小殘留病灶並延緩復發。",
+    "regimen": "Arm 3: Bevacizumab + Durvalumab + Olaparib (300mg bid) 維持直至疾病進展。",
+    "inclusion": ["新診斷 FIGO III-IV 期上皮性卵巢癌。", "接受 PDS 或 IDS 且對鉑類有反應。"],
+    "exclusion": ["非上皮性卵巢癌。", "先前接受過 PARP 抑制劑。"],
+    "outcomes": "HRD+ (non-BRCAm) PFS HR 0.49 (95% CI 0.34-0.69); ITT ITT HR 0.63。"},
+    
     {"cancer": "Ovarian", "pos": "PR-Maint", "sub_pos": ["PARPi Maint"], "name": "📚 SOLO2", "pharma": "AZ", "drug": "Olaparib 復發維持", 
      "results_short": "BRCAm 長期 mOS 51.7m (HR 0.74)",
      "outcomes": "mOS: 51.7m vs 38.8m (HR 0.74)。"},
