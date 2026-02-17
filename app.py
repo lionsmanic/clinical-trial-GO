@@ -580,39 +580,6 @@ all_trials_db = [
         "outcomes": "mOS: 51.7m vs 38.8m (HR 0.74)。PFS 顯著改善，HR 約 0.30，最終 OS 分析顯示 median OS +12.9 months。AE：貧血、噁心、疲倦。 "},
 
     # ==========================
-    # === Ongoing Trials (8核心極量化) ===
-    # ==========================
-    {"cancer": "Endometrial", "name": "📍 MK2870-033", "pharma": "MSD", "drug": "Sac-TMT + Pembrolizumab", "pos": "P-MT", "sub_pos": ["Maintenance Therapy"], "type": "Ongoing",
-     "pop_results": "用 TROP2-ADC增加腫瘤細胞殺傷並與 PD-1 抑制併用，目標是補足「pMMR 子宮內膜癌對免疫單藥反應較差、需要更強的一線/維持策略」的缺口。",
-     "rationale": "標靶 Trop-2 ADC (Sac-TMT) 協同 PD-1。透過 ADC 誘導之 ICD 改善微環境，旨在提升 pMMR 或 NSMP 患者一線維持階段應答深度與持續時間。",
-     "regimen": "Arm A (分組 1): Sac-TMT 5mg/kg Q6W + Pembrolizumab 400mg Q6W 維持治療直到 PD。 Arm B (分組 2): 醫師選擇維持方案 (對照組)。",
-     "inclusion": ["新診斷 pMMR/MSS 子宮內膜癌 (中心 IHC 檢測確認)。", "FIGO III-IV 期、一線含鉑化療 + Pembrolizumab 後達 CR/PR。"],
-     "exclusion": ["先前接受過針對復發病灶之系統 IO 治療。", "組織學為子宮肉瘤 (Sarcoma)。"]},
-
-    {"cancer": "Ovarian", "name": "📍 FRAmework-01 (LY4170156)", "pharma": "Eli Lilly", "drug": "LY4170156 + Bevacizumab", "pos": "R-TX", "sub_pos": ["PROC (Resistant Recur)", "PSOC (Sensitive Recur)"], "type": "Ongoing",
-     "pop_results": "以 FRα 標的 ADC（把細胞毒載荷精準送入腫瘤）攻克鉑抗藥卵巢癌，並嘗試擴大到更多 FRα 表現範圍/或搭配 bev，目的在彌補「鉑抗藥期有效且可耐受的系統治療仍不足、FRα-ADC 受惠族群仍有限」的缺口。",
-     "rationale": "標靶 FRα ADC 聯用 anti-VEGF。利用 Bevacizumab 血管調節作用降低腫瘤間質壓，提升 ADC 於實體腫瘤內的滲透深度挑戰耐藥瓶頸。",
-     "regimen": "PROC 隊列分組： Arm A: LY 3.0mg/kg + Bev 15mg/kg Q3W; Arm B: LY 4.0mg/kg + Bev 15mg/kg Q3W。 PSOC 隊列 (PFI 6-12m): Arm C: LY 3.0mg/kg + Bev 15mg/kg Q3W。 對照組 (Arm D): 醫師選擇化療 SoC。",
-     "inclusion": ["經檢測確認 FRα 表達陽性 (IHC)。", "最後鉑類後進展之 PROC 或 PSOC (PFI 90d-365d)。"],
-     "exclusion": ["曾用過針對 FRα 之 ADC (如 Enhertu 曾試過者需評估)。", "活動性間質性肺病 (ILD)。"]},
-
-    {"cancer": "Endometrial", "name": "📍 GU-US-682-6769", "pharma": "Gilead", "drug": "SG (Trodelvy)", "pos": "R-TX", "sub_pos": ["Recurrent EC"], "type": "Ongoing",
-     "pop_results": "針對「鉑類化療+PD-(L)1 後仍進展、預後差且後線缺乏有效方案」的族群，評估 **TROP2-ADC（sacituzumab govitecan，載荷 SN-38）**能否在 PFS/OS 超越傳統單藥化療，填補後線治療空窗。",
-     "rationale": "針對 Trop-2 標靶。利用 SN-38 載荷引發強力 DNA 損傷，專攻鉑類與免疫檢查點抑制劑 (ICI) 失敗後之復發救援。",
-     "regimen": "Sacituzumab govitecan 10mg/kg (Day 1, Day 8) 每 21 天為一週期 (Q21D) 直至疾病進展。",
-     "inclusion": ["復發性 EC (不含肉瘤)。", "先前曾接受過至少一次含鉑化療及 PD-1/L1 失敗進展者。", "ECOG 0-1。"]},
-
-    {"cancer": "Ovarian", "name": "📍 DOVE", "pharma": "GSK", "drug": "Dostarlimab + Bevacizumab", "pos": "R-TX", "sub_pos": ["PROC (Resistant Recur)"], "type": "Ongoing",
-     "pop_results": "用 **PD-1 抑制（dostarlimab）**單用或合併 抗血管新生（bevacizumab），想把「對化療特別不敏感、復發後選擇很少」的透明細胞癌，從傳統化療導向轉成免疫/免疫合併抗血管新生的新策略。",
-     "rationale": "針對 OCCC 透明細胞癌。利用 PD-1 + anti-VEGF 雙重阻斷改善其特有且高度免疫抑制之微環境。",
-     "regimen": "Dostarlimab 1000mg Q6W + Bevacizumab 15mg/kg Q3W 直至進展。"},
-
-    {"cancer": "Ovarian", "name": "📍 DS8201-772 (Enhertu)", "pharma": "AstraZeneca", "drug": "T-DXd", "pos": "P-MT", "sub_pos": ["BRCA mutation", "HRD positive (wt)"], "type": "Ongoing",
-     "pop_results": "用 **HER2-ADC（T-DXd）**在一線治療後做維持，並合併 bevacizumab，瞄準「HER2 表現的卵巢癌亞群缺乏明確的標靶維持標準、仍易復發」這個 unmet need，希望延長維持期控制與存活。",
-     "rationale": "標靶 HER2 ADC 用於維持。利用 T-DXd 極高 DAR (8) 優勢清除化療後殘餘之 HER2 表現微小病灶。",
-     "regimen": "Trastuzumab deruxtecan 5.4mg/kg IV Q3W 維持至進展。"},
-    
-    # ==========================
     # === Uterine Sarcoma Published ===
     # ==========================
 
@@ -665,7 +632,39 @@ all_trials_db = [
         "regimen": "Doxorubicin (60mg/m2) + Trabectedin (1.1mg/m2) Q3W，接續 Trabectedin 單藥維持。",
         "inclusion": ["晚期/轉移性子宮或非子宮平滑肌肉瘤 (LMS)", "一線治療"],
         "outcomes": "mPFS: 12.2m vs 6.2m (HR 0.37); mOS: 31.6m vs 24.1m。"},
-    
+
+    # ==========================
+    # === Ongoing Trials (8核心極量化) ===
+    # ==========================
+    {"cancer": "Endometrial", "name": "📍 MK2870-033", "pharma": "MSD", "drug": "Sac-TMT + Pembrolizumab", "pos": "P-MT", "sub_pos": ["Maintenance Therapy"], "type": "Ongoing",
+     "pop_results": "用 TROP2-ADC增加腫瘤細胞殺傷並與 PD-1 抑制併用，目標是補足「pMMR 子宮內膜癌對免疫單藥反應較差、需要更強的一線/維持策略」的缺口。",
+     "rationale": "標靶 Trop-2 ADC (Sac-TMT) 協同 PD-1。透過 ADC 誘導之 ICD 改善微環境，旨在提升 pMMR 或 NSMP 患者一線維持階段應答深度與持續時間。",
+     "regimen": "Arm A (分組 1): Sac-TMT 5mg/kg Q6W + Pembrolizumab 400mg Q6W 維持治療直到 PD。 Arm B (分組 2): 醫師選擇維持方案 (對照組)。",
+     "inclusion": ["新診斷 pMMR/MSS 子宮內膜癌 (中心 IHC 檢測確認)。", "FIGO III-IV 期、一線含鉑化療 + Pembrolizumab 後達 CR/PR。"],
+     "exclusion": ["先前接受過針對復發病灶之系統 IO 治療。", "組織學為子宮肉瘤 (Sarcoma)。"]},
+
+    {"cancer": "Ovarian", "name": "📍 FRAmework-01 (LY4170156)", "pharma": "Eli Lilly", "drug": "LY4170156 + Bevacizumab", "pos": "R-TX", "sub_pos": ["PROC (Resistant Recur)", "PSOC (Sensitive Recur)"], "type": "Ongoing",
+     "pop_results": "以 FRα 標的 ADC（把細胞毒載荷精準送入腫瘤）攻克鉑抗藥卵巢癌，並嘗試擴大到更多 FRα 表現範圍/或搭配 bev，目的在彌補「鉑抗藥期有效且可耐受的系統治療仍不足、FRα-ADC 受惠族群仍有限」的缺口。",
+     "rationale": "標靶 FRα ADC 聯用 anti-VEGF。利用 Bevacizumab 血管調節作用降低腫瘤間質壓，提升 ADC 於實體腫瘤內的滲透深度挑戰耐藥瓶頸。",
+     "regimen": "PROC 隊列分組： Arm A: LY 3.0mg/kg + Bev 15mg/kg Q3W; Arm B: LY 4.0mg/kg + Bev 15mg/kg Q3W。 PSOC 隊列 (PFI 6-12m): Arm C: LY 3.0mg/kg + Bev 15mg/kg Q3W。 對照組 (Arm D): 醫師選擇化療 SoC。",
+     "inclusion": ["經檢測確認 FRα 表達陽性 (IHC)。", "最後鉑類後進展之 PROC 或 PSOC (PFI 90d-365d)。"],
+     "exclusion": ["曾用過針對 FRα 之 ADC (如 Enhertu 曾試過者需評估)。", "活動性間質性肺病 (ILD)。"]},
+
+    {"cancer": "Endometrial", "name": "📍 GU-US-682-6769", "pharma": "Gilead", "drug": "SG (Trodelvy)", "pos": "R-TX", "sub_pos": ["Recurrent EC"], "type": "Ongoing",
+     "pop_results": "針對「鉑類化療+PD-(L)1 後仍進展、預後差且後線缺乏有效方案」的族群，評估 **TROP2-ADC（sacituzumab govitecan，載荷 SN-38）**能否在 PFS/OS 超越傳統單藥化療，填補後線治療空窗。",
+     "rationale": "針對 Trop-2 標靶。利用 SN-38 載荷引發強力 DNA 損傷，專攻鉑類與免疫檢查點抑制劑 (ICI) 失敗後之復發救援。",
+     "regimen": "Sacituzumab govitecan 10mg/kg (Day 1, Day 8) 每 21 天為一週期 (Q21D) 直至疾病進展。",
+     "inclusion": ["復發性 EC (不含肉瘤)。", "先前曾接受過至少一次含鉑化療及 PD-1/L1 失敗進展者。", "ECOG 0-1。"]},
+
+    {"cancer": "Ovarian", "name": "📍 DOVE", "pharma": "GSK", "drug": "Dostarlimab + Bevacizumab", "pos": "R-TX", "sub_pos": ["PROC (Resistant Recur)"], "type": "Ongoing",
+     "pop_results": "用 **PD-1 抑制（dostarlimab）**單用或合併 抗血管新生（bevacizumab），想把「對化療特別不敏感、復發後選擇很少」的透明細胞癌，從傳統化療導向轉成免疫/免疫合併抗血管新生的新策略。",
+     "rationale": "針對 OCCC 透明細胞癌。利用 PD-1 + anti-VEGF 雙重阻斷改善其特有且高度免疫抑制之微環境。",
+     "regimen": "Dostarlimab 1000mg Q6W + Bevacizumab 15mg/kg Q3W 直至進展。"},
+
+    {"cancer": "Ovarian", "name": "📍 DS8201-772 (Enhertu)", "pharma": "AstraZeneca", "drug": "T-DXd", "pos": "P-MT", "sub_pos": ["BRCA mutation", "HRD positive (wt)"], "type": "Ongoing",
+     "pop_results": "用 **HER2-ADC（T-DXd）**在一線治療後做維持，並合併 bevacizumab，瞄準「HER2 表現的卵巢癌亞群缺乏明確的標靶維持標準、仍易復發」這個 unmet need，希望延長維持期控制與存活。",
+     "rationale": "標靶 HER2 ADC 用於維持。利用 T-DXd 極高 DAR (8) 優勢清除化療後殘餘之 HER2 表現微小病灶。",
+     "regimen": "Trastuzumab deruxtecan 5.4mg/kg IV Q3W 維持至進展。"},    
 ]
 
 # --- 3. AI 模型巡邏與聯動功能 ---
