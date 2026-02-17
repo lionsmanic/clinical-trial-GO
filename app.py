@@ -309,8 +309,8 @@ all_trials_db = [
         "inclusion": ["newly diagnosed advanced ovarian cancer。", "germline 或 somatic BRCA1/2 mutation。", "一線 platinum 化療後 CR/PR。"],
         "exclusion": ["先前接受過 PARP 抑制劑。", "持續性骨髓抑制未恢復。"],
         "outcomes": "mPFS: 56.0m vs 13.8m (HR 0.30)。AE：貧血、噁心、疲倦常見；需監測血球。"},
-
-        {"cancer": "Ovarian", "pos": "P-TX", "sub_pos": ["Low grade serous carcinoma"], 
+    
+    {"cancer": "Ovarian", "pos": "P-TX", "sub_pos": ["Low grade serous carcinoma"], 
         "name": "📍 NRG-GY019", "pharma": "NRG Oncology", "drug": "Letrozole vs Chemo→Letrozole", 
         "pop_results": "一線去化療挑戰：評估對於新診斷 LGSOC 患者，單用 Letrozole 是否不劣於傳統化療後接續維持治療。",
         "rationale": "低惡性度漿液性癌 (LGSOC) 對傳統化療反應率較低，此研究旨在驗證初期即使用內分泌治療的臨床效益。",
