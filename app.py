@@ -136,7 +136,9 @@ all_trials_db = [
      "regimen": "Arm 1: carboplatin/paclitaxel + placebo → placebo maintenance 僅化療 (對照組); Arm 2: CP+Durvalumab -> Durva 1500mg Q4W 維持; Arm 3: CP+Durvalumab -> Durva 1500mg Q4W + Olaparib 300mg bid 維持直到疾病進展。",
      "inclusion": ["newly diagnosed advanced 或 recurrent endometrial cancer。", "適合 CP。", "ECOG 0-1。"],
      "exclusion": ["既往免疫治療 / PARP inhibitor。", "活動性自體免疫需治療。", "未控制感染。", "其他研究者判定不適合等。"],
-     "outcomes": ["pMMR Arm 3 (Ola+Durva) vs Arm 1: PFS HR 0.57 (95% CI 0.42-0.79); dMMR Arm 2 vs Arm 1: HR 0.42 (95% CI 0.22-0.80)。", "PFS：durvalumab vs control HR 0.71；durvalumab+olaparib vs control HR 0.55。", "AE（臨床重點）：加上 olaparib 後，需特別注意 貧血/血球下降、疲倦 等 PARP 典型毒性疊加。"]},
+     "outcomes": ["pMMR Arm 3 (Ola+Durva) vs Arm 1: PFS HR 0.57 (95% CI 0.42-0.79); dMMR Arm 2 vs Arm 1: HR 0.42 (95% CI 0.22-0.80)。", 
+                  "PFS：durvalumab vs control HR 0.71；durvalumab+olaparib vs control HR 0.55。", 
+                  "AE（臨床重點）：加上 olaparib 後，需特別注意 貧血/血球下降、疲倦 等 PARP 典型毒性疊加。"]},
 
     {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H / MMRd"], "name": "📚 AtTEnd (ENGOT-EN7)", "pharma": "Roche", "drug": "Atezolizumab + CP", 
      "pop_results": "Atezolizumab＋化療在dMMR族群PFS顯著改善（HR 0.36），訊息重點是「效益主要集中在dMMR」，pMMR整體效益相對不明顯，dMMR PFS HR 0.36; ITT OS HR 0.82",
