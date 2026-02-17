@@ -633,6 +633,46 @@ all_trials_db = [
         "inclusion": ["晚期/轉移性子宮或非子宮平滑肌肉瘤 (LMS)", "一線治療"],
         "outcomes": "mPFS: 12.2m vs 6.2m (HR 0.37); mOS: 31.6m vs 24.1m。"},
 
+    {"cancer": "Uterine Sarcoma", 
+        "pos": ["R-TX"], 
+        "sub_pos": ["Recurr / Metastatic"], 
+        "name": "📚 ET743-SAR-3007", "pharma": "Janssen", "drug": "Trabectedin vs Dacarbazine", 
+        "pop_results": "LMS 救援二線標準：Trabectedin 相比 Dacarbazine 可顯著降低 45% 的疾病進展風險 (HR 0.55)。",
+        "rationale": "針對先前接受過含 Anthracycline 化療失敗的晚期平滑肌肉瘤 (LMS)，驗證 Trabectedin 的療效。",
+        "regimen": "Trabectedin 1.5 mg/m2 (24小時持續靜脈滴注) Q3W；對照組 Dacarbazine 1000 mg/m2 Q3W。",
+        "inclusion": ["不可切除或轉移性平滑肌肉瘤 (LMS) 或脂肪肉瘤", "先前接受過含 Anthracycline 方案治療"],
+        "outcomes": "LMS 族群 mPFS: 4.2m vs 1.5m (HR 0.55, P<0.001)；ITT OS 無顯著差異。"},
+    
+    {"cancer": "Uterine Sarcoma", 
+        "pos": ["R-TX"], 
+        "sub_pos": ["Recurr / Metastatic"], 
+        "name": "📚 PALETTE", "pharma": "Novartis / GSK", "drug": "Pazopanib (TKI)", 
+        "pop_results": "非脂肪肉瘤二線標準：Pazopanib 顯著延長中位 PFS 達三倍 (4.6m vs 1.6m, HR 0.31)。",
+        "rationale": "利用多靶點 TKI 抑制 VEGF、PDGFR 與 c-Kit 通路，阻斷肉瘤的血管新生與生長訊號。",
+        "regimen": "Pazopanib 800 mg 每日口服一次，持續治療直到疾病進展或不可耐受。",
+        "inclusion": ["先前化療失敗之晚期非脂肪肉瘤性軟組織肉瘤 (含子宮 LMS)", "ECOG 0-1"],
+        "outcomes": "mPFS: 4.6m vs 1.6m (HR 0.31, P<0.0001)；OS 呈現獲益趨勢但未達統計顯著。"},
+    
+    {"cancer": "Uterine Sarcoma", 
+        "pos": ["R-TX"], 
+        "sub_pos": ["Recurr / Metastatic"], 
+        "name": "📚 REGOSARC", "pharma": "Bayer", "drug": "Regorafenib (TKI)", 
+        "pop_results": "二線 TKI 新數據：在 LMS 族群中，Regorafenib 顯著延長 PFS (HR 0.46)，具備臨床救援價值。",
+        "rationale": "隨機、雙盲、安慰劑對照之第 II 期試驗，驗證 Regorafenib 在各類肉瘤分型中的活性。",
+        "regimen": "Regorafenib 160 mg QD (服用 3 週休息 1 週)，每 28 天為一週期。",
+        "inclusion": ["先前接受過含 Anthracycline 或多線治療失敗之晚期肉瘤", "包含子宮平滑肌肉瘤 (uLMS) 隊列"],
+        "outcomes": "LMS 隊列 PFS: 4.4m vs 1.4m (HR 0.46, P=0.0045)。"},
+    
+    {"cancer": "Uterine Sarcoma", 
+        "pos": ["R-TX"], 
+        "sub_pos": ["Recurr / Metastatic"], 
+        "name": "📚 Eribulin vs Dacarbazine", "pharma": "Eisai", "drug": "Eribulin", 
+        "pop_results": "LMS/LPS 存活獲益：針對平滑肌肉瘤與脂肪肉瘤，Eribulin 顯著延長中位 OS (13.5m vs 11.5m)。",
+        "rationale": "非微管蛋白解聚類藥物，旨在探索其在難治型肉瘤中對於總體生存率 (OS) 的貢獻。",
+        "regimen": "Eribulin 1.4 mg/m2 (D1, D8) 每 21 天為一週期。",
+        "inclusion": ["先前接受過至少 2 線治療 (須含 Anthracycline) 失敗之晚期 LMS 或 LPS", "ECOG 0-1"],
+        "outcomes": "mOS: 13.5m vs 11.5m (HR 0.77, P=0.016)；LMS 族群數據穩定。"},
+
     # ==========================
     # === Ongoing Trials (8核心極量化) ===
     # ==========================
