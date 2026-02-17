@@ -162,6 +162,25 @@ all_trials_db = [
     "inclusion": ["一線含鉑化療後達 CR/PR 之晚期 EC。", "提供 MMR IHC 狀態。"],
     "exclusion": ["先前接受過系統性 IO 治療。"],
     "outcomes": "pMMR 三藥組 (Ola+Durva) PFS HR 0.57 (95% CI 0.42-0.79)。"},
+
+{"cancer": "Endometrial", 
+        "pos": "P-MT", 
+        "sub_pos": ["Maintenance Therapy"], 
+        "name": "📚 SIENDO (ENGOT-EN5/GOG-3055)", 
+        "pharma": "Karyopharm", 
+        "drug": "Selinexor", 
+        "pop_results": "TP53 wild-type 族群獲益極佳：維持治療顯著延長 PFS 達 5 倍以上 (27.4m vs 5.2m, HR 0.41)。",
+        "rationale": "利用 XPO1 抑制劑 Selinexor 在 TP53 wild-type 患者中誘導細胞核內抑癌蛋白蓄積，進而引發腫瘤細胞凋亡。",
+        "regimen": "Selinexor 80 mg 每週口服一次，持續治療直到疾病進展或不可耐受之毒性。",
+        "inclusion": [
+            "完成一線含鉑化療後達 CR 或 PR 之晚期/復發性子宮內膜癌",
+            "ECOG 0-1",
+            "需提供組織學樣本進行 p53 狀態判定"],
+        "exclusion": [
+            "先前接受過 XPO1 抑制劑治療",
+            "活動性腦轉移",
+            "無法吞嚥口服藥物者"],
+        "outcomes": "TP53 wild-type PFS: 27.4m (vs 5.2m, HR 0.41, 95% CI 0.23-0.73)。"},
     
     {"cancer": "Endometrial", "pos": "R-TX", "sub_pos": ["Recurrent EC"], "name": "📚 KEYNOTE-775 (Study 309)", "pharma": "MSD/Eisai", "drug": "Lenvatinib + Pembrolizumab", 
      "pop_results": "Lenvatinib＋Pembrolizumab在復發/晚期子宮內膜癌相較化療同時改善PFS與OS（pMMR：PFS HR 0.60、OS HR 0.68；全體：PFS HR 0.56、OS HR 0.62），確立二線以後的重要組合",
