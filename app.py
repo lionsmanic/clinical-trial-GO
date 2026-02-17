@@ -263,7 +263,16 @@ all_trials_db = [
      "inclusion": ["platinum-resistant 高級別漿液性為主。", "FRα 高表現。", "既往治療線數依試驗。"],
      "exclusion": ["不符合 FRα 門檻。", "不可控眼部/神經毒性風險。"],
      "outcomes": "mOS: 16.4m vs 12.7m (HR 0.67); mPFS 5.6m vs 4.0m (HR 0.65)。ORR 亦顯著較佳；Grade ≥3 AE 較少"},
-
+    
+    {"cancer": "Ovarian", "pos": "P-TX", "sub_pos": ["Low grade serous carcinoma"], 
+        "name": "📍 NRG-GY019", "pharma": "NRG Oncology", "drug": "Letrozole vs Chemo→Letrozole", 
+        "pop_results": "一線去化療挑戰：評估對於新診斷 LGSOC 患者，單用 Letrozole 是否不劣於傳統化療後接續維持治療。",
+        "rationale": "低惡性度漿液性癌 (LGSOC) 對傳統化療反應率較低，此研究旨在驗證初期即使用內分泌治療的臨床效益。",
+        "regimen": "Arm 1: Letrozole (2.5mg QD) 單藥治療直到進展；Arm 2: 傳統 6 週期化療 (CP) 後接續 Letrozole 維持治療。",
+        "inclusion": ["新診斷 Stage II-IV 低惡性度漿液性卵巢癌/腹膜癌", "ECOG 0-2", "需提供組織學判定報告"],
+        "exclusion": ["曾受過針對此疾病之全身性化療或標靶治療", "計畫接受維持性 PARPi 治療者"],
+        "outcomes": "招募中 (Ongoing Recruitment)。"},
+    
     {"cancer": "Ovarian", "pos": "R-TX", "sub_pos": ["PSOC (Sensitive Recur)"], "name": "📚 DESKTOP III", "pharma": "AGO", "drug": "Secondary Cytoreduction Surgery", 
      "pop_results": "復發卵巢癌在嚴格選人（如AGO score）下，次減積手術帶來OS改善（死亡HR 0.75），奠定「選對人做手術」的價值，二次手術價值：R0 切除 mOS 53.7m",
      "rationale": "證明嚴選患者 (AGO Score+) 二次手術具生存獲益。",
