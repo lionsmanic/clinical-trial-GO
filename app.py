@@ -171,26 +171,26 @@ all_trials_db = [
     # === Cervical Published ===
     # ==========================
     {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Locally Advanced (CCRT)"], "name": "📚 KEYNOTE-A18 (ENGOT-cx11)", "pharma": "MSD", "drug": "Pembrolizumab + CCRT", 
-     "results_short": "LACC 標準：36m OS 82.6% (HR 0.67)",
+     "pop_results": "與同步化放療相比，加入Pembrolizumab可帶來整體存活改善的趨勢/早期訊號（期中OS HR 0.67），核心意義在於把免疫治療推進到「根治意圖」同步化放療場景，LACC 標準：36m OS 82.6% (HR 0.67)",
      "rationale": "將免疫整合入高風險局部晚期之根治同步化放療。",
      "regimen": "Arm A: CCRT (Cisplatin 40mg/m2 週服 + RT 45-50.4 Gy) 同步 Pembro 200mg Q3W x5 週期 -> 維持 Pembro 400mg Q6W x15 週期。 Arm B: CCRT + Placebo。",
      "inclusion": ["新診斷 Stage IB2-IIB LN(+) 或 Stage III-IVA 局部晚期。"],
      "outcomes": "24m PFS: 68% vs 57% (HR 0.70); 36m OS: 82.6% vs 74.8% (HR 0.67)。"},
 
     {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Locally Advanced (CCRT)"], "name": "📚 INTERLACE", "pharma": "UCL", "drug": "Induction Carbo/Pacli x6 -> CCRT", 
-     "results_short": "5年 OS 80% (vs 72%, HR 0.60)",
+     "pop_results": "以「誘導化療→再同步化放療」策略改善預後，報告顯示PFS與OS皆提升（PFS HR 0.65；OS HR 0.60），代表「治療序列」本身也能帶來存活增益，5年 OS 80% (vs 72%, HR 0.60)",
      "rationale": "利用誘導化療 (Induction Chemo) 解決放療前的微小轉移。",
      "regimen": "誘導期: Paclitaxel 80mg/m2 + Carboplatin AUC2 每週一次 x6 週期 -> 接續標準 CCRT (Cisplatin + RT)。",
      "outcomes": "5yr OS: 80% vs 72% (HR 0.60); 5yr PFS: 73% vs 64% (HR 0.65)。"},
 
     {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], "name": "📚 KEYNOTE-826", "pharma": "MSD", "drug": "Pembrolizumab + Chemo ± Bev", 
-     "results_short": "R/M 一線標準：OS HR 0.63",
+     "pop_results": "R/M 一線標準：OS HR 0.63",
      "rationale": "一線轉移性子宮頸癌免疫組合黃金標準。",
      "regimen": "Arm 1: Pembrolizumab 200mg Q3W + Chemo (Pacli+Cis/Carbo) ± Bevacizumab 15mg/kg Q3W。 Arm 2: Placebo + Chemo ± Bev。",
      "outcomes": "CPS≥1 mOS: 28.6m vs 16.5m (HR 0.60); 全人群 OS HR 0.63。"},
 
     {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], "name": "📚 innovaTV 301 (ENGOT-cx12)", "pharma": "Genmab", "drug": "Tisotumab Vedotin (ADC)", 
-     "results_short": "後線 ADC 突破：OS HR 0.70; ORR 17.8%",
+     "pop_results": "Tisotumab vedotin相較醫師選擇化療改善OS（OS HR 0.70），代表ADC在復發/轉移頸癌的里程碑，後線 ADC 突破：OS HR 0.70; ORR 17.8%",
      "rationale": "標靶組織因子 (Tissue Factor) ADC，解決後線化療耐藥。",
      "regimen": "Arm A: Tisotumab Vedotin 2.0 mg/kg IV Q3W。 Arm B: 醫師選擇化療 (Chemo SoC)。",
      "outcomes": "mOS: 11.5m vs 9.5m (HR 0.70); ORR 17.8% vs 5.2%。"},
