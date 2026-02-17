@@ -604,8 +604,8 @@ all_trials_db = [
         "outcomes": "局部復發率降低；OS HR 0.94 (P=0.69) 無顯著差異。"},
     
     {"cancer": "Uterine Sarcoma", 
-        "pos": ["R-TX"], 
-        "sub_pos": ["Recurr / Metastatic"], 
+        "pos": ["P-TX"], 
+        "sub_pos": ["Primary Sarcoma"], 
         "name": "📚 EORTC 62012", "pharma": "EORTC", "drug": "Doxorubicin + Ifosfamide", 
         "pop_results": "晚期一線組合：聯用方案顯著提升 ORR (26%) 與 PFS，但在總生存期 (OS) 上與單藥 Dox 相比無顯著差異。",
         "rationale": "針對不可切除或轉移性肉瘤，比較『加強型聯用化療』與『單藥化療』的療效權衡。",
@@ -614,8 +614,8 @@ all_trials_db = [
         "outcomes": "mPFS: 7.4m vs 4.6m (HR 0.74); ORR: 26% vs 14%。"},
     
     {"cancer": "Uterine Sarcoma", 
-        "pos": ["R-TX"], 
-        "sub_pos": ["Recurr / Metastatic"], 
+        "pos": ["P-TX"], 
+        "sub_pos": ["Primary Sarcoma"], 
         "name": "📚 GeDDiS (Phase III)", "pharma": "CRUK", "drug": "Gem/Doce vs Doxorubicin", 
         "pop_results": "一線標準對照：Gem/Doce 與 Doxorubicin 作為一線治療，在 PFS 上無顯著差異，Dox 具備更佳的用藥便利性。",
         "rationale": "旨在確定 Gem/Doce 是否能取代 Doxorubicin 成為晚期肉瘤的一線首選標準。",
@@ -624,8 +624,8 @@ all_trials_db = [
         "outcomes": "mPFS: 23.3 週 (Gem/Doce) vs 23.3 週 (Dox)，HR 1.14 (P=0.06)。"},
     
     {"cancer": "Uterine Sarcoma", 
-        "pos": ["R-TX"], 
-        "sub_pos": ["Recurr / Metastatic"], 
+        "pos": ["P-TX"], 
+        "sub_pos": ["Primary Sarcoma"], 
         "name": "📚 LMS-04 (Phase III)", "pharma": "French Sarcoma Group", "drug": "Doxorubicin + Trabectedin", 
         "pop_results": "LMS 一線新高度：聯用 Trabectedin 顯著延長子宮平滑肌肉瘤中位 PFS 達兩倍 (12.2m vs 6.2m)。",
         "rationale": "專對平滑肌肉瘤 (LMS)，利用 Doxorubicin 聯用 Trabectedin 挑戰傳統單藥治療瓶頸。",
