@@ -363,7 +363,9 @@ all_trials_db = [
         "inclusion": ["platinum-sensitive recurrent ovarian cancer。", "對 platinum 有反應。", "BRCA1/2 mutation。"],
         "exclusion": ["重大共病。", "先前接受過 PARP 抑制劑。", "持續性骨髓抑制未恢復。"],
         "outcomes": "mOS: 51.7m vs 38.8m (HR 0.74)。PFS 顯著改善，HR 約 0.30，最終 OS 分析顯示 median OS +12.9 months。AE：貧血、噁心、疲倦。 "},
+]
 
+    
     # ==========================
     # === Ongoing Trials (8核心極量化) ===
     # ==========================
