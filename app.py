@@ -136,6 +136,7 @@ all_trials_db = [
      "outcomes": "pMMR Arm 3 (Ola+Durva) vs Arm 1: PFS HR 0.57 (95% CI 0.42-0.79); dMMR Arm 2 vs Arm 1: HR 0.42 (95% CI 0.22-0.80)。"},
 
     {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H / MMRd"], "name": "📚 AtTEnd (ENGOT-EN7)", "pharma": "Roche", "drug": "Atezolizumab + CP", 
+     "pop_results": "Atezolizumab＋化療在dMMR族群PFS顯著改善（HR 0.36），訊息重點是「效益主要集中在dMMR」，pMMR整體效益相對不明顯。",
      "results_short": "dMMR PFS HR 0.36; ITT OS HR 0.82",
      "rationale": "驗證一線 PD-L1 抑制劑併用化療對晚期或復發患者之生存優勢。",
      "regimen": "Arm A: Atezolizumab 1200mg Q3W + CP x6-8 週期 -> 維持 Atezolizumab 1200mg Q3W。 Arm B: Placebo + CP x6-8 週期。",
@@ -147,6 +148,7 @@ all_trials_db = [
     "name": "📚 DUO-E (Maint)", 
     "pharma": "AstraZeneca", 
     "drug": "Durvalumab ± Olaparib",
+    "pop_results": "一線治療中，Durvalumab＋化療可改善PFS（HR 0.71），而「Durvalumab＋化療→維持加上Olaparib」效益更大（PFS HR 0.55）；pMMR亦有PFS獲益（Durva+Ola vs control：HR 0.57），且OS期中分析支持（Durva+Ola vs control：HR 0.59）。",
     "results_short": "pMMR PFS HR 0.57; ITT OS HR 0.77",
     "rationale": "探索 PARP 抑制劑與 PD-L1 抑制劑在維持階段對 pMMR 患者的協同增敏效應。",
     "regimen": "Arm 2: Durvalumab 1500mg Q4W 維持; Arm 3: Durvalumab + Olaparib 300mg bid 維持。",
@@ -155,6 +157,7 @@ all_trials_db = [
     "outcomes": "pMMR 三藥組 (Ola+Durva) PFS HR 0.57 (95% CI 0.42-0.79)。"},
     
     {"cancer": "Endometrial", "pos": "R-TX", "sub_pos": ["Recurrent EC"], "name": "📚 KEYNOTE-775 (Study 309)", "pharma": "MSD/Eisai", "drug": "Lenvatinib + Pembrolizumab", 
+     "pop_results": "Lenvatinib＋Pembrolizumab在復發/晚期子宮內膜癌相較化療同時改善PFS與OS（pMMR：PFS HR 0.60、OS HR 0.68；全體：PFS HR 0.56、OS HR 0.62），確立二線以後的重要組合。"
      "results_short": "pMMR/MSS 二線標準：OS 17.4m vs 12.0m",
      "rationale": "結合 VEGF-TKI 重塑血管並減輕免疫抑制，克服 MSS 腫瘤之免疫冷微環境。",
      "regimen": "Lenvatinib 20mg QD (每日口服) + Pembrolizumab 200mg Q3W (靜脈滴注) 直至疾病進展或不可耐受。",
@@ -162,6 +165,7 @@ all_trials_db = [
      "outcomes": "pMMR OS: 17.4m vs 12.0m (HR 0.68, 95% CI 0.56-0.84, P<0.001); ITT OS: 18.3m vs 11.4m (HR 0.62)。"},
 
     {"cancer": "Endometrial", "pos": "R-TX", "sub_pos": ["Recurrent EC"], "name": "📚 GARNET", "pharma": "GSK", "drug": "Dostarlimab 單藥", 
+     "pop_results": "屬單臂Dostarlimab研究（主要報ORR/持續反應），無隨機比較HR可填（HR：N/A）。"
      "results_short": "dMMR ORR 45.5%; DOR 持久",
      "rationale": "針對 MSI-H/dMMR 高免疫原性患者，單藥 PD-1 阻斷即可達成持久應答。",
      "regimen": "Dostarlimab 500mg Q3W x4 劑 -> 1000mg Q6W 維持直到進展。",
