@@ -182,12 +182,14 @@ all_trials_db = [
      "rationale": "利用誘導化療 (Induction Chemo) 解決放療前的微小轉移。",
      "regimen": "誘導期: Paclitaxel 80mg/m2 + Carboplatin AUC2 每週一次 x6 週期 -> 接續標準 CCRT (Cisplatin + RT)。",
      "outcomes": "5yr OS: 80% vs 72% (HR 0.60); 5yr PFS: 73% vs 64% (HR 0.65)。"},
-
-    {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], "name": "📚 KEYNOTE-826", "pharma": "MSD", "drug": "Pembrolizumab + Chemo ± Bev", 
-     "pop_results": "R/M 一線標準：OS HR 0.63",
-     "rationale": "一線轉移性子宮頸癌免疫組合黃金標準。",
-     "regimen": "Arm 1: Pembrolizumab 200mg Q3W + Chemo (Pacli+Cis/Carbo) ± Bevacizumab 15mg/kg Q3W。 Arm 2: Placebo + Chemo ± Bev。",
-     "outcomes": "CPS≥1 mOS: 28.6m vs 16.5m (HR 0.60); 全人群 OS HR 0.63。"},
+    
+    {"cancer": "Cervical", "pos": "P-MT", "sub_pos": ["Maintenance"], 
+        "name": "📚 KEYNOTE-826", "pharma": "MSD", "drug": "Pembrolizumab + Chemo ± Bev", 
+        "pop_results": "一線 R/M 子宮頸癌黃金標準：在化療基礎上併用免疫治療顯著改善 OS (HR 0.63)。完成誘導化療後，免疫藥物接續維持治療直至 PD 或滿 24 個月。",
+        "rationale": "利用免疫檢查點抑制劑與化療產生協同效應，並透過後續單藥免疫維持治療，持續活化免疫系統以控制腫瘤進展。",
+        "regimen": "Arm 1: Pembrolizumab 200mg Q3W + Chemo (Pacli+Cis/Carbo) ± Bevacizumab 15mg/kg Q3W。 Arm 2: Placebo + Chemo ± Bev。",
+        "outcomes": "CPS≥1 族群 mOS: 28.6m vs 16.5m (HR 0.60); ITT 全人群 OS HR 0.63。"},
+    
 
     {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], "name": "📚 innovaTV 301 (ENGOT-cx12)", "pharma": "Genmab", "drug": "Tisotumab Vedotin (ADC)", 
      "pop_results": "Tisotumab vedotin相較醫師選擇化療改善OS（OS HR 0.70），代表ADC在復發/轉移頸癌的里程碑，後線 ADC 突破：OS HR 0.70; ORR 17.8%",
