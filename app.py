@@ -108,6 +108,16 @@ guidelines_nested = {
         {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [
             {"title": "Recurr / Metastatic", "content": "一線 KN826/BEATcc。二線 ADC (innovaTV 301) 或 IO (EMPOWER)。"}]},
         {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Continuous Therapy", "content": "維持當前有效救援方案直至 PD。"}]}
+    ],
+        "Sarcoma": [
+        {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
+            {"title": "Primary Sarcoma", "content": "術後輔助或轉移性不可切除。"},
+            {"title": "Low grade ESS", "content": "LGESS"}]},
+        {"id": "P-MT", "header": "一線維持 (1L Maint)", "css": "p-mt", "subs": [{"title": "Maintenance", "content": "1L 方案後接續維持。"}]},
+        {"id": "R-TX", "header": "復發治療 (Recurr Tx)", "css": "r-tx", "subs": [
+            {"title": "Recurr / Metastatic", "content": "復發治療。"},
+            {"title": "Low grade ESS", "content": "LGESS"}]},
+        {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "Continuous Therapy", "content": "維持當前有效救援方案直至 PD。"}]}
     ]
 }
 
