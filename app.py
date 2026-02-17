@@ -639,7 +639,7 @@ with st.sidebar:
 
 # --- 5. 主頁面：導航地圖佈局 ---
 st.markdown("<div class='main-title'>婦癌臨床導航儀表板 (2026 旗艦最終極量整合版)</div>", unsafe_allow_html=True)
-cancer_type = st.radio("第一步：選擇癌症類型", ["Endometrial", "Ovarian", "Cervical"], horizontal=True)
+cancer_type = st.radio("第一步：選擇癌症類型", ["Endometrial", "Ovarian", "Cervical", "Uterine Sarcoma"], horizontal=True)
 
 cols = st.columns(len(guidelines_nested[cancer_type]))
 stages_data = guidelines_nested[cancer_type]
