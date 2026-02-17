@@ -124,7 +124,7 @@ all_trials_db = [
      "exclusion": ["既往接受 PD-1/PD-L1 治療。", "活動性/需系統性治療之自體免疫疾病。", "未控制感染。", "臨床上顯著 CNS 轉移等。"],
      "outcomes": "dMMR 族群 24個月 PFS 率: 61.4% vs 15.7% (HR 0.28, 95% CI 0.16-0.50); ITT 全人群 mOS HR 0.64 (95% CI 0.46-0.87, P=0.0021)。"},
 
-    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H / MMRd", "pMMR / NSMP / MSS"], "name": "📚 NRG-GY018 (KEYNOTE-868)", "pharma": "MSD", "drug": "Pembrolizumab + Carboplatin/Paclitaxel", 
+    {"cancer": "Endometrial", "pos": ["P-TX", "R-TX"], "sub_pos": ["dMMR / MSI-H / MMRd", "Recurrent EC"], "name": "📚 NRG-GY018 (KEYNOTE-868)", "pharma": "MSD", "drug": "Pembrolizumab + Carboplatin/Paclitaxel", 
      "pop_results": "晚期轉移第一線或復發者，Pembrolizumab＋化療在一線顯著延長PFS（dMMR：HR 0.30；pMMR：HR 0.54），是另一個改變臨床實務的一線免疫＋化療關鍵試驗。",
      "rationale": "利用免疫檢查點抑制劑 (ICI) 重塑腫瘤微環境，Pembrolizumab 強化一線含鉑化療反應後的持久性。",
      "regimen": "Arm A: Pembrolizumab 200mg Q3W + Carboplatin (AUC 5) + Paclitaxel (175 mg/m2) x6 週期 -> 維持期: Pembrolizumab 400mg Q6W (持續 2年)。 Arm B: Placebo + CP x6 週期。",
@@ -142,7 +142,7 @@ all_trials_db = [
                   "PFS：durvalumab vs control HR 0.71；durvalumab+olaparib vs control HR 0.55。", 
                   "AE（臨床重點）：加上 olaparib 後，需特別注意 貧血/血球下降、疲倦 等 PARP 典型毒性疊加。"]},
 
-    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H / MMRd"], "name": "📚 AtTEnd (ENGOT-EN7)", "pharma": "Roche", "drug": "Atezolizumab + CP", 
+    {"cancer": "Endometrial", "pos": ["P-TX", "R-TX"], "sub_pos": ["dMMR / MSI-H / MMRd", "Recurrent EC"], "name": "📚 AtTEnd (ENGOT-EN7)", "pharma": "Roche", "drug": "Atezolizumab + CP", 
      "pop_results": "晚期轉移第一線或復發者，Atezolizumab＋化療在dMMR族群PFS顯著改善（HR 0.36），訊息重點是「效益主要集中在dMMR」，pMMR整體效益相對不明顯，dMMR PFS HR 0.36; ITT OS HR 0.82",
      "rationale": "驗證一線 PD-L1 抑制劑併用化療對晚期或復發患者之生存優勢。",
      "regimen": "Arm A: Atezolizumab 1200mg Q3W + CP x6-8 週期 -> 維持 Atezolizumab 1200mg Q3W。 Arm B: Placebo + CP x6-8 週期。",
