@@ -179,6 +179,22 @@ all_trials_db = [
      "exclusion": ["既往 PD-1/PD-L1。", "活動性自體免疫需治療。", "CNS 活動性病灶等"],
      "outcomes": "dMMR/MSI-H ORR 45.5%、且 DoR 長; DOR 未達到。pMMR ORR 較低（約 10–15% 等級，依分析集而異）"},
 
+    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H / MMRd", "pMMR / NSMP / MSS", "POLE mutation (超突變型)", "p53 mutation (高拷貝型)"], 
+        "name": "📚 RAINBO Program", "pharma": "ENGOT / GOG", "drug": "分子分型導航輔助治療", 
+        "pop_results": "精準輔助治療新標準：根據四大分子分型進行治療降階或增益 (Escalation/De-escalation)，旨在優化術後預後並減少過度治療。",
+        "rationale": "RAINBO 由四個平台組成：RED (p53abn 加化放療)、GREEN (NSMP 加激素維持)、AMBER (MMRd 加免疫維持) 及 BLUE (POLE 觀察)，將分子分型落實於臨床決策。",
+        "regimen": "RED: 化放療 + Olaparib 維持治療; GREEN: 骨盆放療 + Letrozole 維持治療; AMBER: 骨盆放療 + Dostarlimab 維持治療; BLUE: 術後觀察 (De-escalation)。",
+        "inclusion": ["FIGO Stage I-III 子宮內膜癌", "術後完成分子分型鑑定 (POLE, MMR, p53)", "具備中高風險特徵者"],
+        "outcomes": "試驗進行中 (Ongoing)，部分平台如 BLUE 旨在驗證 POLE 突變極佳之預後可否免除輔助治療。"},
+    
+    {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["pMMR / NSMP / MSS"], 
+        "name": "📚 PORTEC-4a", "pharma": "Leiden University", "drug": "Molecular-integrated Risk Profile", 
+        "pop_results": "分子整合風險導航：比較『分子風險模型』與『傳統臨床病理風險』導航的輔助放療，達成更精準的患者分流。",
+        "rationale": "驗證基於分子特徵（如 p53, POLE, MMR, CTNNB1, L1CAM）的風險評估是否優於傳統臨床分期，以決定放療範圍。",
+        "regimen": "試驗組: 依據分子風險模型決定 (觀察/陰道殘端放療/骨盆放療); 對照組: 依傳統臨床風險標準進行陰道殘端放療 (VBT)。",
+        "inclusion": ["FIGO Stage I 子宮內膜癌", "具備中度風險病理特徵", "完成完整分子分型標記檢測"],
+        "outcomes": "主要終點為陰道復發率 (Vaginal Recurrence Rate)，預期分子導航組能減少 15% 的過度放療。"},
+    
     # ==========================
     # === Cervical Published ===
     # ==========================
