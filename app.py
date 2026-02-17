@@ -115,7 +115,7 @@ all_trials_db = [
     # === Endometrial Published ===
     # ==========================
     {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H / MMRd"], "name": "📚 RUBY (ENGOT-EN6/GOG-3031)", "pharma": "GSK", "drug": "Dostarlimab + Carboplatin/Paclitaxel", 
-     "pop_results": "dMMR 死亡風險降低 68% (HR 0.32)",
+     "pop_results": "dMMR/MSS（pMMR）皆顯著延長PFS（dMMR：HR 0.28；全體：HR 0.64），且更新分析顯示OS亦改善（dMMR：HR 0.32；全體：HR 0.69），奠定一線「免疫＋化療」新標準。",
      "rationale": "PD-1 阻斷 (PD-1 blockade) 與含鉑化療 (Carbo/Pacli) 具備協同免疫原性細胞死亡 (ICD) 效應。藉由化療誘導腫瘤抗原釋放，釋放免疫微環境壓力並針對 MMRd 族群達成極高持久應答率。",
      "regimen": "Arm 1 (Dostarlimab 組): 誘導期: Dostarlimab 500mg Q3W + Carboplatin (AUC 5) + Paclitaxel (175 mg/m2) x6 週期；維持期: Dostarlimab 1000mg Q6W (持續 3年)。 Arm 2 (Placebo 組): 生理鹽水對照 + 同劑量 CP 化療 x6 週期。",
      "inclusion": ["新診斷 FIGO Stage III-IV 或首次復發之子宮內膜癌 (EC)。", "ECOG 0-1。", "含 Carcinosarcoma / Clear cell / Serous 等組織型態。"],
@@ -123,14 +123,14 @@ all_trials_db = [
      "outcomes": "dMMR 族群 24個月 PFS 率: 61.4% vs 15.7% (HR 0.28, 95% CI 0.16-0.50); ITT 全人群 mOS HR 0.64 (95% CI 0.46-0.87, P=0.0021)。"},
 
     {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["dMMR / MSI-H / MMRd", "pMMR / NSMP / MSS"], "name": "📚 NRG-GY018 (KEYNOTE-868)", "pharma": "MSD", "drug": "Pembrolizumab + Carboplatin/Paclitaxel", 
-     "pop_results": "dMMR PFS HR 0.30; pMMR HR 0.54",
+     "pop_results": "Pembrolizumab＋化療在一線顯著延長PFS（dMMR：HR 0.30；pMMR：HR 0.54），是另一個改變臨床實務的一線免疫＋化療關鍵試驗",
      "rationale": "利用免疫檢查點抑制劑 (ICI) 重塑腫瘤微環境，Pembrolizumab 強化一線含鉑化療反應後的持久性。",
      "regimen": "Arm A: Pembrolizumab 200mg Q3W + Carboplatin (AUC 5) + Paclitaxel (175 mg/m2) x6 週期 -> 維持期: Pembrolizumab 400mg Q6W (持續 2年)。 Arm B: Placebo + CP x6 週期。",
      "inclusion": ["Stage III/IV 或復發 EC。", "提供 MMR 檢測 (IHC) 報告。", "ECOG 0-1。"],
      "outcomes": "dMMR PFS HR 0.30 (95% CI 0.19-0.48); pMMR PFS HR 0.54 (95% CI 0.41-0.71, P<0.001)。"},
 
     {"cancer": "Endometrial", "pos": "P-TX", "sub_pos": ["pMMR / NSMP / MSS"], "name": "📚 DUO-E (ENGOT-EN9)", "pharma": "AZ", "drug": "Durvalumab + CP →維持 ± Olaparib", 
-     "results_short": "三藥組 pMMR PFS HR 0.57 (vs CP)",
+     "results_short": "一線治療中，Durvalumab＋化療可改善PFS（HR 0.71），而「Durvalumab＋化療→維持加上Olaparib」效益更大（PFS HR 0.55）；pMMR亦有PFS獲益（Durva+Ola vs control：HR 0.57），且OS期中分析支持（Durva+Ola vs control：HR 0.59）。",
      "rationale": "探索 PARP 抑制劑 (PARPi) 與 PD-L1 抑制劑在維持階段的協同效果，PARPi 誘導的 DNA 損傷可增加新抗原負荷，強化免疫應答。",
      "regimen": "Arm 1: CP 僅化療 (對照組); Arm 2: CP+Durvalumab -> Durva 1500mg Q4W 維持; Arm 3: CP+Durvalumab -> Durva 1500mg Q4W + Olaparib 300mg bid 維持直到疾病進展。",
      "outcomes": "pMMR Arm 3 (Ola+Durva) vs Arm 1: PFS HR 0.57 (95% CI 0.42-0.79); dMMR Arm 2 vs Arm 1: HR 0.42 (95% CI 0.22-0.80)。"},
