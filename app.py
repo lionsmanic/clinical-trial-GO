@@ -269,6 +269,48 @@ all_trials_db = [
      "pop_results": "Olaparib維持可延長PFS（HR 0.30），但最終OS優勢不明顯（OS HR 0.74、未達顯著），是解讀「交叉治療/後線PARPi使用」影響OS的代表案例，BRCAm 長期 mOS 51.7m (HR 0.74)",
      "outcomes": "mOS: 51.7m vs 38.8m (HR 0.74)。"},
 
+    {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["BRCA mutation"], 
+        "name": "📚 SOLO-1", "pharma": "AZ", "drug": "Olaparib", 
+        "pop_results": "BRCAm 一線維持金標準：7 年存活率達 67% (HR 0.33)。",
+        "rationale": "針對一線含鉑化療反應良好之 BRCA 突變患者，利用 PARPi 達成『合成致死』效果以延緩復發。",
+        "outcomes": "mPFS: 56.0m vs 13.8m (HR 0.30)。"},
+    
+    {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["HRD positive / BRCA wt", "HRD negative (pHRD)"], 
+        "name": "📚 PRIMA", "pharma": "GSK", "drug": "Niraparib", 
+        "pop_results": "不限 BRCA 狀態的全人群一線維持：HRD+ PFS HR 0.43；全體 ITT HR 0.62。",
+        "rationale": "不論 HRD 狀態，透過 PARPi 強化一線化療後的維持獲益，特別是針對高風險族群。",
+        "outcomes": "HRD+ PFS HR 0.43 (95% CI 0.31-0.59)。"},
+    
+    {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["HRD positive / BRCA wt"], 
+        "name": "📚 PAOLA-1", "pharma": "AZ", "drug": "Olaparib + Bevacizumab", 
+        "pop_results": "HRD+ 黃金組合維持：5 年 OS 率達 75.2% (HR 0.62)。",
+        "rationale": "結合 anti-VEGF（Bev）重塑血管環境與 PARPi（Ola）抑制 DNA 修復之雙重機轉。",
+        "outcomes": "HRD+ 5yr OS: 75.2% vs 58.3% (HR 0.62)。"},
+    
+    {"cancer": "Ovarian", "pos": "P-MT", "sub_pos": ["BRCA mutation", "HRD positive / BRCA wt"], 
+        "name": "📚 ATHENA–MONO", "pharma": "Clovis", "drug": "Rucaparib", 
+        "pop_results": "一線維持新選擇：ITT 族群 PFS HR 0.52；HRD+ 族群 HR 0.47。",
+        "rationale": "證實 Rucaparib 在一線含鉑化療反應後的單藥維持價值，不論其 HRD 狀態。",
+        "outcomes": "ITT PFS: 28.7m vs 11.3m (HR 0.52)。"},
+    
+    {"cancer": "Ovarian", "pos": "R-MT", "sub_pos": ["PARPi Maint"], 
+        "name": "📚 NOVA", "pharma": "GSK", "drug": "Niraparib", 
+        "pop_results": "復發維持基石研究：gBRCAm 族群 PFS HR 0.27；non-gBRCAm HR 0.45。",
+        "rationale": "首個證明 PARPi 在鉑類敏感復發（PSOC）患者中，不論 BRCA 是否突變皆有獲益的研究。",
+        "outcomes": "gBRCAm mPFS: 21.0m vs 5.5m (HR 0.27)。"},
+    
+    {"cancer": "Ovarian", "pos": "R-MT", "sub_pos": ["PARPi Maint"], 
+        "name": "📚 ARIEL3", "pharma": "Clovis", "drug": "Rucaparib", 
+        "pop_results": "精確分流維持獲益：BRCAm PFS HR 0.23；HRD+ HR 0.32。",
+        "rationale": "利用 LOH（雜合性丟失）檢測輔助判定 HRD 狀態，導航 PARPi 在復發階段的使用。",
+        "outcomes": "BRCAm mPFS 16.6m vs 5.4m (HR 0.23)。"},
+    
+    {"cancer": "Ovarian", "pos": "R-MT", "sub_pos": ["PARPi Maint"], 
+        "name": "📚 SOLO2", "pharma": "AZ", "drug": "Olaparib", 
+        "pop_results": "復發維持生存突破：BRCAm 族群 mOS 顯著延長至 51.7m (HR 0.74)。",
+        "rationale": "確認 Olaparib 在復發維持階段能將 PFS 獲益轉化為最終 OS 獲益。",
+        "outcomes": "mOS: 51.7m vs 38.8m (HR 0.74)。"},
+
     # ==========================
     # === Ongoing Trials (8核心極量化) ===
     # ==========================
