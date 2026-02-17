@@ -195,6 +195,36 @@ all_trials_db = [
      "regimen": "Arm A: Tisotumab Vedotin 2.0 mg/kg IV Q3W。 Arm B: 醫師選擇化療 (Chemo SoC)。",
      "outcomes": "mOS: 11.5m vs 9.5m (HR 0.70); ORR 17.8% vs 5.2%。"},
 
+    {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Locally Advanced (CCRT)"], 
+        "name": "📚 CALLA", "pharma": "AZ", "drug": "Durvalumab + CCRT", 
+        "pop_results": "整體試驗結果為陰性。在局部晚期子宮頸癌中，同步化放療加入 Durvalumab 並未顯著改善 PFS (HR 0.84; P=0.174)。",
+        "rationale": "探索 PD-L1 抑制劑與同步化放療 (CCRT) 聯用是否能產生協同免疫效應。",
+        "outcomes": "PFS HR 0.84 (95% CI 0.65-1.08)。"},
+    
+    {"cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], 
+        "name": "📚 EMPOWER-Cervical 1", "pharma": "Regeneron", "drug": "Cemiplimab 單藥", 
+        "pop_results": "二線後單藥免疫治療重要指標：相較化療顯著延長 OS (mOS 12.0m vs 8.5m; HR 0.69)，不論組織型態均有獲益。",
+        "rationale": "針對一線鉑類化療失敗後之患者，利用 PD-1 阻斷提供持久緩解與生存優勢。",
+        "outcomes": "ITT 全人群 OS HR 0.69 (95% CI 0.56-0.84)。"},
+    
+    { "cancer": "Cervical", "pos": "R-TX", "sub_pos": ["Recurr / Metastatic"], 
+        "name": "📚 BEATcc", "pharma": "Roche", "drug": "Atezolizumab + Chemo + Bev", 
+        "pop_results": "一線 R/M 子宮頸癌：在化療+標靶基礎上加入 Atezolizumab，顯著延長 PFS (13.7m vs 10.4m) 與 OS (32.1m vs 22.8m)。",
+        "rationale": "PD-L1 阻斷併用 VEGF 抑制劑與化療，三軌聯用強化腫瘤微環境之殺傷力。",
+        "outcomes": "mPFS HR 0.62; mOS HR 0.68 (95% CI 0.52-0.88)。"},
+    
+    {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Early Stage (Surgery)"], 
+        "name": "📚 LACC", "pharma": "NEJM", "drug": "Open vs MIS Radical Hysterectomy", 
+        "pop_results": "改變手術標準之研究：微創手術 (MIS) 相較於傳統開腹手術，其復發風險較高且三年存活率較低。",
+        "rationale": "評估達文西/腹腔鏡微創手術在子宮頸癌根治術中，是否能達成與開腹手術同等的預後。",
+        "outcomes": "DFS Rate: 91.2% (MIS) vs 97.1% (Open); HR for recurrence 3.74。"},
+    
+    {"cancer": "Cervical", "pos": "P-TX", "sub_pos": ["Early Stage (Surgery)"], 
+        "name": "📚 SHAPE", "pharma": "CCTG", "drug": "Simple vs Radical Hysterectomy", 
+        "pop_results": "低風險降階選擇：對於腫瘤 <2cm 之低風險患者，單純子宮切除在三年盆腔復發率上不劣於廣泛性子宮切除。",
+        "rationale": "旨在減少早期患者接受過度手術治療所導致的併發症與生活品質受損。",
+        "outcomes": "3yr Pelvic Recurrence: 2.52% (Simple) vs 2.17% (Radical); P<0.05 (非劣性)。"},
+    
     # ==========================
     # === Ovarian Published ===
     # ==========================
