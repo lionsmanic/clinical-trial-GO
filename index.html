@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>婦癌臨床導航 × AI 智能分析</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --ink-soft: #2d2d4a;
+    --cream: #f8f5f0;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --teal: #1a6b6b;
+    --teal-light: #e8f5f5;
+    --rose: #8b2252;
+    --rose-light: #fdf0f6;
+    --amber: #b85c00;
+    --amber-light: #fff4e6;
+    --sage: #3a6b3a;
+    --sage-light: #edf7ed;
+    --border: rgba(201,168,76,0.3);
+    --shadow: 0 4px 32px rgba(26,26,46,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Serif TC', serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    background: var(--ink);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid var(--gold);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .logo-block { display: flex; align-items: center; gap: 14px; }
+  .logo-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .logo-text { line-height: 1.1; }
+  .logo-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 0.02em;
+  }
+  .logo-sub { font-size: 11px; color: rgba(255,255,255,0.5); font-family: 'DM Mono', monospace; margin-top: 2px; }
+  .header-nav { display: flex; gap: 4px; }
+  .nav-btn {
+    padding: 8px 18px; border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent; color: rgba(255,255,255,0.7);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    background: var(--gold); color: var(--ink);
+    border-color: var(--gold); font-weight: 600;
+  }
+
+  /* ─── TABS ─── */
+  .main-tabs {
+    max-width: 1400px; margin: 0 auto;
+    padding: 32px 32px 0;
+    display: flex; gap: 0;
+    border-bottom: 2px solid var(--border);
+  }
+  .tab-btn {
+    padding: 14px 28px;
+    background: transparent;
+    border: none; border-bottom: 3px solid transparent;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px; font-weight: 600;
+    color: rgba(26,26,46,0.45);
+    cursor: pointer; transition: all 0.2s;
+    margin-bottom: -2px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tab-btn:hover { color: var(--teal); }
+  .tab-btn.active {
+    color: var(--teal);
+    border-bottom-color: var(--teal);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ─── CANCER TYPE SELECTOR ─── */
+  .cancer-selector {
+    max-width: 1400px; margin: 0 auto;
+    padding: 28px 32px 0;
+  }
+  .cancer-selector h3 { font-size: 13px; color: rgba(26,26,46,0.45); font-family: 'DM Mono', monospace; margin-bottom: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .cancer-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cancer-btn {
+    padding: 10px 22px; border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: white; color: var(--ink-soft);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .cancer-btn:hover { border-color: var(--teal); color: var(--teal); }
+  .cancer-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
+
+  /* ─── STAGE GRID ─── */
+  .stage-grid {
+    max-width: 1400px; margin: 0 auto;
+    padding: 24px 32px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .stage-col {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1.5px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .stage-header {
+    padding: 16px 18px;
+    font-size: 14px; font-weight: 900;
+    color: white; text-align: center;
+    letter-spacing: 0.03em;
+  }
+  .stage-p-tx .stage-header { background: linear-gradient(135deg, #1a5c2a, #0f3d1a); }
+  .stage-p-mt .stage-header { background: linear-gradient(135deg, #1a3a8b, #0d2460); }
+  .stage-r-tx .stage-header { background: linear-gradient(135deg, #8b1a00, #5c1000); }
+  .stage-r-mt .stage-header { background: linear-gradient(135deg, #5c1a8b, #3a0d60); }
+
+  .sub-section {
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    padding: 12px 14px;
+  }
+  .sub-section:last-child { border-bottom: none; }
+  .sub-title {
+    font-size: 11.5px; font-weight: 700;
+    color: var(--ink-soft); margin-bottom: 6px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .sub-content { font-size: 11px; color: rgba(26,26,46,0.6); line-height: 1.5; margin-bottom: 8px; }
+
+  .trial-chip {
+    display: block; width: 100%;
+    padding: 7px 10px; margin-bottom: 5px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--cream);
+    text-align: left; cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--teal);
+    font-weight: 500;
+    transition: all 0.18s;
+    line-height: 1.4;
+  }
+  .trial-chip:hover {
+    background: var(--teal-light);
+    border-color: var(--teal);
+    transform: translateX(2px);
+  }
+  .trial-chip.ongoing {
+    color: var(--amber); border-color: rgba(184,92,0,0.3);
+    background: var(--amber-light);
+  }
+  .trial-chip.ongoing:hover { background: #ffe8cc; border-color: var(--amber); }
+
+  /* ─── DETAIL PANEL ─── */
+  .detail-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(26,26,46,0.6);
+    z-index: 200;
+    backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+  }
+  .detail-overlay.open { display: flex; }
+  .detail-modal {
+    background: white; border-radius: 20px;
+    max-width: 820px; width: 92%;
+    max-height: 88vh; overflow-y: auto;
+    padding: 36px; position: relative;
+    border: 2px solid var(--gold-light);
+    box-shadow: 0 24px 80px rgba(26,26,46,0.3);
+    animation: modalIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes modalIn { from { transform: scale(0.92) translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: white; cursor: pointer; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-soft); transition: all 0.2s;
+  }
+  .modal-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; color: var(--ink); margin-bottom: 6px; padding-right: 40px; }
+  .modal-drug { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--teal); background: var(--teal-light); padding: 4px 12px; border-radius: 100px; display: inline-block; margin-bottom: 20px; }
+  .modal-section { margin-bottom: 20px; }
+  .modal-section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(26,26,46,0.4); margin-bottom: 10px; font-family: 'DM Mono', monospace;
+    padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  }
+  .result-highlight {
+    background: linear-gradient(135deg, #fff9ee, #fff4dd);
+    border-left: 4px solid var(--gold);
+    padding: 14px 16px; border-radius: 8px;
+    font-size: 13.5px; line-height: 1.65;
+  }
+  .regimen-box {
+    background: var(--sage-light);
+    border-left: 4px solid var(--sage);
+    padding: 14px 16px; border-radius: 8px;
+    font-size: 12.5px; line-height: 1.7;
+    font-family: 'DM Mono', monospace;
+  }
+  .criteria-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .criteria-box { padding: 14px; border-radius: 10px; }
+  .criteria-box.inc { background: var(--sage-light); border: 1px solid rgba(58,107,58,0.2); }
+  .criteria-box.exc { background: var(--rose-light); border: 1px solid rgba(139,34,82,0.2); }
+  .criteria-box h5 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; font-family: 'DM Mono', monospace; }
+  .criteria-box.inc h5 { color: var(--sage); }
+  .criteria-box.exc h5 { color: var(--rose); }
+  .criteria-box li { font-size: 12px; line-height: 1.6; margin-left: 14px; margin-bottom: 4px; }
+
+  /* ─── AI ANALYSIS TAB ─── */
+  .ai-panel {
+    max-width: 1000px; margin: 0 auto;
+    padding: 40px 32px;
+  }
+  .ai-hero { text-align: center; margin-bottom: 40px; }
+  .ai-hero h2 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: var(--ink); margin-bottom: 8px; }
+  .ai-hero p { font-size: 14px; color: rgba(26,26,46,0.55); line-height: 1.7; max-width: 600px; margin: 0 auto; }
+  .ai-hero .badge { display: inline-block; margin-top: 12px; padding: 5px 16px; background: var(--teal-light); border: 1px solid rgba(26,107,107,0.3); border-radius: 100px; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--teal); }
+
+  .api-setup {
+    background: var(--ink);
+    border-radius: 14px; padding: 20px 24px;
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .api-setup-text { flex: 1; }
+  .api-setup-text h4 { color: var(--gold); font-size: 13px; margin-bottom: 4px; }
+  .api-setup-text p { color: rgba(255,255,255,0.5); font-size: 11px; font-family: 'DM Mono', monospace; }
+  .api-input {
+    flex: 2; padding: 10px 16px;
+    border-radius: 8px; border: 1.5px solid rgba(201,168,76,0.4);
+    background: rgba(255,255,255,0.06);
+    color: white; font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+  .api-input::placeholder { color: rgba(255,255,255,0.3); }
+
+  .input-mode-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .mode-tab {
+    padding: 9px 20px; border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: white; color: rgba(26,26,46,0.5);
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; display: flex; align-items: center; gap: 7px;
+  }
+  .mode-tab:hover { border-color: var(--teal); color: var(--teal); }
+  .mode-tab.active { background: var(--teal); color: white; border-color: var(--teal); }
+
+  .input-area {
+    background: white; border-radius: 14px;
+    border: 1.5px solid var(--border);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .text-input {
+    width: 100%; min-height: 180px;
+    border: 1.5px solid rgba(201,168,76,0.25);
+    border-radius: 10px; padding: 16px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13.5px; line-height: 1.8;
+    color: var(--ink); resize: vertical;
+    background: var(--cream);
+    transition: border-color 0.2s;
+  }
+  .text-input:focus { outline: none; border-color: var(--teal); background: white; }
+  .text-input::placeholder { color: rgba(26,26,46,0.35); }
+
+  .upload-zone {
+    border: 2px dashed rgba(201,168,76,0.4);
+    border-radius: 12px; padding: 40px;
+    text-align: center; cursor: pointer;
+    transition: all 0.2s; background: var(--cream);
+  }
+  .upload-zone:hover { border-color: var(--teal); background: var(--teal-light); }
+  .upload-zone .icon { font-size: 36px; margin-bottom: 12px; }
+  .upload-zone h4 { font-size: 14px; color: var(--ink-soft); margin-bottom: 6px; }
+  .upload-zone p { font-size: 12px; color: rgba(26,26,46,0.45); font-family: 'DM Mono', monospace; }
+  .upload-zone input { display: none; }
+  .uploaded-preview {
+    display: none;
+    align-items: center; gap: 12px;
+    background: var(--sage-light); padding: 12px 16px;
+    border-radius: 10px; margin-top: 12px;
+  }
+  .uploaded-preview.show { display: flex; }
+  .uploaded-preview img { max-height: 80px; border-radius: 6px; }
+  .uploaded-preview span { font-size: 12px; color: var(--sage); font-family: 'DM Mono', monospace; }
+
+  .structured-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label { font-size: 11px; font-weight: 700; color: rgba(26,26,46,0.5); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'DM Mono', monospace; }
+  .form-select, .form-input-small {
+    padding: 9px 12px; border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: var(--cream); color: var(--ink);
+    font-family: 'Noto Serif TC', serif; font-size: 13px;
+  }
+  .form-select:focus, .form-input-small:focus { outline: none; border-color: var(--teal); background: white; }
+
+  .analyze-btn {
+    width: 100%; padding: 16px;
+    background: linear-gradient(135deg, var(--teal), #0d4848);
+    color: white; border: none; border-radius: 12px;
+    font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    box-shadow: 0 4px 20px rgba(26,107,107,0.35);
+    letter-spacing: 0.02em;
+  }
+  .analyze-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,107,107,0.45); }
+  .analyze-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .analyze-btn .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ─── AI RESULT ─── */
+  .ai-result {
+    display: none;
+    background: white; border-radius: 16px;
+    border: 1.5px solid var(--gold-light);
+    padding: 32px; margin-top: 24px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.4s ease;
+  }
+  .ai-result.show { display: block; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .result-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .result-header .gemini-badge { padding: 5px 14px; background: linear-gradient(135deg, #4285f4, #0d47a1); color: white; border-radius: 100px; font-size: 10px; font-family: 'DM Mono', monospace; }
+  .result-header h3 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--ink); }
+  .result-content { font-size: 14px; line-height: 1.85; color: var(--ink-soft); }
+  .result-content h4 { color: var(--teal); font-size: 15px; margin: 18px 0 8px; padding-left: 12px; border-left: 3px solid var(--teal); }
+  .result-content ul { padding-left: 20px; margin: 8px 0; }
+  .result-content li { margin-bottom: 6px; }
+  .result-content strong { color: var(--ink); }
+  .trial-match-chip {
+    display: inline-block; margin: 4px;
+    padding: 6px 14px; border-radius: 8px;
+    background: var(--teal-light); color: var(--teal);
+    font-size: 11px; font-family: 'DM Mono', monospace; font-weight: 600;
+    border: 1px solid rgba(26,107,107,0.2);
+  }
+  .trial-match-chip.ongoing-match {
+    background: var(--amber-light); color: var(--amber);
+    border-color: rgba(184,92,0,0.2);
+  }
+
+  /* ─── ERROR / INFO ─── */
+  .info-box { padding: 14px 18px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; }
+  .info-box.warn { background: var(--amber-light); border: 1px solid rgba(184,92,0,0.25); color: var(--amber); }
+  .info-box.tip { background: var(--teal-light); border: 1px solid rgba(26,107,107,0.2); color: var(--teal); }
+
+  /* ─── FOOTER ─── */
+  .site-footer {
+    text-align: center; padding: 32px;
+    border-top: 1px solid var(--border);
+    color: rgba(26,26,46,0.35);
+    font-size: 11px; font-family: 'DM Mono', monospace;
+    line-height: 1.8;
+  }
+  @media (max-width: 900px) {
+    .stage-grid { grid-template-columns: 1fr 1fr; }
+    .criteria-grid { grid-template-columns: 1fr; }
+    .structured-form { grid-template-columns: 1fr; }
+    .header-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .header-nav { flex-wrap: wrap; }
+    .api-setup { flex-direction: column; }
+  }
+  @media (max-width: 600px) {
+    .stage-grid { grid-template-columns: 1fr; }
+    .main-tabs { padding: 24px 16px 0; }
+    .cancer-selector, .stage-grid, .ai-panel { padding-left: 16px; padding-right: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-block">
+      <div class="logo-icon">🩺</div>
+      <div class="logo-text">
+        <div class="logo-title">婦癌臨床導航系統</div>
+        <div class="logo-sub">Gynecologic Oncology Navigator · 2026</div>
+      </div>
+    </div>
+    <nav class="header-nav">
+      <button class="nav-btn active" onclick="switchTab('nav')">🗺 試驗導航地圖</button>
+      <button class="nav-btn" onclick="switchTab('ai')">🤖 AI 患者分析</button>
+    </nav>
+  </div>
+</header>
+
+<!-- NAVIGATION TAB -->
+<div id="tab-nav" class="tab-panel active">
+  <div class="cancer-selector">
+    <h3>選擇癌症類型</h3>
+    <div class="cancer-btns">
+      <button class="cancer-btn active" onclick="selectCancer('Endometrial', this)">🔴 子宮內膜癌</button>
+      <button class="cancer-btn" onclick="selectCancer('Ovarian', this)">🟣 卵巢癌</button>
+      <button class="cancer-btn" onclick="selectCancer('Cervical', this)">🟠 子宮頸癌</button>
+      <button class="cancer-btn" onclick="selectCancer('Uterine Sarcoma', this)">🔵 子宮肉瘤</button>
+    </div>
+  </div>
+  <div id="stage-grid" class="stage-grid"></div>
+</div>
+
+<!-- AI TAB -->
+<div id="tab-ai" class="tab-panel">
+  <div class="ai-panel">
+    <div class="ai-hero">
+      <h2>AI 患者臨床路徑分析</h2>
+      <p>貼上患者病歷摘要，或上傳病理/影像照片，Gemini AI 將根據婦癌試驗資料庫，推薦最適合的治療路徑與可參與的臨床試驗。</p>
+      <span class="badge">⚡ Powered by Google Gemini · 需輸入 API Key</span>
+    </div>
+
+    <div class="api-setup">
+      <div class="api-setup-text">
+        <h4>🔑 Gemini API Key</h4>
+        <p>前往 aistudio.google.com 免費取得</p>
+      </div>
+      <input type="password" class="api-input" id="apiKey" placeholder="AIzaSy...">
+    </div>
+
+    <div class="info-box tip">
+      💡 患者資料僅在您的瀏覽器中處理，不會儲存於任何伺服器。API 請求直接由您的瀏覽器發送至 Google。
+    </div>
+
+    <div class="input-area">
+      <div class="input-mode-tabs">
+        <button class="mode-tab active" onclick="switchMode('text', this)">📝 文字輸入</button>
+        <button class="mode-tab" onclick="switchMode('image', this)">🖼 影像上傳</button>
+        <button class="mode-tab" onclick="switchMode('form', this)">📋 結構化表單</button>
+      </div>
+
+      <!-- TEXT MODE -->
+      <div id="mode-text">
+        <textarea class="text-input" id="textInput" placeholder="請貼上患者病歷摘要，例如：
+
+患者女性，63歲，子宮內膜癌 Stage IIIC2。
+組織型態：子宮內膜樣腺癌，Grade 3。
+分子分型：dMMR（MLH1/PMS2 缺失），p53 wild-type，POLE 未突變。
+CA-125: 68 U/mL。
+既往治療：已完成廣泛性子宮切除術 + 雙側附件切除 + 骨盆淋巴清掃。
+目前考慮一線化療方案，詢問是否可加入免疫治療或臨床試驗。"></textarea>
+      </div>
+
+      <!-- IMAGE MODE -->
+      <div id="mode-image" style="display:none">
+        <div class="upload-zone" onclick="document.getElementById('imgUpload').click()" id="uploadZone">
+          <div class="icon">📷</div>
+          <h4>點擊或拖曳上傳病理/影像檔案</h4>
+          <p>支援 JPG · PNG · WEBP · 病理切片 · CT 截圖 · 報告掃描</p>
+          <input type="file" id="imgUpload" accept="image/*" onchange="handleImageUpload(event)">
+        </div>
+        <div class="uploaded-preview" id="uploadedPreview">
+          <img id="previewImg" src="" alt="preview">
+          <span id="previewName"></span>
+        </div>
+        <textarea class="text-input" id="imageContextInput" style="margin-top:14px; min-height:80px;" placeholder="補充說明（選填）：例如患者年齡、臨床分期、其他標記等…"></textarea>
+      </div>
+
+      <!-- FORM MODE -->
+      <div id="mode-form" style="display:none">
+        <div class="structured-form">
+          <div class="form-group">
+            <label>癌症類型</label>
+            <select class="form-select" id="f-cancer">
+              <option>子宮內膜癌 (Endometrial)</option>
+              <option>卵巢癌 (Ovarian)</option>
+              <option>子宮頸癌 (Cervical)</option>
+              <option>子宮肉瘤 (Uterine Sarcoma)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>FIGO 分期</label>
+            <select class="form-select" id="f-stage">
+              <option>Stage I</option><option>Stage II</option>
+              <option>Stage III</option><option>Stage IV</option><option>復發</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>MMR 狀態</label>
+            <select class="form-select" id="f-mmr">
+              <option>dMMR / MSI-H</option><option>pMMR / MSS</option><option>未檢測</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>p53 狀態</label>
+            <select class="form-select" id="f-p53">
+              <option>wild-type</option><option>mutant (abn)</option><option>未檢測</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>BRCA / HRD（卵巢癌）</label>
+            <select class="form-select" id="f-brca">
+              <option>BRCA1/2 突變</option><option>HRD 陽性（BRCA wt）</option>
+              <option>HRD 陰性</option><option>未檢測</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>ECOG 體能狀態</label>
+            <select class="form-select" id="f-ecog">
+              <option>ECOG 0</option><option>ECOG 1</option>
+              <option>ECOG 2</option><option>ECOG ≥3</option>
+            </select>
+          </div>
+          <div class="form-group" style="grid-column:1/-1">
+            <label>既往治療史</label>
+            <input type="text" class="form-input-small" id="f-prior" placeholder="例如：廣泛子宮切除 + 骨盆淋巴清掃，未曾接受系統化療">
+          </div>
+          <div class="form-group" style="grid-column:1/-1">
+            <label>其他重要標記</label>
+            <input type="text" class="form-input-small" id="f-markers" placeholder="例如：HER2 2+, FRα 高表現, POLE mutation, PD-L1 CPS…">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="analyze-btn" id="analyzeBtn" onclick="runAnalysis()">
+      <span id="btnIcon">✨</span>
+      <span id="btnText">啟動 Gemini AI 分析</span>
+    </button>
+
+    <div id="aiResult" class="ai-result">
+      <div class="result-header">
+        <span class="gemini-badge">GEMINI AI</span>
+        <h3>臨床路徑分析報告</h3>
+      </div>
+      <div class="result-content" id="resultContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="detail-overlay" id="detailOverlay" onclick="closeModal(event)">
+  <div class="detail-modal">
+    <button class="modal-close" onclick="closeModal(null, true)">✕</button>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-drug" id="modalDrug"></div>
+    <div class="modal-section">
+      <div class="modal-section-title">核心結論 Key Results</div>
+      <div class="result-highlight" id="modalResults"></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">科學理據 Scientific Rationale</div>
+      <div id="modalRationale" style="font-size:13.5px; line-height:1.75; color:var(--ink-soft);"></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">給藥方案 Regimen per Arm</div>
+      <div class="regimen-box" id="modalRegimen"></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">納入 / 排除標準</div>
+      <div class="criteria-grid">
+        <div class="criteria-box inc">
+          <h5>✅ Inclusion</h5>
+          <ul id="modalInclusion"></ul>
+        </div>
+        <div class="criteria-box exc">
+          <h5>❌ Exclusion</h5>
+          <ul id="modalExclusion"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  婦癌臨床導航系統 · 2026 旗艦整合版 · 僅供醫療專業人員參考使用<br>
+  All clinical data sourced from published trial results and ClinicalTrials.gov · Not for patient self-diagnosis
+</footer>
+
+<script>
+// ════════════════════════════════════════
+// DATA: 臨床試驗資料庫 (精選核心)
+// ════════════════════════════════════════
+const TRIALS_DB = [
+  // Endometrial
+  {cancer:"Endometrial",pos:["P-TX","R-TX"],sub:["dMMR / MSI-H / MMRd","Recurrent EC"],name:"RUBY (ENGOT-EN6)",pharma:"GSK",drug:"Dostarlimab + CP",type:"published",
+   pop:"dMMR PFS HR 0.28；全體 OS HR 0.64。奠定一線免疫+化療新標準。",
+   rationale:"PD-1阻斷與含鉑化療具協同ICD效應，藉由化療誘導腫瘤抗原釋放，對MMRd族群達成極高持久應答率。",
+   regimen:"誘導期: Dostarlimab 500mg Q3W + Carboplatin AUC5 + Paclitaxel 175mg/m² x6週期\n維持期: Dostarlimab 1000mg Q6W 持續3年",
+   inclusion:["Stage III-IV或首次復發EC","ECOG 0-1","含Carcinosarcoma/Clear cell/Serous"],
+   exclusion:["既往PD-1/PD-L1治療","活動性自體免疫疾病","臨床顯著CNS轉移"],
+   outcomes:"dMMR 24m PFS率: 61.4% vs 15.7% (HR 0.28); ITT OS HR 0.64 (P=0.0021)"},
+  {cancer:"Endometrial",pos:["P-TX","R-TX"],sub:["dMMR / MSI-H / MMRd","pMMR / NSMP / MSS","Recurrent EC"],name:"NRG-GY018 (KEYNOTE-868)",pharma:"MSD",drug:"Pembrolizumab + CP",type:"published",
+   pop:"dMMR PFS HR 0.30；pMMR PFS HR 0.54。一線免疫+化療關鍵試驗。",
+   rationale:"ICI重塑腫瘤微環境，Pembrolizumab強化一線含鉑化療反應後的持久性。",
+   regimen:"Arm A: Pembrolizumab 200mg Q3W + CP x6週期\n維持期: Pembrolizumab 400mg Q6W x2年",
+   inclusion:["Stage III/IV或復發EC","提供MMR IHC檢測","ECOG 0-1"],
+   exclusion:["既往anti-PD-(L)1","活動性自體免疫需治療","CNS活動性病灶"],
+   outcomes:"dMMR PFS HR 0.30 (95% CI 0.19-0.48); pMMR PFS HR 0.54 (P<0.001)"},
+  {cancer:"Endometrial",pos:["P-TX"],sub:["pMMR / NSMP / MSS"],name:"DUO-E (ENGOT-EN9)",pharma:"AZ",drug:"Durvalumab + CP → Durva ± Ola",type:"published",
+   pop:"Durva+化療 PFS HR 0.71；三藥組 PFS HR 0.55；pMMR三藥組 HR 0.57。",
+   rationale:"PARPi與PD-L1抑制劑在維持階段的協同效果，PARPi誘導DNA損傷增加新抗原負荷。",
+   regimen:"Arm 1: CP對照組\nArm 2: CP+Durvalumab → Durva 1500mg Q4W維持\nArm 3: CP+Durvalumab → Durva + Olaparib 300mg bid維持",
+   inclusion:["晚期或復發EC一線","適合CP","ECOG 0-1"],
+   exclusion:["既往免疫治療/PARPi","活動性自體免疫疾病"],
+   outcomes:"pMMR Arm3 vs Arm1: PFS HR 0.57 (95% CI 0.42-0.79)"},
+  {cancer:"Endometrial",pos:["P-MT"],sub:["Maintenance Therapy"],name:"MK2870-033 (Ongoing)",pharma:"MSD",drug:"Sac-TMT + Pembrolizumab",type:"ongoing",
+   pop:"一線pMMR維持：TROP2-ADC+PD-1聯合維持，補足pMMR免疫單藥反應不足的缺口。",
+   rationale:"標靶Trop-2 ADC協同PD-1。ADC誘導ICD改善微環境，提升pMMR患者維持階段應答深度。",
+   regimen:"Arm A: Sac-TMT 5mg/kg Q6W + Pembrolizumab 400mg Q6W維持\nArm B: 醫師選擇維持方案（對照）",
+   inclusion:["新診斷pMMR/MSS EC","FIGO III-IV期","一線CP+Pembro後CR/PR"],
+   exclusion:["先前系統性IO治療","子宮肉瘤"],
+   outcomes:"招募中 (Ongoing)"},
+  {cancer:"Endometrial",pos:["R-TX"],sub:["Recurrent EC"],name:"KEYNOTE-775 (KN775)",pharma:"MSD/Eisai",drug:"Lenvatinib + Pembrolizumab",type:"published",
+   pop:"復發EC二線：pMMR OS HR 0.68；全體 OS HR 0.62。確立二線重要組合。",
+   rationale:"VEGF-TKI重塑血管並減輕免疫抑制，克服MSS腫瘤之免疫冷微環境。",
+   regimen:"Lenvatinib 20mg QD + Pembrolizumab 200mg Q3W 直至進展",
+   inclusion:["先前至少一次含鉑化療進展","ECOG 0-1","不限MMR狀態"],
+   exclusion:["既往PD-1/PD-L1","未控制高血壓","出血/廔管高風險"],
+   outcomes:"pMMR OS: 17.4m vs 12.0m (HR 0.68); ITT OS HR 0.62"},
+  // Ovarian
+  {cancer:"Ovarian",pos:["P-MT"],sub:["BRCA mutation"],name:"SOLO-1",pharma:"AZ",drug:"Olaparib",type:"published",
+   pop:"BRCAm一線維持金標準：7年存活率67%，PFS HR 0.33。",
+   rationale:"針對BRCA突變患者，PARPi達成合成致死效果延緩復發。",
+   regimen:"Olaparib 300mg BID 維持（通常至2年或進展）\n對照組: Placebo",
+   inclusion:["新診斷晚期卵巢癌","germline或somatic BRCA1/2突變","一線鉑化療後CR/PR"],
+   exclusion:["先前接受PARP抑制劑","持續性骨髓抑制"],
+   outcomes:"mPFS: 56.0m vs 13.8m (HR 0.30); 7yr OS Rate 67%"},
+  {cancer:"Ovarian",pos:["P-MT"],sub:["HRD positive (wt)","HRD negative (pHRD)"],name:"PRIMA",pharma:"GSK",drug:"Niraparib",type:"published",
+   pop:"全人群一線維持：HRD+ PFS HR 0.43；全體ITT HR 0.62。",
+   rationale:"不論HRD狀態，PARPi強化一線化療後維持獲益。",
+   regimen:"Niraparib 維持（起始劑量依體重/血小板調整，至36個月或進展）",
+   inclusion:["新診斷Stage III/IV高復發風險","一線鉑化療後CR/PR"],
+   exclusion:["MDS/AML風險","先前PARP抑制劑"],
+   outcomes:"HRD+ PFS HR 0.43 (95% CI 0.31-0.59); ITT HR 0.62"},
+  {cancer:"Ovarian",pos:["R-TX"],sub:["PROC (Resistant Recur)"],name:"MIRASOL (GOG-3045)",pharma:"ImmunoGen",drug:"Mirvetuximab Soravtansine",type:"published",
+   pop:"FRα高表現PROC：OS HR 0.67；ORR 42.3%。確立FRα ADC關鍵地位。",
+   rationale:"針對FRα高表現PROC患者，首個ADC生存獲益研究。",
+   regimen:"Mirvetuximab 6.0mg/kg (AIBW) IV Q3W 直至進展\n對照: 醫師選擇化療",
+   inclusion:["鉑類抗藥","FRα高表現"],
+   exclusion:["不符合FRα門檻","不可控眼部/神經毒性風險"],
+   outcomes:"mOS: 16.4m vs 12.7m (HR 0.67); mPFS HR 0.65; ORR 42.3%"},
+  {cancer:"Ovarian",pos:["R-TX"],sub:["PSOC (Sensitive Recur)"],name:"DESKTOP III",pharma:"AGO",drug:"Secondary Cytoreduction Surgery",type:"published",
+   pop:"AGO Score+患者次減積手術：OS HR 0.75。R0切除mOS 53.7m。",
+   rationale:"嚴選患者（AGO Score陽性）二次手術具生存獲益。",
+   regimen:"手術組: 腫瘤完全切除 → 含鉑化療\n化療組: 單純含鉑複方化療",
+   inclusion:["首次鉑類敏感復發 PFI>6m","AGO Score陽性","可望達到complete resection"],
+   exclusion:["無法達到R0或手術風險過高"],
+   outcomes:"ITT mOS: 53.7m vs 46.0m (HR 0.75); R0切除mOS 61.9m"},
+  // Cervical
+  {cancer:"Cervical",pos:["P-TX"],sub:["Locally Advanced (CCRT)"],name:"KEYNOTE-A18 (ENGOT-cx11)",pharma:"MSD",drug:"Pembrolizumab + CCRT",type:"published",
+   pop:"LACC標準：36m OS 82.6% (HR 0.67)。免疫治療整合入根治同步化放療。",
+   rationale:"將免疫整合入高風險局部晚期之根治同步化放療。",
+   regimen:"CCRT (Cisplatin 40mg/m² 週服 + RT) 同步 Pembro 200mg Q3W x5週期\n→ 維持 Pembro 400mg Q6W x15週期",
+   inclusion:["新診斷Stage IB2-IIB LN(+)或Stage III-IVA"],
+   exclusion:["既往系統性治療","活動性自體免疫","放療禁忌"],
+   outcomes:"24m PFS: 68% vs 57% (HR 0.70); 36m OS: 82.6% vs 74.8% (HR 0.67)"},
+  {cancer:"Cervical",pos:["P-TX"],sub:["Locally Advanced (CCRT)"],name:"INTERLACE",pharma:"UCL",drug:"Induction Carbo/Pacli → CCRT",type:"published",
+   pop:"誘導化療→CCRT策略：5年OS 80% vs 72% (HR 0.60)。",
+   rationale:"誘導化療解決放療前的微小轉移。",
+   regimen:"誘導期: Paclitaxel 80mg/m² + Carboplatin AUC2 每週 x6週期\n→ 接續標準CCRT",
+   inclusion:["treatment-naïve LACC","適合根治性CCRT"],
+   exclusion:["無法接受化療或根治性放療"],
+   outcomes:"5yr OS: 80% vs 72% (HR 0.60); 5yr PFS: 73% vs 64% (HR 0.65)"},
+  {cancer:"Cervical",pos:["R-TX"],sub:["Recurr / Metastatic"],name:"innovaTV 301 (ENGOT-cx12)",pharma:"Genmab",drug:"Tisotumab Vedotin (ADC)",type:"published",
+   pop:"後線ADC突破：OS HR 0.70；ORR 17.8%。",
+   rationale:"標靶組織因子ADC，解決後線化療耐藥。",
+   regimen:"Tisotumab Vedotin 2.0mg/kg IV Q3W\n對照: 醫師選擇化療",
+   inclusion:["recurrent/metastatic宮頸癌","2L/3L治療"],
+   exclusion:["嚴重角膜/眼部風險"],
+   outcomes:"mOS: 11.5m vs 9.5m (HR 0.70); ORR 17.8% vs 5.2%"},
+  // Uterine Sarcoma
+  {cancer:"Uterine Sarcoma",pos:["P-TX","R-TX"],sub:["Carcinosarcoma"],name:"NRG/GOG-0261",pharma:"NRG Oncology",drug:"Paclitaxel + Carboplatin",type:"published",
+   pop:"UCS新標準：PC方案不劣於PI且毒性顯著降低。PFS 14.6m vs 10.3m。",
+   rationale:"Pacli/Carbo確立為癌肉瘤一線治療新標竿，取代毒性較大的Ifosfamide方案。",
+   regimen:"Arm A: Paclitaxel 175mg/m² + Carboplatin AUC6 Q3W\nArm B: Paclitaxel 135mg/m² + Ifosfamide Q3W",
+   inclusion:["Stage III-IV或復發性子宮/卵巢癌肉瘤","ECOG 0-2"],
+   exclusion:[],
+   outcomes:"PFS: 14.6m vs 10.3m; OS: 37m vs 29m (非劣效達成)"},
+  {cancer:"Uterine Sarcoma",pos:["R-TX"],sub:["Recurr / Metastatic"],name:"LMS-04",pharma:"French Sarcoma Group",drug:"Doxorubicin + Trabectedin",type:"published",
+   pop:"LMS一線新高度：mPFS 12.2m vs 6.2m (HR 0.37)。",
+   rationale:"專對LMS，Doxorubicin聯用Trabectedin挑戰傳統單藥治療瓶頸。",
+   regimen:"Doxorubicin 60mg/m² + Trabectedin 1.1mg/m² Q3W\n→ 接續Trabectedin單藥維持",
+   inclusion:["晚期/轉移性LMS","一線治療"],
+   exclusion:[],
+   outcomes:"mPFS: 12.2m vs 6.2m (HR 0.37); mOS: 31.6m vs 24.1m"},
+];
+
+const GUIDELINES = {
+  "Endometrial": [
+    {id:"P-TX", header:"🌿 初治 (Primary Tx)", css:"p-tx", subs:[
+      {title:"dMMR / MSI-H / MMRd", content:"一線首選：含鉑化療 + PD-1 (RUBY/GY018/AtTEnd)。"},
+      {title:"pMMR / NSMP / MSS", content:"一線維持：Chemo + Durva/Ola (DUO-E)。二線標靶免疫 (KN775)。"},
+      {title:"POLE mutation", content:"預後極佳。早期考慮治療降階 (De-escalation)。"},
+      {title:"p53 mutation", content:"侵襲性最強。建議化放療積極介入。Serous型需檢測HER2。"}]},
+    {id:"P-MT", header:"💊 一線維持 (1L Maint)", css:"p-mt", subs:[
+      {title:"Maintenance Therapy", content:"一線IO後延續維持至PD (MK2870-033/DUO-E)。"}]},
+    {id:"R-TX", header:"🔄 復發治療 (Recurr Tx)", css:"r-tx", subs:[
+      {title:"Recurrent EC", content:"標準二線：標靶+免疫 (KN775) 或單藥IO (GARNET)。救援ADC (SG)。"}]},
+    {id:"R-MT", header:"🔒 復後維持 (PR-Maint)", css:"r-mt", subs:[
+      {title:"Continuous Therapy", content:"救援治療後維持當前有效方案直到PD。"}]}
+  ],
+  "Ovarian": [
+    {id:"P-TX", header:"🌿 初治 (Primary Tx)", css:"p-tx", subs:[
+      {title:"Neoadjuvant Setting", content:"NAC + IDS + HIPEC (van Driel)。"},
+      {title:"HGSC / Endometrioid", content:"手術 (PDS/IDS) + Carbo/Pacli ± Bev。"},
+      {title:"Low grade serous carcinoma", content:"AI, MEK, CDK 4/6。"},
+      {title:"Clear Cell Carcinoma", content:"OCCC 特殊方案。"}]},
+    {id:"P-MT", header:"💊 一線維持 (1L Maint)", css:"p-mt", subs:[
+      {title:"BRCA mutation", content:"Olaparib單藥維持2年 (SOLO-1)。"},
+      {title:"HRD positive (wt)", content:"PAOLA-1 (Ola+Bev) 或 PRIMA (Nira)。"},
+      {title:"HRD negative (pHRD)", content:"Niraparib維持 (PRIMA ITT) 或Bevacizumab。"}]},
+    {id:"R-TX", header:"🔄 復發治療 (Recurr Tx)", css:"r-tx", subs:[
+      {title:"PSOC (Sensitive Recur)", content:"PFI>6m。評估二次手術 (DESKTOP III) 或含鉑複方。"},
+      {title:"PROC (Resistant Recur)", content:"PFI<6m。單藥化療 ± Bev 或標靶ADC (MIRASOL)。"},
+      {title:"Low grade serous carcinoma", content:"AI, MEK, CDK 4/6。"}]},
+    {id:"R-MT", header:"🔒 復後維持 (PR-Maint)", css:"r-mt", subs:[
+      {title:"PARPi Maint", content:"救援緩解後續用PARPi (NOVA/ARIEL3/SOLO2)。"}]}
+  ],
+  "Cervical": [
+    {id:"P-TX", header:"🌿 初治 (Primary Tx)", css:"p-tx", subs:[
+      {title:"Locally Advanced (CCRT)", content:"同步化放療 ± 同步IO (A18) 或誘導化療 (INTERLACE)。"},
+      {title:"Early Stage (Surgery)", content:"根治術 (LACC) 或單純切除 (SHAPE)。"}]},
+    {id:"P-MT", header:"💊 一線維持 (1L Maint)", css:"p-mt", subs:[
+      {title:"Maintenance", content:"1L方案後接續維持 (KEYNOTE-826)。"}]},
+    {id:"R-TX", header:"🔄 復發治療 (Recurr Tx)", css:"r-tx", subs:[
+      {title:"Recurr / Metastatic", content:"一線KN826/BEATcc。二線ADC (innovaTV 301) 或IO (EMPOWER)。"}]},
+    {id:"R-MT", header:"🔒 復後維持 (PR-Maint)", css:"r-mt", subs:[
+      {title:"Continuous Therapy", content:"維持當前有效救援方案直至PD。"}]}
+  ],
+  "Uterine Sarcoma": [
+    {id:"P-TX", header:"🌿 初治 (Primary Tx)", css:"p-tx", subs:[
+      {title:"Primary Sarcoma", content:"術後輔助或轉移性不可切除。"},
+      {title:"Carcinosarcoma", content:"PC方案 (NRG-GOG0261)。"},
+      {title:"Low grade ESS", content:"激素治療 (Anastrozole/Letrozole)。"}]},
+    {id:"P-MT", header:"💊 一線維持 (1L Maint)", css:"p-mt", subs:[
+      {title:"Maintenance", content:"1L方案後接續維持。"}]},
+    {id:"R-TX", header:"🔄 復發治療 (Recurr Tx)", css:"r-tx", subs:[
+      {title:"Recurr / Metastatic", content:"LMS: Trabectedin (ET743)、Pazopanib、Eribulin。"},
+      {title:"Low grade ESS", content:"激素治療為主。"}]},
+    {id:"R-MT", header:"🔒 復後維持 (PR-Maint)", css:"r-mt", subs:[
+      {title:"Continuous Therapy", content:"維持當前有效救援方案直至PD。"}]}
+  ]
+};
+
+// ════════════════════════════════════════
+// RENDER NAVIGATION
+// ════════════════════════════════════════
+let currentCancer = 'Endometrial';
+
+function selectCancer(cancer, btn) {
+  currentCancer = cancer;
+  document.querySelectorAll('.cancer-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderStageGrid(cancer);
+}
+
+function renderStageGrid(cancer) {
+  const grid = document.getElementById('stage-grid');
+  const stages = GUIDELINES[cancer];
+  if (!stages) return;
+  grid.innerHTML = stages.map(stage => {
+    const subsHTML = stage.subs.map(sub => {
+      const trials = TRIALS_DB.filter(t =>
+        t.cancer === cancer &&
+        t.pos.includes(stage.id) &&
+        t.sub.some(s => sub.title.includes(s) || s.includes(sub.title.split('(')[0].trim()))
+      );
+      const trialBtns = trials.map(t => `
+        <button class="trial-chip ${t.type === 'ongoing' ? 'ongoing' : ''}"
+          onclick="openModal('${encodeURIComponent(JSON.stringify(t))}')">
+          ${t.type === 'ongoing' ? '📍' : '📚'} ${t.name}
+          <br><span style="opacity:0.7">${t.pharma} · ${t.drug}</span>
+        </button>`).join('');
+      return `<div class="sub-section">
+        <div class="sub-title">📘 ${sub.title}</div>
+        <div class="sub-content">${sub.content}</div>
+        ${trialBtns}
+      </div>`;
+    }).join('');
+    return `<div class="stage-col stage-${stage.css}">
+      <div class="stage-header">${stage.header}</div>
+      ${subsHTML}
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════
+// MODAL
+// ════════════════════════════════════════
+function openModal(encoded) {
+  const t = JSON.parse(decodeURIComponent(encoded));
+  document.getElementById('modalTitle').textContent = t.name;
+  document.getElementById('modalDrug').textContent = `${t.pharma} · ${t.drug}`;
+  document.getElementById('modalResults').textContent = t.pop;
+  document.getElementById('modalRationale').textContent = t.rationale;
+  document.getElementById('modalRegimen').textContent = t.regimen;
+  const incEl = document.getElementById('modalInclusion');
+  const excEl = document.getElementById('modalExclusion');
+  incEl.innerHTML = (t.inclusion||[]).map(i => `<li>${i}</li>`).join('');
+  excEl.innerHTML = (t.exclusion||[]).map(e => `<li>${e}</li>`).join('');
+  document.getElementById('detailOverlay').classList.add('open');
+}
+function closeModal(e, force) {
+  if (force || !e || e.target === document.getElementById('detailOverlay')) {
+    document.getElementById('detailOverlay').classList.remove('open');
+  }
+}
+
+// ════════════════════════════════════════
+// TAB SWITCHING
+// ════════════════════════════════════════
+function switchTab(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function switchMode(mode, btn) {
+  ['text','image','form'].forEach(m => {
+    document.getElementById('mode-' + m).style.display = m === mode ? 'block' : 'none';
+  });
+  document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ════════════════════════════════════════
+// IMAGE UPLOAD
+// ════════════════════════════════════════
+let uploadedImageBase64 = null;
+let uploadedImageMime = null;
+
+function handleImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const result = e.target.result;
+    uploadedImageBase64 = result.split(',')[1];
+    uploadedImageMime = file.type;
+    document.getElementById('previewImg').src = result;
+    document.getElementById('previewName').textContent = `✅ ${file.name} (${(file.size/1024).toFixed(0)} KB)`;
+    document.getElementById('uploadedPreview').classList.add('show');
+  };
+  reader.readAsDataURL(file);
+}
+
+// drag/drop
+const uploadZone = document.getElementById('uploadZone');
+if (uploadZone) {
+  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.style.borderColor = 'var(--teal)'; });
+  uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = ''; });
+  uploadZone.addEventListener('drop', e => {
+    e.preventDefault(); uploadZone.style.borderColor = '';
+    const file = e.dataTransfer.files[0];
+    if (file) { document.getElementById('imgUpload').files = e.dataTransfer.files; handleImageUpload({target:{files:[file]}}); }
+  });
+}
+
+// ════════════════════════════════════════
+// AI ANALYSIS
+// ════════════════════════════════════════
+const SYSTEM_PROMPT = `你是一位資深婦科腫瘤臨床醫師，同時也是臨床試驗設計專家。
+根據以下婦癌臨床試驗實證資料庫，針對患者病歷資料進行深度分析，提供：
+
+1. 【分子分型解讀】根據輸入的標記（MMR、p53、POLE、BRCA、HRD等），判斷患者屬於哪個分子亞型，及其預後意義。
+2. 【推薦治療路徑】依據目前實證最強的方案，提供分期分線的具體建議（請引用試驗名稱如RUBY、KN775等）。
+3. 【可參與臨床試驗】列出符合條件的進行中試驗（標記📍者），說明符合原因。
+4. 【風險與注意事項】免疫相關副作用、PARPi血液毒性、ADC眼毒性等個別化注意事項。
+
+請使用繁體中文，回答要精準且有條理，用醫師對醫師的語氣，不需過度解釋基礎知識。`;
+
+async function runAnalysis() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (!apiKey) { alert('請先輸入 Gemini API Key。'); return; }
+
+  let userContent = '';
+  const activeMode = document.querySelector('.mode-tab.active').textContent.trim();
+
+  if (activeMode.includes('文字')) {
+    userContent = document.getElementById('textInput').value.trim();
+    if (!userContent) { alert('請輸入患者病歷摘要。'); return; }
+  } else if (activeMode.includes('影像')) {
+    if (!uploadedImageBase64) { alert('請先上傳影像檔案。'); return; }
+    userContent = document.getElementById('imageContextInput').value || '請分析此病理/影像圖片，並根據婦癌試驗資料庫給出治療建議。';
+  } else {
+    const cancer = document.getElementById('f-cancer').value;
+    const stage = document.getElementById('f-stage').value;
+    const mmr = document.getElementById('f-mmr').value;
+    const p53 = document.getElementById('f-p53').value;
+    const brca = document.getElementById('f-brca').value;
+    const ecog = document.getElementById('f-ecog').value;
+    const prior = document.getElementById('f-prior').value;
+    const markers = document.getElementById('f-markers').value;
+    userContent = `癌症: ${cancer} | 分期: ${stage} | MMR: ${mmr} | p53: ${p53} | BRCA/HRD: ${brca} | ECOG: ${ecog} | 既往治療: ${prior} | 其他標記: ${markers}`;
+  }
+
+  // Build request
+  const btn = document.getElementById('analyzeBtn');
+  btn.disabled = true;
+  document.getElementById('btnIcon').innerHTML = '<div class="spinner"></div>';
+  document.getElementById('btnText').textContent = 'Gemini AI 分析中…';
+
+  const trialSummary = TRIALS_DB.map(t => `[${t.name}] ${t.cancer} ${t.pos.join('/')} - ${t.pop}`).join('\n');
+  const fullPrompt = `${SYSTEM_PROMPT}\n\n===試驗資料庫摘要===\n${trialSummary}\n\n===患者資料===\n${userContent}`;
+
+  let requestBody;
+  if (uploadedImageBase64 && activeMode.includes('影像')) {
+    requestBody = { contents: [{ parts: [
+      { text: fullPrompt },
+      { inline_data: { mime_type: uploadedImageMime, data: uploadedImageBase64 } }
+    ]}]};
+  } else {
+    requestBody = { contents: [{ parts: [{ text: fullPrompt }] }] };
+  }
+
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(requestBody) }
+    );
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error?.message || `HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '無法取得回應。';
+    displayResult(text);
+  } catch (err) {
+    alert(`❌ 分析失敗：${err.message}\n\n請確認 API Key 是否正確，或您的網路是否允許連接 Google API。`);
+  } finally {
+    btn.disabled = false;
+    document.getElementById('btnIcon').textContent = '✨';
+    document.getElementById('btnText').textContent = '啟動 Gemini AI 分析';
+  }
+}
+
+function displayResult(text) {
+  const resultDiv = document.getElementById('aiResult');
+  const contentDiv = document.getElementById('resultContent');
+  // Convert markdown-like to HTML
+  let html = text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^#{1,3}\s(.+)$/gm, '<h4>$1</h4>')
+    .replace(/^[-•]\s(.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g, match => `<ul>${match}</ul>`)
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>');
+  contentDiv.innerHTML = `<p>${html}</p>`;
+  resultDiv.classList.add('show');
+  resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
+renderStageGrid('Endometrial');
+</script>
+</body>
+</html>
