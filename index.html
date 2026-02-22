@@ -263,7 +263,7 @@ body{font-family:"Noto Sans TC","Inter",sans-serif;background:#f0f4f8;color:var(
           <span style="font-size:22px;">📋</span>
           <div>
             <div style="font-size:15px;font-weight:800;color:white;letter-spacing:0.01em;">試驗快速瀏覽器</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.55);font-family:'JetBrains Mono',monospace;margin-top:2px;">89 個臨床試驗 · 點選查看摘要 · 一鍵送入 AI 分析</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.55);font-family:JetBrains Mono,monospace;margin-top:2px;">89 個臨床試驗 · 點選查看摘要 · 一鍵送入 AI 分析</div>
           </div>
         </div>
         <span id="browserToggleIcon" style="font-size:20px;color:#93c5fd;transition:transform 0.3s;">▼</span>
@@ -294,7 +294,7 @@ body{font-family:"Noto Sans TC","Inter",sans-serif;background:#f0f4f8;color:var(
           <div style="flex:1;position:relative;min-width:180px;">
             <input type="text" id="trialSearch" oninput="filterTrialList()" placeholder="🔍 搜尋試驗名稱或藥物…" style="width:100%;padding:9px 14px;border-radius:10px;border:2px solid #e2e8f0;background:white;font-size:13px;color:#1a202c;">
           </div>
-          <span id="trialCount" style="font-size:12px;color:#64748b;font-family:'JetBrains Mono',monospace;white-space:nowrap;"></span>
+          <span id="trialCount" style="font-size:12px;color:#64748b;font-family:JetBrains Mono,monospace;white-space:nowrap;"></span>
         </div>
 
         <!-- Trial list -->
@@ -307,7 +307,7 @@ body{font-family:"Noto Sans TC","Inter",sans-serif;background:#f0f4f8;color:var(
             <div style="text-align:center;color:#94a3b8;">
               <div style="font-size:40px;margin-bottom:12px;">👈</div>
               <div style="font-size:14px;font-weight:600;">選擇左側試驗</div>
-              <div style="font-size:12px;margin-top:4px;font-family:'JetBrains Mono',monospace;">查看摘要後可送入 AI 深度分析</div>
+              <div style="font-size:12px;margin-top:4px;font-family:JetBrains Mono,monospace;">查看摘要後可送入 AI 深度分析</div>
             </div>
           </div>
         </div>
@@ -606,7 +606,7 @@ function handleImageUpload(event){
   reader.readAsDataURL(file);
 }
 const uz=document.getElementById('uploadZone');
-if(uz){
+if(uz&&uz.addEventListener){
   uz.addEventListener('dragover',e=>{e.preventDefault();uz.style.borderColor='var(--teal)';});
   uz.addEventListener('dragleave',()=>{uz.style.borderColor='';});
   uz.addEventListener('drop',e=>{
@@ -741,7 +741,7 @@ function renderTrialList(){
 
   let html = '';
   Object.keys(groups).forEach(c=>{
-    html += `<div style="padding:8px 14px 4px;font-size:10px;font-weight:800;color:#94a3b8;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:0.08em;background:#f8fafc;border-bottom:1px solid #f1f5f9;position:sticky;top:0;z-index:1;">${CANCER_EMOJI[c]||''} ${c}</div>`;
+    html += `<div style="padding:8px 14px 4px;font-size:10px;font-weight:800;color:#94a3b8;font-family:JetBrains Mono,monospace;text-transform:uppercase;letter-spacing:0.08em;background:#f8fafc;border-bottom:1px solid #f1f5f9;position:sticky;top:0;z-index:1;">${CANCER_EMOJI[c]||''} ${c}</div>`;
     groups[c].forEach(({t,i})=>{
       const isSelected = i === selectedTrialIdx;
       const stageTags = t.p.map(p=>`<span style="font-size:9px;padding:1px 5px;border-radius:4px;background:${p==='P-TX'?'#d1fae5':p==='P-MT'?'#dbeafe':p==='R-TX'?'#fee2e2':'#ede9fe'};color:${p==='P-TX'?'#065f46':p==='P-MT'?'#1e40af':p==='R-TX'?'#991b1b':'#5b21b6'};font-weight:700;">${STAGE_LABEL[p]||p}</span>`).join(' ');
@@ -750,7 +750,7 @@ function renderTrialList(){
           <span style="font-size:13px;flex-shrink:0;">${t.t==='o'?'📍':'📚'}</span>
           <span style="font-size:12.5px;font-weight:700;color:${isSelected?'#1d4ed8':'#1a202c'};line-height:1.35;">${t.n}</span>
         </div>
-        <div style="font-size:11px;color:#64748b;font-family:'JetBrains Mono',monospace;margin-bottom:5px;padding-left:19px;">${t.d}</div>
+        <div style="font-size:11px;color:#64748b;font-family:JetBrains Mono,monospace;margin-bottom:5px;padding-left:19px;">${t.d}</div>
         <div style="padding-left:19px;display:flex;flex-wrap:wrap;gap:3px;">${stageTags}</div>
       </div>`;
     });
@@ -769,7 +769,7 @@ function selectTrial(idx){
 function renderDetailPane(t){
   const pane = document.getElementById('trialDetailPane');
   if(!t){
-    pane.innerHTML = '<div style="text-align:center;color:#94a3b8;"><div style="font-size:40px;margin-bottom:12px;">👈</div><div style="font-size:14px;font-weight:600;">選擇左側試驗</div><div style="font-size:12px;margin-top:4px;font-family:'JetBrains Mono',monospace;">查看摘要後可送入 AI 深度分析</div></div>';
+    pane.innerHTML = '<div style="text-align:center;color:#94a3b8;"><div style="font-size:40px;margin-bottom:12px;">👈</div><div style="font-size:14px;font-weight:600;">選擇左側試驗</div><div style="font-size:12px;margin-top:4px;font-family:JetBrains Mono,monospace;">查看摘要後可送入 AI 深度分析</div></div>';
     return;
   }
   const statusBadge = t.t==='o'
@@ -781,27 +781,27 @@ function renderDetailPane(t){
     <div style="width:100%;">
       <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px;">
         ${statusBadge} ${stageTags}
-        <span style="font-size:11px;color:#64748b;font-family:'JetBrains Mono',monospace;">${CANCER_EMOJI[t.c]||''} ${t.c}</span>
+        <span style="font-size:11px;color:#64748b;font-family:JetBrains Mono,monospace;">${CANCER_EMOJI[t.c]||''} ${t.c}</span>
       </div>
       <div style="font-size:17px;font-weight:800;color:#1a202c;line-height:1.35;margin-bottom:6px;">${t.n}</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
-        <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#0369a1;background:#e0f2fe;padding:3px 11px;border-radius:100px;font-weight:600;">${t.d}</span>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#92400e;background:#fef3c7;padding:3px 11px;border-radius:100px;font-weight:600;">${t.ph}</span>
+        <span style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:#0369a1;background:#e0f2fe;padding:3px 11px;border-radius:100px;font-weight:600;">${t.d}</span>
+        <span style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:#92400e;background:#fef3c7;padding:3px 11px;border-radius:100px;font-weight:600;">${t.ph}</span>
       </div>
 
       <div style="margin-bottom:12px;">
-        <div style="font-size:10px;font-weight:800;color:#94a3b8;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;padding-bottom:5px;border-bottom:2px solid #e2e8f0;">核心結論</div>
+        <div style="font-size:10px;font-weight:800;color:#94a3b8;font-family:JetBrains Mono,monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;padding-bottom:5px;border-bottom:2px solid #e2e8f0;">核心結論</div>
         <div style="background:#fffbeb;border-left:4px solid #f59e0b;padding:10px 13px;border-radius:8px;font-size:13px;line-height:1.75;color:#1a202c;">${t.pop}</div>
       </div>
 
       <div style="margin-bottom:12px;">
-        <div style="font-size:10px;font-weight:800;color:#94a3b8;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;padding-bottom:5px;border-bottom:2px solid #e2e8f0;">給藥方案</div>
-        <div style="background:#f8fafc;border-left:4px solid #64748b;padding:10px 13px;border-radius:8px;font-size:12px;line-height:1.75;color:#334155;font-family:'JetBrains Mono',monospace;white-space:pre-wrap;">${t.reg}</div>
+        <div style="font-size:10px;font-weight:800;color:#94a3b8;font-family:JetBrains Mono,monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;padding-bottom:5px;border-bottom:2px solid #e2e8f0;">給藥方案</div>
+        <div style="background:#f8fafc;border-left:4px solid #64748b;padding:10px 13px;border-radius:8px;font-size:12px;line-height:1.75;color:#334155;font-family:JetBrains Mono,monospace;white-space:pre-wrap;">${t.reg}</div>
       </div>
 
       ${t.out?`<div style="margin-bottom:14px;">
-        <div style="font-size:10px;font-weight:800;color:#94a3b8;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;padding-bottom:5px;border-bottom:2px solid #e2e8f0;">主要終點</div>
-        <div style="font-size:12.5px;color:#0f172a;line-height:1.7;font-family:'JetBrains Mono',monospace;">${t.out}</div>
+        <div style="font-size:10px;font-weight:800;color:#94a3b8;font-family:JetBrains Mono,monospace;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;padding-bottom:5px;border-bottom:2px solid #e2e8f0;">主要終點</div>
+        <div style="font-size:12.5px;color:#0f172a;line-height:1.7;font-family:JetBrains Mono,monospace;">${t.out}</div>
       </div>`:''}
 
       <button onclick="sendTrialToAI(${idx})" style="width:100%;padding:13px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(37,99,235,0.35);transition:all .2s;">
