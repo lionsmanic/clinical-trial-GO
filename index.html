@@ -2,567 +2,250 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>婦癌臨床導航 × AI 智能分析</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>婦癌臨床導航 × AI 智能分析 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;900&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1a1a2e;
-    --ink-soft: #2d2d4a;
-    --cream: #f8f5f0;
-    --gold: #c9a84c;
-    --gold-light: #e8d5a3;
-    --teal: #1a6b6b;
-    --teal-light: #e8f5f5;
-    --rose: #8b2252;
-    --rose-light: #fdf0f6;
-    --amber: #b85c00;
-    --amber-light: #fff4e6;
-    --sage: #3a6b3a;
-    --sage-light: #edf7ed;
-    --border: rgba(201,168,76,0.3);
-    --shadow: 0 4px 32px rgba(26,26,46,0.12);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'Noto Serif TC', serif;
-    background: var(--cream);
-    color: var(--ink);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ─── HEADER ─── */
-  .site-header {
-    background: var(--ink);
-    padding: 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    border-bottom: 2px solid var(--gold);
-  }
-  .header-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 16px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-  }
-  .logo-block { display: flex; align-items: center; gap: 14px; }
-  .logo-icon {
-    width: 44px; height: 44px;
-    background: linear-gradient(135deg, var(--gold), var(--amber));
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-  }
-  .logo-text { line-height: 1.1; }
-  .logo-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 18px; font-weight: 900;
-    color: var(--gold);
-    letter-spacing: 0.02em;
-  }
-  .logo-sub { font-size: 11px; color: rgba(255,255,255,0.5); font-family: 'DM Mono', monospace; margin-top: 2px; }
-  .header-nav { display: flex; gap: 4px; }
-  .nav-btn {
-    padding: 8px 18px; border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: transparent; color: rgba(255,255,255,0.7);
-    font-family: 'Noto Serif TC', serif;
-    font-size: 13px; cursor: pointer;
-    transition: all 0.2s;
-  }
-  .nav-btn:hover, .nav-btn.active {
-    background: var(--gold); color: var(--ink);
-    border-color: var(--gold); font-weight: 600;
-  }
-
-  /* ─── TABS ─── */
-  .main-tabs {
-    max-width: 1400px; margin: 0 auto;
-    padding: 32px 32px 0;
-    display: flex; gap: 0;
-    border-bottom: 2px solid var(--border);
-  }
-  .tab-btn {
-    padding: 14px 28px;
-    background: transparent;
-    border: none; border-bottom: 3px solid transparent;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 15px; font-weight: 600;
-    color: rgba(26,26,46,0.45);
-    cursor: pointer; transition: all 0.2s;
-    margin-bottom: -2px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .tab-btn:hover { color: var(--teal); }
-  .tab-btn.active {
-    color: var(--teal);
-    border-bottom-color: var(--teal);
-  }
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
-
-  /* ─── CANCER TYPE SELECTOR ─── */
-  .cancer-selector {
-    max-width: 1400px; margin: 0 auto;
-    padding: 28px 32px 0;
-  }
-  .cancer-selector h3 { font-size: 13px; color: rgba(26,26,46,0.45); font-family: 'DM Mono', monospace; margin-bottom: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
-  .cancer-btns { display: flex; gap: 10px; flex-wrap: wrap; }
-  .cancer-btn {
-    padding: 10px 22px; border-radius: 100px;
-    border: 1.5px solid var(--border);
-    background: white; color: var(--ink-soft);
-    font-family: 'Noto Serif TC', serif;
-    font-size: 13px; font-weight: 600;
-    cursor: pointer; transition: all 0.2s;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .cancer-btn:hover { border-color: var(--teal); color: var(--teal); }
-  .cancer-btn.active { background: var(--teal); color: white; border-color: var(--teal); }
-
-  /* ─── STAGE GRID ─── */
-  .stage-grid {
-    max-width: 1400px; margin: 0 auto;
-    padding: 24px 32px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-  .stage-col {
-    background: white;
-    border-radius: 14px;
-    overflow: hidden;
-    border: 1.5px solid var(--border);
-    box-shadow: var(--shadow);
-  }
-  .stage-header {
-    padding: 16px 18px;
-    font-size: 14px; font-weight: 900;
-    color: white; text-align: center;
-    letter-spacing: 0.03em;
-  }
-  .stage-p-tx .stage-header { background: linear-gradient(135deg, #1a5c2a, #0f3d1a); }
-  .stage-p-mt .stage-header { background: linear-gradient(135deg, #1a3a8b, #0d2460); }
-  .stage-r-tx .stage-header { background: linear-gradient(135deg, #8b1a00, #5c1000); }
-  .stage-r-mt .stage-header { background: linear-gradient(135deg, #5c1a8b, #3a0d60); }
-
-  .sub-section {
-    border-bottom: 1px solid rgba(201,168,76,0.15);
-    padding: 12px 14px;
-  }
-  .sub-section:last-child { border-bottom: none; }
-  .sub-title {
-    font-size: 11.5px; font-weight: 700;
-    color: var(--ink-soft); margin-bottom: 6px;
-    display: flex; align-items: center; gap: 5px;
-  }
-  .sub-content { font-size: 11px; color: rgba(26,26,46,0.6); line-height: 1.5; margin-bottom: 8px; }
-
-  .trial-chip {
-    display: block; width: 100%;
-    padding: 7px 10px; margin-bottom: 5px;
-    border-radius: 7px;
-    border: 1px solid var(--border);
-    background: var(--cream);
-    text-align: left; cursor: pointer;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; color: var(--teal);
-    font-weight: 500;
-    transition: all 0.18s;
-    line-height: 1.4;
-  }
-  .trial-chip:hover {
-    background: var(--teal-light);
-    border-color: var(--teal);
-    transform: translateX(2px);
-  }
-  .trial-chip.ongoing {
-    color: var(--amber); border-color: rgba(184,92,0,0.3);
-    background: var(--amber-light);
-  }
-  .trial-chip.ongoing:hover { background: #ffe8cc; border-color: var(--amber); }
-
-  /* ─── DETAIL PANEL ─── */
-  .detail-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(26,26,46,0.6);
-    z-index: 200;
-    backdrop-filter: blur(4px);
-    align-items: center; justify-content: center;
-  }
-  .detail-overlay.open { display: flex; }
-  .detail-modal {
-    background: white; border-radius: 20px;
-    max-width: 820px; width: 92%;
-    max-height: 88vh; overflow-y: auto;
-    padding: 36px; position: relative;
-    border: 2px solid var(--gold-light);
-    box-shadow: 0 24px 80px rgba(26,26,46,0.3);
-    animation: modalIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
-  }
-  @keyframes modalIn { from { transform: scale(0.92) translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
-  .modal-close {
-    position: absolute; top: 16px; right: 16px;
-    width: 34px; height: 34px; border-radius: 50%;
-    border: 1.5px solid var(--border);
-    background: white; cursor: pointer; font-size: 18px;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--ink-soft); transition: all 0.2s;
-  }
-  .modal-close:hover { background: var(--ink); color: white; border-color: var(--ink); }
-  .modal-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 900; color: var(--ink); margin-bottom: 6px; padding-right: 40px; }
-  .modal-drug { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--teal); background: var(--teal-light); padding: 4px 12px; border-radius: 100px; display: inline-block; margin-bottom: 20px; }
-  .modal-section { margin-bottom: 20px; }
-  .modal-section-title {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    color: rgba(26,26,46,0.4); margin-bottom: 10px; font-family: 'DM Mono', monospace;
-    padding-bottom: 6px; border-bottom: 1px solid var(--border);
-  }
-  .result-highlight {
-    background: linear-gradient(135deg, #fff9ee, #fff4dd);
-    border-left: 4px solid var(--gold);
-    padding: 14px 16px; border-radius: 8px;
-    font-size: 13.5px; line-height: 1.65;
-  }
-  .regimen-box {
-    background: var(--sage-light);
-    border-left: 4px solid var(--sage);
-    padding: 14px 16px; border-radius: 8px;
-    font-size: 12.5px; line-height: 1.7;
-    font-family: 'DM Mono', monospace;
-  }
-  .criteria-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .criteria-box { padding: 14px; border-radius: 10px; }
-  .criteria-box.inc { background: var(--sage-light); border: 1px solid rgba(58,107,58,0.2); }
-  .criteria-box.exc { background: var(--rose-light); border: 1px solid rgba(139,34,82,0.2); }
-  .criteria-box h5 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; font-family: 'DM Mono', monospace; }
-  .criteria-box.inc h5 { color: var(--sage); }
-  .criteria-box.exc h5 { color: var(--rose); }
-  .criteria-box li { font-size: 12px; line-height: 1.6; margin-left: 14px; margin-bottom: 4px; }
-
-  /* ─── AI ANALYSIS TAB ─── */
-  .ai-panel {
-    max-width: 1000px; margin: 0 auto;
-    padding: 40px 32px;
-  }
-  .ai-hero { text-align: center; margin-bottom: 40px; }
-  .ai-hero h2 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: var(--ink); margin-bottom: 8px; }
-  .ai-hero p { font-size: 14px; color: rgba(26,26,46,0.55); line-height: 1.7; max-width: 600px; margin: 0 auto; }
-  .ai-hero .badge { display: inline-block; margin-top: 12px; padding: 5px 16px; background: var(--teal-light); border: 1px solid rgba(26,107,107,0.3); border-radius: 100px; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--teal); }
-
-  .api-setup {
-    background: var(--ink);
-    border-radius: 14px; padding: 20px 24px;
-    margin-bottom: 28px;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .api-setup-text { flex: 1; }
-  .api-setup-text h4 { color: var(--gold); font-size: 13px; margin-bottom: 4px; }
-  .api-setup-text p { color: rgba(255,255,255,0.5); font-size: 11px; font-family: 'DM Mono', monospace; }
-  .api-input {
-    flex: 2; padding: 10px 16px;
-    border-radius: 8px; border: 1.5px solid rgba(201,168,76,0.4);
-    background: rgba(255,255,255,0.06);
-    color: white; font-family: 'DM Mono', monospace;
-    font-size: 12px;
-  }
-  .api-input::placeholder { color: rgba(255,255,255,0.3); }
-
-  .input-mode-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-  .mode-tab {
-    padding: 9px 20px; border-radius: 8px;
-    border: 1.5px solid var(--border);
-    background: white; color: rgba(26,26,46,0.5);
-    font-size: 13px; font-weight: 600; cursor: pointer;
-    transition: all 0.2s; display: flex; align-items: center; gap: 7px;
-  }
-  .mode-tab:hover { border-color: var(--teal); color: var(--teal); }
-  .mode-tab.active { background: var(--teal); color: white; border-color: var(--teal); }
-
-  .input-area {
-    background: white; border-radius: 14px;
-    border: 1.5px solid var(--border);
-    padding: 24px;
-    box-shadow: var(--shadow);
-    margin-bottom: 20px;
-  }
-  .text-input {
-    width: 100%; min-height: 180px;
-    border: 1.5px solid rgba(201,168,76,0.25);
-    border-radius: 10px; padding: 16px;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 13.5px; line-height: 1.8;
-    color: var(--ink); resize: vertical;
-    background: var(--cream);
-    transition: border-color 0.2s;
-  }
-  .text-input:focus { outline: none; border-color: var(--teal); background: white; }
-  .text-input::placeholder { color: rgba(26,26,46,0.35); }
-
-  .upload-zone {
-    border: 2px dashed rgba(201,168,76,0.4);
-    border-radius: 12px; padding: 40px;
-    text-align: center; cursor: pointer;
-    transition: all 0.2s; background: var(--cream);
-  }
-  .upload-zone:hover { border-color: var(--teal); background: var(--teal-light); }
-  .upload-zone .icon { font-size: 36px; margin-bottom: 12px; }
-  .upload-zone h4 { font-size: 14px; color: var(--ink-soft); margin-bottom: 6px; }
-  .upload-zone p { font-size: 12px; color: rgba(26,26,46,0.45); font-family: 'DM Mono', monospace; }
-  .upload-zone input { display: none; }
-  .uploaded-preview {
-    display: none;
-    align-items: center; gap: 12px;
-    background: var(--sage-light); padding: 12px 16px;
-    border-radius: 10px; margin-top: 12px;
-  }
-  .uploaded-preview.show { display: flex; }
-  .uploaded-preview img { max-height: 80px; border-radius: 6px; }
-  .uploaded-preview span { font-size: 12px; color: var(--sage); font-family: 'DM Mono', monospace; }
-
-  .structured-form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .form-group { display: flex; flex-direction: column; gap: 6px; }
-  .form-group label { font-size: 11px; font-weight: 700; color: rgba(26,26,46,0.5); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'DM Mono', monospace; }
-  .form-select, .form-input-small {
-    padding: 9px 12px; border-radius: 8px;
-    border: 1.5px solid var(--border);
-    background: var(--cream); color: var(--ink);
-    font-family: 'Noto Serif TC', serif; font-size: 13px;
-  }
-  .form-select:focus, .form-input-small:focus { outline: none; border-color: var(--teal); background: white; }
-
-  .analyze-btn {
-    width: 100%; padding: 16px;
-    background: linear-gradient(135deg, var(--teal), #0d4848);
-    color: white; border: none; border-radius: 12px;
-    font-family: 'Noto Serif TC', serif; font-size: 16px; font-weight: 700;
-    cursor: pointer; transition: all 0.2s;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    box-shadow: 0 4px 20px rgba(26,107,107,0.35);
-    letter-spacing: 0.02em;
-  }
-  .analyze-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(26,107,107,0.45); }
-  .analyze-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  .analyze-btn .spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ─── AI RESULT ─── */
-  .ai-result {
-    display: none;
-    background: white; border-radius: 16px;
-    border: 1.5px solid var(--gold-light);
-    padding: 32px; margin-top: 24px;
-    box-shadow: var(--shadow);
-    animation: fadeUp 0.4s ease;
-  }
-  .ai-result.show { display: block; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-  .result-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-  .result-header .gemini-badge { padding: 5px 14px; background: linear-gradient(135deg, #4285f4, #0d47a1); color: white; border-radius: 100px; font-size: 10px; font-family: 'DM Mono', monospace; }
-  .result-header h3 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--ink); }
-  .result-content { font-size: 14px; line-height: 1.85; color: var(--ink-soft); }
-  .result-content h4 { color: var(--teal); font-size: 15px; margin: 18px 0 8px; padding-left: 12px; border-left: 3px solid var(--teal); }
-  .result-content ul { padding-left: 20px; margin: 8px 0; }
-  .result-content li { margin-bottom: 6px; }
-  .result-content strong { color: var(--ink); }
-  .trial-match-chip {
-    display: inline-block; margin: 4px;
-    padding: 6px 14px; border-radius: 8px;
-    background: var(--teal-light); color: var(--teal);
-    font-size: 11px; font-family: 'DM Mono', monospace; font-weight: 600;
-    border: 1px solid rgba(26,107,107,0.2);
-  }
-  .trial-match-chip.ongoing-match {
-    background: var(--amber-light); color: var(--amber);
-    border-color: rgba(184,92,0,0.2);
-  }
-
-  /* ─── ERROR / INFO ─── */
-  .info-box { padding: 14px 18px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; }
-  .info-box.warn { background: var(--amber-light); border: 1px solid rgba(184,92,0,0.25); color: var(--amber); }
-  .info-box.tip { background: var(--teal-light); border: 1px solid rgba(26,107,107,0.2); color: var(--teal); }
-
-  /* ─── FOOTER ─── */
-  .site-footer {
-    text-align: center; padding: 32px;
-    border-top: 1px solid var(--border);
-    color: rgba(26,26,46,0.35);
-    font-size: 11px; font-family: 'DM Mono', monospace;
-    line-height: 1.8;
-  }
-  @media (max-width: 900px) {
-    .stage-grid { grid-template-columns: 1fr 1fr; }
-    .criteria-grid { grid-template-columns: 1fr; }
-    .structured-form { grid-template-columns: 1fr; }
-    .header-inner { flex-direction: column; align-items: flex-start; gap: 10px; }
-    .header-nav { flex-wrap: wrap; }
-    .api-setup { flex-direction: column; }
-  }
-  @media (max-width: 600px) {
-    .stage-grid { grid-template-columns: 1fr; }
-    .main-tabs { padding: 24px 16px 0; }
-    .cancer-selector, .stage-grid, .ai-panel { padding-left: 16px; padding-right: 16px; }
-  }
+:root{--ink:#1a1a2e;--ink-soft:#2d2d4a;--cream:#f8f5f0;--gold:#c9a84c;--gold-light:#e8d5a3;--teal:#1a6b6b;--teal-light:#e8f5f5;--rose:#8b2252;--rose-light:#fdf0f6;--amber:#b85c00;--amber-light:#fff4e6;--sage:#3a6b3a;--sage-light:#edf7ed;--border:rgba(201,168,76,0.3);--shadow:0 4px 32px rgba(26,26,46,0.12);--r:14px;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:"Noto Serif TC",serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+.site-header{background:var(--ink);position:sticky;top:0;z-index:200;border-bottom:2px solid var(--gold);}
+.header-inner{max-width:1400px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.logo-block{display:flex;align-items:center;gap:12px;}
+.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--amber));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.logo-title{font-family:"Playfair Display",serif;font-size:16px;font-weight:900;color:var(--gold);}
+.logo-sub{font-size:10px;color:rgba(255,255,255,.45);font-family:"DM Mono",monospace;margin-top:1px;}
+.header-nav{display:flex;gap:4px;flex-wrap:wrap;}
+.nav-btn{padding:7px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:transparent;color:rgba(255,255,255,.7);font-family:"Noto Serif TC",serif;font-size:12px;cursor:pointer;transition:all .2s;}
+.nav-btn:hover,.nav-btn.active{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:700;}
+.page-content{max-width:1400px;margin:0 auto;padding:0 16px 40px;}
+.tab-panel{display:none;}.tab-panel.active{display:block;}
+.cancer-selector{padding:20px 0 0;}
+.selector-label{font-size:11px;color:rgba(26,26,46,.45);font-family:"DM Mono",monospace;margin-bottom:10px;letter-spacing:.08em;text-transform:uppercase;}
+.cancer-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.cancer-btn{padding:8px 18px;border-radius:100px;border:1.5px solid var(--border);background:white;color:var(--ink-soft);font-family:"Noto Serif TC",serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;}
+.cancer-btn:hover{border-color:var(--teal);color:var(--teal);}
+.cancer-btn.active{background:var(--teal);color:white;border-color:var(--teal);}
+.stage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:18px 0;}
+.stage-col{background:white;border-radius:var(--r);overflow:hidden;border:1.5px solid var(--border);box-shadow:var(--shadow);}
+.stage-header{padding:13px 16px;font-size:13px;font-weight:900;color:white;text-align:center;}
+.stage-p-tx .stage-header{background:linear-gradient(135deg,#1a5c2a,#0f3d1a);}
+.stage-p-mt .stage-header{background:linear-gradient(135deg,#1a3a8b,#0d2460);}
+.stage-r-tx .stage-header{background:linear-gradient(135deg,#8b1a00,#5c1000);}
+.stage-r-mt .stage-header{background:linear-gradient(135deg,#5c1a8b,#3a0d60);}
+.sub-section{border-bottom:1px solid rgba(201,168,76,.12);padding:10px 12px;}
+.sub-section:last-child{border-bottom:none;}
+.sub-title{font-size:11px;font-weight:700;color:var(--ink-soft);margin-bottom:4px;line-height:1.4;}
+.sub-content{font-size:10.5px;color:rgba(26,26,46,.58);line-height:1.55;margin-bottom:6px;}
+.trial-chip{display:block;width:100%;padding:6px 9px;margin-bottom:4px;border-radius:7px;border:1px solid var(--border);background:var(--cream);text-align:left;cursor:pointer;font-family:"DM Mono",monospace;font-size:10px;color:var(--teal);font-weight:500;transition:all .18s;line-height:1.45;}
+.trial-chip:hover{background:var(--teal-light);border-color:var(--teal);transform:translateX(2px);}
+.trial-chip.ongoing{color:var(--amber);border-color:rgba(184,92,0,.3);background:var(--amber-light);}
+.chip-pharma{display:block;font-size:9px;opacity:.65;margin-top:1px;}
+.detail-overlay{display:none;position:fixed;inset:0;background:rgba(26,26,46,.65);z-index:500;backdrop-filter:blur(4px);align-items:flex-start;justify-content:center;padding:20px 12px;overflow-y:auto;}
+.detail-overlay.open{display:flex;}
+.detail-modal{background:white;border-radius:20px;max-width:800px;width:100%;padding:28px;position:relative;border:2px solid var(--gold-light);box-shadow:0 24px 80px rgba(26,26,46,.3);animation:modalIn .25s cubic-bezier(.34,1.56,.64,1);margin:auto;}
+@keyframes modalIn{from{transform:scale(.92) translateY(20px);opacity:0}to{transform:none;opacity:1}}
+.modal-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);background:white;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--ink-soft);}
+.modal-close:hover{background:var(--ink);color:white;}
+.modal-title{font-family:"Playfair Display",serif;font-size:18px;font-weight:900;color:var(--ink);margin-bottom:5px;padding-right:36px;line-height:1.3;}
+.modal-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+.modal-drug{font-family:"DM Mono",monospace;font-size:11px;color:var(--teal);background:var(--teal-light);padding:3px 10px;border-radius:100px;}
+.modal-pharma{font-family:"DM Mono",monospace;font-size:11px;color:var(--amber);background:var(--amber-light);padding:3px 10px;border-radius:100px;}
+.m-section{margin-bottom:16px;}
+.m-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(26,26,46,.38);margin-bottom:7px;font-family:"DM Mono",monospace;padding-bottom:5px;border-bottom:1px solid var(--border);}
+.m-result{background:linear-gradient(135deg,#fff9ee,#fff4dd);border-left:4px solid var(--gold);padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.7;}
+.m-regimen{background:var(--sage-light);border-left:4px solid var(--sage);padding:12px 14px;border-radius:8px;font-size:11.5px;line-height:1.75;font-family:"DM Mono",monospace;white-space:pre-wrap;}
+.m-rationale{font-size:13px;line-height:1.75;color:var(--ink-soft);}
+.criteria-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.criteria-box{padding:12px;border-radius:10px;}
+.criteria-box.inc{background:var(--sage-light);border:1px solid rgba(58,107,58,.2);}
+.criteria-box.exc{background:var(--rose-light);border:1px solid rgba(139,34,82,.2);}
+.criteria-box h5{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;font-family:"DM Mono",monospace;}
+.criteria-box.inc h5{color:var(--sage);}.criteria-box.exc h5{color:var(--rose);}
+.criteria-box ul{padding-left:14px;}.criteria-box li{font-size:11.5px;line-height:1.65;margin-bottom:3px;}
+.ai-panel{padding:28px 0 0;}
+.ai-hero{text-align:center;margin-bottom:28px;}
+.ai-hero h2{font-family:"Playfair Display",serif;font-size:26px;font-weight:900;color:var(--ink);margin-bottom:6px;}
+.ai-hero p{font-size:13px;color:rgba(26,26,46,.52);line-height:1.75;max-width:560px;margin:0 auto;}
+.ai-badge{display:inline-block;margin-top:10px;padding:4px 14px;background:var(--teal-light);border:1px solid rgba(26,107,107,.3);border-radius:100px;font-size:10px;font-family:"DM Mono",monospace;color:var(--teal);}
+.api-setup{background:var(--ink);border-radius:var(--r);padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.api-setup-text h4{color:var(--gold);font-size:12px;margin-bottom:3px;}
+.api-setup-text p{color:rgba(255,255,255,.45);font-size:10px;font-family:"DM Mono",monospace;}
+.api-input{flex:1;min-width:200px;padding:9px 14px;border-radius:8px;border:1.5px solid rgba(201,168,76,.4);background:rgba(255,255,255,.06);color:white;font-family:"DM Mono",monospace;font-size:11px;}
+.api-input::placeholder{color:rgba(255,255,255,.28);}
+.info-box{padding:12px 16px;border-radius:10px;font-size:12px;margin-bottom:14px;line-height:1.6;}
+.info-box.tip{background:var(--teal-light);border:1px solid rgba(26,107,107,.2);color:var(--teal);}
+.mode-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.mode-tab{padding:8px 16px;border-radius:8px;border:1.5px solid var(--border);background:white;color:rgba(26,26,46,.5);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;}
+.mode-tab:hover{border-color:var(--teal);color:var(--teal);}
+.mode-tab.active{background:var(--teal);color:white;border-color:var(--teal);}
+.input-area{background:white;border-radius:var(--r);border:1.5px solid var(--border);padding:20px;box-shadow:var(--shadow);margin-bottom:16px;}
+.text-input{width:100%;min-height:160px;border:1.5px solid rgba(201,168,76,.25);border-radius:10px;padding:14px;font-family:"Noto Serif TC",serif;font-size:13px;line-height:1.8;color:var(--ink);resize:vertical;background:var(--cream);}
+.text-input:focus{outline:none;border-color:var(--teal);background:white;}
+.text-input::placeholder{color:rgba(26,26,46,.32);}
+.upload-zone{border:2px dashed rgba(201,168,76,.4);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;background:var(--cream);}
+.upload-zone:hover{border-color:var(--teal);background:var(--teal-light);}
+.upload-zone .uicon{font-size:32px;margin-bottom:10px;}
+.upload-zone h4{font-size:13px;color:var(--ink-soft);margin-bottom:4px;}
+.upload-zone p{font-size:11px;color:rgba(26,26,46,.42);font-family:"DM Mono",monospace;}
+.upload-zone input{display:none;}
+.upload-preview{display:none;align-items:center;gap:10px;background:var(--sage-light);padding:10px 14px;border-radius:10px;margin-top:10px;}
+.upload-preview.show{display:flex;}
+.upload-preview img{max-height:70px;border-radius:6px;}
+.upload-preview span{font-size:11px;color:var(--sage);font-family:"DM Mono",monospace;}
+.struct-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group label{font-size:10px;font-weight:700;color:rgba(26,26,46,.45);text-transform:uppercase;letter-spacing:.08em;font-family:"DM Mono",monospace;}
+.form-select,.form-text{padding:8px 11px;border-radius:8px;border:1.5px solid var(--border);background:var(--cream);color:var(--ink);font-family:"Noto Serif TC",serif;font-size:12px;}
+.form-select:focus,.form-text:focus{outline:none;border-color:var(--teal);}
+.analyze-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--teal),#0d4848);color:white;border:none;border-radius:12px;font-family:"Noto Serif TC",serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 20px rgba(26,107,107,.35);}
+.analyze-btn:hover{transform:translateY(-2px);}
+.analyze-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.spinner{width:17px;height:17px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-result{display:none;background:white;border-radius:16px;border:1.5px solid var(--gold-light);padding:28px;margin-top:20px;box-shadow:var(--shadow);animation:fadeUp .4s ease;}
+.ai-result.show{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.result-header{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.gemini-badge{padding:4px 12px;background:linear-gradient(135deg,#4285f4,#0d47a1);color:white;border-radius:100px;font-size:10px;font-family:"DM Mono",monospace;}
+.result-header h3{font-family:"Playfair Display",serif;font-size:18px;color:var(--ink);}
+.result-content{font-size:13.5px;line-height:1.85;color:var(--ink-soft);}
+.result-content h4{color:var(--teal);font-size:14px;margin:16px 0 7px;padding-left:10px;border-left:3px solid var(--teal);}
+.result-content ul{padding-left:18px;margin:6px 0;}
+.result-content li{margin-bottom:5px;}
+.result-content strong{color:var(--ink);}
+.site-footer{text-align:center;padding:28px 16px;border-top:1px solid var(--border);color:rgba(26,26,46,.32);font-size:10px;font-family:"DM Mono",monospace;line-height:1.9;}
+@media(max-width:640px){
+  .mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:var(--ink);border-top:2px solid var(--gold);z-index:300;padding:8px 0;}
+  .mobile-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:rgba(255,255,255,.6);font-family:"Noto Serif TC",serif;font-size:10px;cursor:pointer;padding:6px 0;}
+  .mobile-nav-btn.active{color:var(--gold);}
+  .mobile-nav-btn .micon{font-size:18px;}
+  body{padding-bottom:70px;}
+  .header-nav{display:none;}
+}
+@media(min-width:641px){.mobile-nav{display:none;}}
+@media(max-width:1100px){.stage-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.stage-grid{grid-template-columns:1fr;}.criteria-grid{grid-template-columns:1fr;}.struct-form{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
-
-<!-- HEADER -->
 <header class="site-header">
-  <div class="header-inner">
-    <div class="logo-block">
-      <div class="logo-icon">🩺</div>
-      <div class="logo-text">
-        <div class="logo-title">婦癌臨床導航系統</div>
-        <div class="logo-sub">Gynecologic Oncology Navigator · 2026</div>
-      </div>
+<div class="header-inner">
+  <div class="logo-block">
+    <div class="logo-icon">🩺</div>
+    <div>
+      <div class="logo-title">婦癌臨床導航系統</div>
+      <div class="logo-sub">Gynecologic Oncology Navigator · 2026</div>
     </div>
-    <nav class="header-nav">
-      <button class="nav-btn active" onclick="switchTab('nav')">🗺 試驗導航地圖</button>
-      <button class="nav-btn" onclick="switchTab('ai')">🤖 AI 患者分析</button>
-    </nav>
   </div>
+  <nav class="header-nav">
+    <button class="nav-btn active" onclick="switchTab('nav',this)">🗺 試驗導航地圖</button>
+    <button class="nav-btn" onclick="switchTab('ai',this)">🤖 AI 患者分析</button>
+  </nav>
+</div>
 </header>
-
-<!-- NAVIGATION TAB -->
+<nav class="mobile-nav">
+  <button class="mobile-nav-btn active" id="mnav-nav" onclick="switchTab('nav',null,'mobile')">
+    <span class="micon">🗺</span>試驗導航
+  </button>
+  <button class="mobile-nav-btn" id="mnav-ai" onclick="switchTab('ai',null,'mobile')">
+    <span class="micon">🤖</span>AI 分析
+  </button>
+</nav>
+<div class="page-content">
 <div id="tab-nav" class="tab-panel active">
   <div class="cancer-selector">
-    <h3>選擇癌症類型</h3>
+    <div class="selector-label">第一步：選擇癌症類型</div>
     <div class="cancer-btns">
-      <button class="cancer-btn active" onclick="selectCancer('Endometrial', this)">🔴 子宮內膜癌</button>
-      <button class="cancer-btn" onclick="selectCancer('Ovarian', this)">🟣 卵巢癌</button>
-      <button class="cancer-btn" onclick="selectCancer('Cervical', this)">🟠 子宮頸癌</button>
-      <button class="cancer-btn" onclick="selectCancer('Uterine Sarcoma', this)">🔵 子宮肉瘤</button>
+      <button class="cancer-btn active" onclick="selectCancer('Endometrial',this)">🔴 子宮內膜癌</button>
+      <button class="cancer-btn" onclick="selectCancer('Ovarian',this)">🟣 卵巢癌</button>
+      <button class="cancer-btn" onclick="selectCancer('Cervical',this)">🟠 子宮頸癌</button>
+      <button class="cancer-btn" onclick="selectCancer('Uterine Sarcoma',this)">🔵 子宮肉瘤</button>
     </div>
   </div>
   <div id="stage-grid" class="stage-grid"></div>
 </div>
-
-<!-- AI TAB -->
 <div id="tab-ai" class="tab-panel">
   <div class="ai-panel">
     <div class="ai-hero">
       <h2>AI 患者臨床路徑分析</h2>
       <p>貼上患者病歷摘要，或上傳病理/影像照片，Gemini AI 將根據婦癌試驗資料庫，推薦最適合的治療路徑與可參與的臨床試驗。</p>
-      <span class="badge">⚡ Powered by Google Gemini · 需輸入 API Key</span>
+      <span class="ai-badge">⚡ Powered by Google Gemini · 需輸入 API Key</span>
     </div>
-
     <div class="api-setup">
       <div class="api-setup-text">
         <h4>🔑 Gemini API Key</h4>
         <p>前往 aistudio.google.com 免費取得</p>
       </div>
-      <input type="password" class="api-input" id="apiKey" placeholder="AIzaSy...">
+      <input type="password" class="api-input" id="apiKey" placeholder="AIzaSy…">
     </div>
-
-    <div class="info-box tip">
-      💡 患者資料僅在您的瀏覽器中處理，不會儲存於任何伺服器。API 請求直接由您的瀏覽器發送至 Google。
-    </div>
-
+    <div class="info-box tip">💡 患者資料僅在您的瀏覽器中處理，不會儲存於任何伺服器。</div>
     <div class="input-area">
-      <div class="input-mode-tabs">
-        <button class="mode-tab active" onclick="switchMode('text', this)">📝 文字輸入</button>
-        <button class="mode-tab" onclick="switchMode('image', this)">🖼 影像上傳</button>
-        <button class="mode-tab" onclick="switchMode('form', this)">📋 結構化表單</button>
+      <div class="mode-tabs">
+        <button class="mode-tab active" onclick="switchMode('text',this)">📝 文字輸入</button>
+        <button class="mode-tab" onclick="switchMode('image',this)">🖼 影像上傳</button>
+        <button class="mode-tab" onclick="switchMode('form',this)">📋 結構化表單</button>
       </div>
-
-      <!-- TEXT MODE -->
       <div id="mode-text">
-        <textarea class="text-input" id="textInput" placeholder="請貼上患者病歷摘要，例如：
-
-患者女性，63歲，子宮內膜癌 Stage IIIC2。
-組織型態：子宮內膜樣腺癌，Grade 3。
-分子分型：dMMR（MLH1/PMS2 缺失），p53 wild-type，POLE 未突變。
-CA-125: 68 U/mL。
-既往治療：已完成廣泛性子宮切除術 + 雙側附件切除 + 骨盆淋巴清掃。
-目前考慮一線化療方案，詢問是否可加入免疫治療或臨床試驗。"></textarea>
+        <textarea class="text-input" id="textInput" placeholder="請貼上患者病歷摘要，例如：&#10;&#10;患者女性，63歲，子宮內膜癌 Stage IIIC2。&#10;組織型態：子宮內膜樣腺癌，Grade 3。&#10;分子分型：dMMR（MLH1/PMS2缺失），p53 wild-type，POLE未突變。&#10;CA-125: 68 U/mL。&#10;目前考慮一線化療方案，詢問是否可加入免疫治療或臨床試驗。"></textarea>
       </div>
-
-      <!-- IMAGE MODE -->
       <div id="mode-image" style="display:none">
         <div class="upload-zone" onclick="document.getElementById('imgUpload').click()" id="uploadZone">
-          <div class="icon">📷</div>
-          <h4>點擊或拖曳上傳病理/影像檔案</h4>
-          <p>支援 JPG · PNG · WEBP · 病理切片 · CT 截圖 · 報告掃描</p>
+          <div class="uicon">📷</div>
+          <h4>點擊或拖曳上傳病理 / 影像檔案</h4>
+          <p>支援 JPG · PNG · WEBP · 病理切片 · CT截圖 · 報告掃描</p>
           <input type="file" id="imgUpload" accept="image/*" onchange="handleImageUpload(event)">
         </div>
-        <div class="uploaded-preview" id="uploadedPreview">
+        <div class="upload-preview" id="uploadedPreview">
           <img id="previewImg" src="" alt="preview">
           <span id="previewName"></span>
         </div>
-        <textarea class="text-input" id="imageContextInput" style="margin-top:14px; min-height:80px;" placeholder="補充說明（選填）：例如患者年齡、臨床分期、其他標記等…"></textarea>
+        <textarea class="text-input" id="imageContextInput" style="margin-top:12px;min-height:70px;" placeholder="補充說明（選填）：例如患者年齡、臨床分期、其他標記等…"></textarea>
       </div>
-
-      <!-- FORM MODE -->
       <div id="mode-form" style="display:none">
-        <div class="structured-form">
-          <div class="form-group">
-            <label>癌症類型</label>
+        <div class="struct-form">
+          <div class="form-group"><label>癌症類型</label>
             <select class="form-select" id="f-cancer">
-              <option>子宮內膜癌 (Endometrial)</option>
-              <option>卵巢癌 (Ovarian)</option>
-              <option>子宮頸癌 (Cervical)</option>
-              <option>子宮肉瘤 (Uterine Sarcoma)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>FIGO 分期</label>
+              <option>子宮內膜癌 (Endometrial)</option><option>卵巢癌 (Ovarian)</option>
+              <option>子宮頸癌 (Cervical)</option><option>子宮肉瘤 (Uterine Sarcoma)</option>
+            </select></div>
+          <div class="form-group"><label>FIGO 分期</label>
             <select class="form-select" id="f-stage">
-              <option>Stage I</option><option>Stage II</option>
-              <option>Stage III</option><option>Stage IV</option><option>復發</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>MMR 狀態</label>
+              <option>Stage I</option><option>Stage II</option><option>Stage III</option><option>Stage IV</option><option>復發</option>
+            </select></div>
+          <div class="form-group"><label>MMR 狀態</label>
             <select class="form-select" id="f-mmr">
               <option>dMMR / MSI-H</option><option>pMMR / MSS</option><option>未檢測</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>p53 狀態</label>
+            </select></div>
+          <div class="form-group"><label>p53 狀態</label>
             <select class="form-select" id="f-p53">
               <option>wild-type</option><option>mutant (abn)</option><option>未檢測</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>BRCA / HRD（卵巢癌）</label>
+            </select></div>
+          <div class="form-group"><label>POLE 突變</label>
+            <select class="form-select" id="f-pole">
+              <option>未突變</option><option>突變 (exonuclease domain)</option><option>未檢測</option>
+            </select></div>
+          <div class="form-group"><label>BRCA / HRD（卵巢癌）</label>
             <select class="form-select" id="f-brca">
-              <option>BRCA1/2 突變</option><option>HRD 陽性（BRCA wt）</option>
-              <option>HRD 陰性</option><option>未檢測</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>ECOG 體能狀態</label>
+              <option>BRCA1/2 突變</option><option>HRD陽性（BRCA wt）</option><option>HRD陰性</option><option>未檢測</option>
+            </select></div>
+          <div class="form-group"><label>ECOG 體能狀態</label>
             <select class="form-select" id="f-ecog">
-              <option>ECOG 0</option><option>ECOG 1</option>
-              <option>ECOG 2</option><option>ECOG ≥3</option>
-            </select>
-          </div>
-          <div class="form-group" style="grid-column:1/-1">
-            <label>既往治療史</label>
-            <input type="text" class="form-input-small" id="f-prior" placeholder="例如：廣泛子宮切除 + 骨盆淋巴清掃，未曾接受系統化療">
-          </div>
-          <div class="form-group" style="grid-column:1/-1">
-            <label>其他重要標記</label>
-            <input type="text" class="form-input-small" id="f-markers" placeholder="例如：HER2 2+, FRα 高表現, POLE mutation, PD-L1 CPS…">
-          </div>
+              <option>ECOG 0</option><option>ECOG 1</option><option>ECOG 2</option><option>ECOG ≥3</option>
+            </select></div>
+          <div class="form-group"><label>組織型態</label>
+            <input type="text" class="form-text" id="f-histo" placeholder="例如：子宮內膜樣腺癌G3、HGSC、Clear cell…"></div>
+          <div class="form-group" style="grid-column:1/-1"><label>既往治療史</label>
+            <input type="text" class="form-text" id="f-prior" placeholder="例如：廣泛子宮切除+骨盆淋巴清掃，未曾接受系統化療"></div>
+          <div class="form-group" style="grid-column:1/-1"><label>其他重要標記 / 特殊考量</label>
+            <input type="text" class="form-text" id="f-markers" placeholder="例如：HER2 2+, FRα高表現, PD-L1 CPS, 腹水, 腎功能…"></div>
         </div>
       </div>
     </div>
-
     <button class="analyze-btn" id="analyzeBtn" onclick="runAnalysis()">
       <span id="btnIcon">✨</span>
       <span id="btnText">啟動 Gemini AI 分析</span>
     </button>
-
     <div id="aiResult" class="ai-result">
       <div class="result-header">
         <span class="gemini-badge">GEMINI AI</span>
@@ -572,245 +255,230 @@ CA-125: 68 U/mL。
     </div>
   </div>
 </div>
-
-<!-- DETAIL MODAL -->
+</div>
 <div class="detail-overlay" id="detailOverlay" onclick="closeModal(event)">
   <div class="detail-modal">
-    <button class="modal-close" onclick="closeModal(null, true)">✕</button>
+    <button class="modal-close" onclick="closeModal(null,true)">✕</button>
     <div class="modal-title" id="modalTitle"></div>
-    <div class="modal-drug" id="modalDrug"></div>
-    <div class="modal-section">
-      <div class="modal-section-title">核心結論 Key Results</div>
-      <div class="result-highlight" id="modalResults"></div>
+    <div class="modal-meta">
+      <span class="modal-drug" id="modalDrug"></span>
+      <span class="modal-pharma" id="modalPharma"></span>
     </div>
-    <div class="modal-section">
-      <div class="modal-section-title">科學理據 Scientific Rationale</div>
-      <div id="modalRationale" style="font-size:13.5px; line-height:1.75; color:var(--ink-soft);"></div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-section-title">給藥方案 Regimen per Arm</div>
-      <div class="regimen-box" id="modalRegimen"></div>
-    </div>
-    <div class="modal-section">
-      <div class="modal-section-title">納入 / 排除標準</div>
+    <div class="m-section"><div class="m-label">核心結論 Key Results</div><div class="m-result" id="modalResults"></div></div>
+    <div class="m-section"><div class="m-label">科學理據 Scientific Rationale</div><div class="m-rationale" id="modalRationale"></div></div>
+    <div class="m-section"><div class="m-label">給藥方案 Regimen per Arm</div><div class="m-regimen" id="modalRegimen"></div></div>
+    <div class="m-section"><div class="m-label">納入 / 排除標準</div>
       <div class="criteria-grid">
-        <div class="criteria-box inc">
-          <h5>✅ Inclusion</h5>
-          <ul id="modalInclusion"></ul>
-        </div>
-        <div class="criteria-box exc">
-          <h5>❌ Exclusion</h5>
-          <ul id="modalExclusion"></ul>
-        </div>
+        <div class="criteria-box inc"><h5>✅ Inclusion</h5><ul id="modalInclusion"></ul></div>
+        <div class="criteria-box exc"><h5>❌ Exclusion</h5><ul id="modalExclusion"></ul></div>
       </div>
     </div>
   </div>
 </div>
-
 <footer class="site-footer">
   婦癌臨床導航系統 · 2026 旗艦整合版 · 僅供醫療專業人員參考使用<br>
   All clinical data sourced from published trial results and ClinicalTrials.gov · Not for patient self-diagnosis
 </footer>
-
 <script>
-// ════════════════════════════════════════
-// DATA: 臨床試驗資料庫 (精選核心)
-// ════════════════════════════════════════
-const TRIALS_DB = [
-  // Endometrial
-  {cancer:"Endometrial",pos:["P-TX","R-TX"],sub:["dMMR / MSI-H / MMRd","Recurrent EC"],name:"RUBY (ENGOT-EN6)",pharma:"GSK",drug:"Dostarlimab + CP",type:"published",
-   pop:"dMMR PFS HR 0.28；全體 OS HR 0.64。奠定一線免疫+化療新標準。",
-   rationale:"PD-1阻斷與含鉑化療具協同ICD效應，藉由化療誘導腫瘤抗原釋放，對MMRd族群達成極高持久應答率。",
-   regimen:"誘導期: Dostarlimab 500mg Q3W + Carboplatin AUC5 + Paclitaxel 175mg/m² x6週期\n維持期: Dostarlimab 1000mg Q6W 持續3年",
-   inclusion:["Stage III-IV或首次復發EC","ECOG 0-1","含Carcinosarcoma/Clear cell/Serous"],
-   exclusion:["既往PD-1/PD-L1治療","活動性自體免疫疾病","臨床顯著CNS轉移"],
-   outcomes:"dMMR 24m PFS率: 61.4% vs 15.7% (HR 0.28); ITT OS HR 0.64 (P=0.0021)"},
-  {cancer:"Endometrial",pos:["P-TX","R-TX"],sub:["dMMR / MSI-H / MMRd","pMMR / NSMP / MSS","Recurrent EC"],name:"NRG-GY018 (KEYNOTE-868)",pharma:"MSD",drug:"Pembrolizumab + CP",type:"published",
-   pop:"dMMR PFS HR 0.30；pMMR PFS HR 0.54。一線免疫+化療關鍵試驗。",
-   rationale:"ICI重塑腫瘤微環境，Pembrolizumab強化一線含鉑化療反應後的持久性。",
-   regimen:"Arm A: Pembrolizumab 200mg Q3W + CP x6週期\n維持期: Pembrolizumab 400mg Q6W x2年",
-   inclusion:["Stage III/IV或復發EC","提供MMR IHC檢測","ECOG 0-1"],
-   exclusion:["既往anti-PD-(L)1","活動性自體免疫需治療","CNS活動性病灶"],
-   outcomes:"dMMR PFS HR 0.30 (95% CI 0.19-0.48); pMMR PFS HR 0.54 (P<0.001)"},
-  {cancer:"Endometrial",pos:["P-TX"],sub:["pMMR / NSMP / MSS"],name:"DUO-E (ENGOT-EN9)",pharma:"AZ",drug:"Durvalumab + CP → Durva ± Ola",type:"published",
-   pop:"Durva+化療 PFS HR 0.71；三藥組 PFS HR 0.55；pMMR三藥組 HR 0.57。",
-   rationale:"PARPi與PD-L1抑制劑在維持階段的協同效果，PARPi誘導DNA損傷增加新抗原負荷。",
-   regimen:"Arm 1: CP對照組\nArm 2: CP+Durvalumab → Durva 1500mg Q4W維持\nArm 3: CP+Durvalumab → Durva + Olaparib 300mg bid維持",
-   inclusion:["晚期或復發EC一線","適合CP","ECOG 0-1"],
-   exclusion:["既往免疫治療/PARPi","活動性自體免疫疾病"],
-   outcomes:"pMMR Arm3 vs Arm1: PFS HR 0.57 (95% CI 0.42-0.79)"},
-  {cancer:"Endometrial",pos:["P-MT"],sub:["Maintenance Therapy"],name:"MK2870-033 (Ongoing)",pharma:"MSD",drug:"Sac-TMT + Pembrolizumab",type:"ongoing",
-   pop:"一線pMMR維持：TROP2-ADC+PD-1聯合維持，補足pMMR免疫單藥反應不足的缺口。",
-   rationale:"標靶Trop-2 ADC協同PD-1。ADC誘導ICD改善微環境，提升pMMR患者維持階段應答深度。",
-   regimen:"Arm A: Sac-TMT 5mg/kg Q6W + Pembrolizumab 400mg Q6W維持\nArm B: 醫師選擇維持方案（對照）",
-   inclusion:["新診斷pMMR/MSS EC","FIGO III-IV期","一線CP+Pembro後CR/PR"],
-   exclusion:["先前系統性IO治療","子宮肉瘤"],
-   outcomes:"招募中 (Ongoing)"},
-  {cancer:"Endometrial",pos:["R-TX"],sub:["Recurrent EC"],name:"KEYNOTE-775 (KN775)",pharma:"MSD/Eisai",drug:"Lenvatinib + Pembrolizumab",type:"published",
-   pop:"復發EC二線：pMMR OS HR 0.68；全體 OS HR 0.62。確立二線重要組合。",
-   rationale:"VEGF-TKI重塑血管並減輕免疫抑制，克服MSS腫瘤之免疫冷微環境。",
-   regimen:"Lenvatinib 20mg QD + Pembrolizumab 200mg Q3W 直至進展",
-   inclusion:["先前至少一次含鉑化療進展","ECOG 0-1","不限MMR狀態"],
-   exclusion:["既往PD-1/PD-L1","未控制高血壓","出血/廔管高風險"],
-   outcomes:"pMMR OS: 17.4m vs 12.0m (HR 0.68); ITT OS HR 0.62"},
-  // Ovarian
-  {cancer:"Ovarian",pos:["P-MT"],sub:["BRCA mutation"],name:"SOLO-1",pharma:"AZ",drug:"Olaparib",type:"published",
-   pop:"BRCAm一線維持金標準：7年存活率67%，PFS HR 0.33。",
-   rationale:"針對BRCA突變患者，PARPi達成合成致死效果延緩復發。",
-   regimen:"Olaparib 300mg BID 維持（通常至2年或進展）\n對照組: Placebo",
-   inclusion:["新診斷晚期卵巢癌","germline或somatic BRCA1/2突變","一線鉑化療後CR/PR"],
-   exclusion:["先前接受PARP抑制劑","持續性骨髓抑制"],
-   outcomes:"mPFS: 56.0m vs 13.8m (HR 0.30); 7yr OS Rate 67%"},
-  {cancer:"Ovarian",pos:["P-MT"],sub:["HRD positive (wt)","HRD negative (pHRD)"],name:"PRIMA",pharma:"GSK",drug:"Niraparib",type:"published",
-   pop:"全人群一線維持：HRD+ PFS HR 0.43；全體ITT HR 0.62。",
-   rationale:"不論HRD狀態，PARPi強化一線化療後維持獲益。",
-   regimen:"Niraparib 維持（起始劑量依體重/血小板調整，至36個月或進展）",
-   inclusion:["新診斷Stage III/IV高復發風險","一線鉑化療後CR/PR"],
-   exclusion:["MDS/AML風險","先前PARP抑制劑"],
-   outcomes:"HRD+ PFS HR 0.43 (95% CI 0.31-0.59); ITT HR 0.62"},
-  {cancer:"Ovarian",pos:["R-TX"],sub:["PROC (Resistant Recur)"],name:"MIRASOL (GOG-3045)",pharma:"ImmunoGen",drug:"Mirvetuximab Soravtansine",type:"published",
-   pop:"FRα高表現PROC：OS HR 0.67；ORR 42.3%。確立FRα ADC關鍵地位。",
-   rationale:"針對FRα高表現PROC患者，首個ADC生存獲益研究。",
-   regimen:"Mirvetuximab 6.0mg/kg (AIBW) IV Q3W 直至進展\n對照: 醫師選擇化療",
-   inclusion:["鉑類抗藥","FRα高表現"],
-   exclusion:["不符合FRα門檻","不可控眼部/神經毒性風險"],
-   outcomes:"mOS: 16.4m vs 12.7m (HR 0.67); mPFS HR 0.65; ORR 42.3%"},
-  {cancer:"Ovarian",pos:["R-TX"],sub:["PSOC (Sensitive Recur)"],name:"DESKTOP III",pharma:"AGO",drug:"Secondary Cytoreduction Surgery",type:"published",
-   pop:"AGO Score+患者次減積手術：OS HR 0.75。R0切除mOS 53.7m。",
-   rationale:"嚴選患者（AGO Score陽性）二次手術具生存獲益。",
-   regimen:"手術組: 腫瘤完全切除 → 含鉑化療\n化療組: 單純含鉑複方化療",
-   inclusion:["首次鉑類敏感復發 PFI>6m","AGO Score陽性","可望達到complete resection"],
-   exclusion:["無法達到R0或手術風險過高"],
-   outcomes:"ITT mOS: 53.7m vs 46.0m (HR 0.75); R0切除mOS 61.9m"},
-  // Cervical
-  {cancer:"Cervical",pos:["P-TX"],sub:["Locally Advanced (CCRT)"],name:"KEYNOTE-A18 (ENGOT-cx11)",pharma:"MSD",drug:"Pembrolizumab + CCRT",type:"published",
-   pop:"LACC標準：36m OS 82.6% (HR 0.67)。免疫治療整合入根治同步化放療。",
-   rationale:"將免疫整合入高風險局部晚期之根治同步化放療。",
-   regimen:"CCRT (Cisplatin 40mg/m² 週服 + RT) 同步 Pembro 200mg Q3W x5週期\n→ 維持 Pembro 400mg Q6W x15週期",
-   inclusion:["新診斷Stage IB2-IIB LN(+)或Stage III-IVA"],
-   exclusion:["既往系統性治療","活動性自體免疫","放療禁忌"],
-   outcomes:"24m PFS: 68% vs 57% (HR 0.70); 36m OS: 82.6% vs 74.8% (HR 0.67)"},
-  {cancer:"Cervical",pos:["P-TX"],sub:["Locally Advanced (CCRT)"],name:"INTERLACE",pharma:"UCL",drug:"Induction Carbo/Pacli → CCRT",type:"published",
-   pop:"誘導化療→CCRT策略：5年OS 80% vs 72% (HR 0.60)。",
-   rationale:"誘導化療解決放療前的微小轉移。",
-   regimen:"誘導期: Paclitaxel 80mg/m² + Carboplatin AUC2 每週 x6週期\n→ 接續標準CCRT",
-   inclusion:["treatment-naïve LACC","適合根治性CCRT"],
-   exclusion:["無法接受化療或根治性放療"],
-   outcomes:"5yr OS: 80% vs 72% (HR 0.60); 5yr PFS: 73% vs 64% (HR 0.65)"},
-  {cancer:"Cervical",pos:["R-TX"],sub:["Recurr / Metastatic"],name:"innovaTV 301 (ENGOT-cx12)",pharma:"Genmab",drug:"Tisotumab Vedotin (ADC)",type:"published",
-   pop:"後線ADC突破：OS HR 0.70；ORR 17.8%。",
-   rationale:"標靶組織因子ADC，解決後線化療耐藥。",
-   regimen:"Tisotumab Vedotin 2.0mg/kg IV Q3W\n對照: 醫師選擇化療",
-   inclusion:["recurrent/metastatic宮頸癌","2L/3L治療"],
-   exclusion:["嚴重角膜/眼部風險"],
-   outcomes:"mOS: 11.5m vs 9.5m (HR 0.70); ORR 17.8% vs 5.2%"},
-  // Uterine Sarcoma
-  {cancer:"Uterine Sarcoma",pos:["P-TX","R-TX"],sub:["Carcinosarcoma"],name:"NRG/GOG-0261",pharma:"NRG Oncology",drug:"Paclitaxel + Carboplatin",type:"published",
-   pop:"UCS新標準：PC方案不劣於PI且毒性顯著降低。PFS 14.6m vs 10.3m。",
-   rationale:"Pacli/Carbo確立為癌肉瘤一線治療新標竿，取代毒性較大的Ifosfamide方案。",
-   regimen:"Arm A: Paclitaxel 175mg/m² + Carboplatin AUC6 Q3W\nArm B: Paclitaxel 135mg/m² + Ifosfamide Q3W",
-   inclusion:["Stage III-IV或復發性子宮/卵巢癌肉瘤","ECOG 0-2"],
-   exclusion:[],
-   outcomes:"PFS: 14.6m vs 10.3m; OS: 37m vs 29m (非劣效達成)"},
-  {cancer:"Uterine Sarcoma",pos:["R-TX"],sub:["Recurr / Metastatic"],name:"LMS-04",pharma:"French Sarcoma Group",drug:"Doxorubicin + Trabectedin",type:"published",
-   pop:"LMS一線新高度：mPFS 12.2m vs 6.2m (HR 0.37)。",
-   rationale:"專對LMS，Doxorubicin聯用Trabectedin挑戰傳統單藥治療瓶頸。",
-   regimen:"Doxorubicin 60mg/m² + Trabectedin 1.1mg/m² Q3W\n→ 接續Trabectedin單藥維持",
-   inclusion:["晚期/轉移性LMS","一線治療"],
-   exclusion:[],
-   outcomes:"mPFS: 12.2m vs 6.2m (HR 0.37); mOS: 31.6m vs 24.1m"},
+const TRIALS=[
+// ENDOMETRIAL
+{c:"Endometrial",p:["P-TX","R-TX"],s:["dMMR / MSI-H / MMRd","pMMR / NSMP / MSS","Recurrent EC"],n:"RUBY (ENGOT-EN6/GOG-3031)",ph:"GSK",d:"Dostarlimab+CP",t:"p",pop:"晚期轉移第一線或復發，dMMR HR 0.28；全體HR 0.64；OS HR 0.69。一線「免疫＋化療」新標準。",rat:"PD-1 blockade與含鉑化療具協同ICD效應，藉由化療誘導腫瘤抗原釋放，針對MMRd族群達成極高持久應答率。",reg:"Dostarlimab 500mg Q3W + Carboplatin AUC5 + Paclitaxel 175mg/m² x6週期\n→ 維持: Dostarlimab 1000mg Q6W 持續3年\nArm 2: Placebo + CP x6週期",inc:["新診斷FIGO Stage III-IV或首次復發EC","ECOG 0-1","含Carcinosarcoma/Clear cell/Serous"],exc:["既往PD-1/PD-L1治療","活動性自體免疫疾病","未控制感染","CNS轉移"],out:"dMMR 24m PFS率:61.4% vs 15.7%(HR 0.28,CI 0.16-0.50); ITT mOS HR 0.64(P=0.0021)"},
+{c:"Endometrial",p:["P-TX","R-TX"],s:["dMMR / MSI-H / MMRd","pMMR / NSMP / MSS","Recurrent EC"],n:"NRG-GY018 (KEYNOTE-868)",ph:"MSD",d:"Pembrolizumab+CP",t:"p",pop:"Pembrolizumab＋化療一線延長PFS：dMMR HR 0.30；pMMR HR 0.54。改變臨床實務的關鍵試驗。",rat:"ICI重塑腫瘤微環境，Pembrolizumab強化一線含鉑化療反應後的持久性。",reg:"Arm A: Pembrolizumab 200mg Q3W + Carbo AUC5 + Pacli 175mg/m² x6週期\n→ 維持: Pembrolizumab 400mg Q6W 持續2年\nArm B: Placebo + CP x6週期",inc:["Stage III/IV或復發EC","MMR IHC檢測","ECOG 0-1"],exc:["既往anti–PD-(L)1","活動性自體免疫需治療","CNS活動性病灶"],out:"dMMR PFS HR 0.30(CI 0.19-0.48); pMMR PFS HR 0.54(P<0.001)"},
+{c:"Endometrial",p:["P-TX"],s:["pMMR / NSMP / MSS","dMMR / MSI-H / MMRd"],n:"DUO-E (ENGOT-EN9)",ph:"AstraZeneca",d:"Durvalumab+CP → Durva±Ola",t:"p",pop:"Durva+化療 PFS HR 0.71；三藥組HR 0.55；pMMR三藥組HR 0.57；OS HR 0.59。",rat:"PARPi與PD-L1抑制劑在維持階段協同效果，PARPi誘導DNA損傷增加新抗原負荷，強化免疫應答。",reg:"Arm 1: CP+placebo → placebo維持\nArm 2: CP+Durvalumab → Durvalumab 1500mg Q4W維持\nArm 3: CP+Durvalumab → Durvalumab 1500mg Q4W + Olaparib 300mg bid維持",inc:["新診斷晚期或復發EC","適合CP","ECOG 0-1"],exc:["既往免疫治療/PARPi","活動性自體免疫需治療"],out:"pMMR Arm3 vs Arm1: PFS HR 0.57(CI 0.42-0.79); dMMR HR 0.42(0.22-0.80)"},
+{c:"Endometrial",p:["P-TX","R-TX"],s:["dMMR / MSI-H / MMRd","Recurrent EC"],n:"AtTEnd (ENGOT-EN7)",ph:"Roche",d:"Atezolizumab+CP",t:"p",pop:"dMMR族群PFS HR 0.36；效益主要集中在dMMR；pMMR效益相對不明顯。ITT OS HR 0.82。",rat:"驗證一線PD-L1抑制劑併用化療對晚期或復發患者之生存優勢。",reg:"Arm A: Atezolizumab 1200mg Q3W + CP x6-8週期 → 維持Atezolizumab 1200mg Q3W\nArm B: Placebo + CP x6-8週期",inc:["Advanced或recurrent EC","一線接受CP"],exc:["既往PD-(L)1抑制劑","活動性自體免疫需治療"],out:"dMMR PFS: NR vs 6.9m(HR 0.36,CI 0.23-0.57); 全人群mOS HR 0.82(P=0.048)"},
+{c:"Endometrial",p:["P-TX"],s:["p53 mutation (高拷貝型)","pMMR / NSMP / MSS","dMMR / MSI-H / MMRd"],n:"KEYNOTE-B21 (ENGOT-en11)",ph:"MSD",d:"Pembrolizumab+Chemo±RT",t:"p",pop:"高風險輔助治療挑戰：輔助化療加入Pembrolizumab並未顯著改善DFS(HR 1.02)，目前不建議常規加入。",rat:"旨在驗證高風險已切除EC患者，在輔助化療基礎上加ICI是否能降低復發風險。",reg:"試驗組: Pembrolizumab 200mg Q3W x6 + CP ± 放射治療\n→ 維持: Pembrolizumab 400mg Q6W x14週期",inc:["新診斷高風險且完全切除EC","FIGO 2009 Stage I/II(Serous/Clear cell)或Stage III/IV","ECOG 0-1"],exc:["先前全身性治療","活動性自體免疫疾病"],out:"2yr DFS: 75.2% vs 74.2%; HR 1.02(CI 0.79-1.32), P=0.57"},
+{c:"Endometrial",p:["P-MT"],s:["Maintenance Therapy"],n:"DUO-E (Maint)",ph:"AstraZeneca",d:"Durvalumab±Olaparib維持",t:"p",pop:"維持階段：Durva+化療 PFS HR 0.71；三藥組HR 0.55；pMMR三藥組HR 0.57；OS HR 0.59。",rat:"PARPi與PD-L1抑制劑在維持階段對pMMR患者的協同增敏效應。",reg:"Arm 2: Durvalumab 1500mg Q4W維持\nArm 3: Durvalumab + Olaparib 300mg bid維持",inc:["一線含鉑化療後達CR/PR之晚期EC","提供MMR IHC狀態"],exc:["先前接受過系統性IO治療"],out:"pMMR三藥組(Ola+Durva) PFS HR 0.57(CI 0.42-0.79)"},
+{c:"Endometrial",p:["P-MT"],s:["Maintenance Therapy"],n:"SIENDO (ENGOT-EN5/GOG-3055)",ph:"Karyopharm",d:"Selinexor",t:"p",pop:"TP53 wild-type族群獲益極佳：維持治療顯著延長PFS達5倍以上(27.4m vs 5.2m, HR 0.41)。",rat:"XPO1抑制劑Selinexor在TP53 wild-type患者中誘導細胞核內抑癌蛋白蓄積，引發腫瘤細胞凋亡。",reg:"Selinexor 80mg 每週口服一次，持續直到PD或不可耐受毒性",inc:["完成一線含鉑化療後達CR或PR之晚期/復發性EC","ECOG 0-1","提供組織樣本進行p53狀態判定"],exc:["先前接受XPO1抑制劑治療","活動性腦轉移","無法吞嚥口服藥物"],out:"TP53 wild-type PFS: 27.4m vs 5.2m(HR 0.41, CI 0.23-0.73)"},
+{c:"Endometrial",p:["R-TX"],s:["Recurrent EC"],n:"KEYNOTE-775 (Study 309)",ph:"MSD/Eisai",d:"Lenvatinib+Pembrolizumab",t:"p",pop:"復發/晚期EC改善PFS與OS（pMMR：PFS HR 0.60、OS HR 0.68；全體：PFS HR 0.56、OS HR 0.62）。",rat:"VEGF-TKI重塑血管並減輕免疫抑制，克服MSS腫瘤之免疫冷微環境。",reg:"Lenvatinib 20mg QD + Pembrolizumab 200mg Q3W 直至PD或不可耐受",inc:["Advanced/recurrent EC","先前至少一次含鉑化療進展（最多前線2次）","ECOG 0-1","不限MMR狀態"],exc:["既往PD-1/PD-L1","活動性自體免疫需治療","未控制高血壓","出血/廔管高風險"],out:"pMMR OS: 17.4m vs 12.0m(HR 0.68, P<0.001); ITT OS: 18.3m vs 11.4m(HR 0.62)"},
+{c:"Endometrial",p:["R-TX"],s:["Recurrent EC"],n:"GARNET",ph:"GSK",d:"Dostarlimab 單藥",t:"p",pop:"單臂研究。dMMR ORR 45.5%; DOR未達到。pMMR ORR約10-15%。",rat:"針對MSI-H/dMMR高免疫原性患者，單藥PD-1阻斷即可達成持久應答。",reg:"Dostarlimab 500mg Q3W x4劑 → 1000mg Q6W 維持直到進展",inc:["Recurrent/advanced EC，先前治療後","分dMMR/MSI-H與pMMR cohort"],exc:["既往PD-1/PD-L1","活動性自體免疫需治療"],out:"dMMR/MSI-H ORR 45.5%; DOR未達到; pMMR ORR~10-15%"},
+{c:"Endometrial",p:["P-TX"],s:["dMMR / MSI-H / MMRd","pMMR / NSMP / MSS","POLE mutation (超突變型)","p53 mutation (高拷貝型)"],n:"RAINBO Program",ph:"ENGOT/GOG",d:"分子分型導航輔助治療",t:"o",pop:"精準輔助治療新標準：根據四大分子分型進行治療降階或增益，優化術後預後並減少過度治療。",rat:"RAINBO由四平台組成：RED(p53abn加化放療)、GREEN(NSMP加激素)、AMBER(MMRd加免疫)、BLUE(POLE觀察)。",reg:"RED: 化放療 + Olaparib維持\nGREEN: 骨盆放療 + Letrozole維持\nAMBER: 骨盆放療 + Dostarlimab維持\nBLUE: 術後觀察（De-escalation）",inc:["FIGO Stage I-III EC","術後完成分子分型鑑定(POLE,MMR,p53)","具備中高風險特徵"],exc:[],out:"試驗進行中(Ongoing)，BLUE平台旨在驗證POLE突變可否免除輔助治療"},
+{c:"Endometrial",p:["P-TX"],s:["pMMR / NSMP / MSS"],n:"PORTEC-4a",ph:"Leiden University",d:"Molecular-integrated Risk Profile",t:"p",pop:"分子整合風險導航：比較分子風險模型與傳統臨床病理風險導航的輔助放療，達成更精準的患者分流。",rat:"驗證基於分子特徵（p53, POLE, MMR, CTNNB1, L1CAM）的風險評估是否優於傳統臨床分期。",reg:"試驗組: 依分子風險模型決定（觀察/VBT/骨盆放療）\n對照組: 依傳統臨床風險標準進行VBT",inc:["FIGO Stage I EC","具備中度風險病理特徵","完成完整分子分型標記檢測"],exc:[],out:"主要終點為陰道復發率；預期分子導航組能減少15%的過度放療"},
+{c:"Endometrial",p:["P-MT"],s:["Maintenance Therapy"],n:"MK2870-033",ph:"MSD",d:"Sac-TMT+Pembrolizumab",t:"o",pop:"一線pMMR維持：TROP2-ADC+PD-1聯合維持，補足pMMR免疫單藥反應不足的缺口。",rat:"標靶Trop-2 ADC(Sac-TMT)協同PD-1，ADC誘導ICD改善微環境，提升pMMR患者維持階段應答深度。",reg:"Arm A: Sac-TMT 5mg/kg Q6W + Pembrolizumab 400mg Q6W 維持至PD\nArm B: 醫師選擇維持方案（對照）",inc:["新診斷pMMR/MSS EC（IHC確認）","FIGO III-IV期","一線CP+Pembro後CR/PR"],exc:["先前系統性IO治療","組織學為子宮肉瘤"],out:"招募中(Ongoing)"},
+{c:"Endometrial",p:["R-TX"],s:["Recurrent EC"],n:"GU-US-682-6769 (SG/Trodelvy)",ph:"Gilead",d:"Sacituzumab Govitecan",t:"o",pop:"鉑類+PD-(L)1後仍進展的後線空窗期：TROP2-ADC能否在PFS/OS超越單藥化療。",rat:"TROP2標靶，SN-38載荷引發強力DNA損傷，專攻鉑類與ICI失敗後之復發救援。",reg:"Sacituzumab govitecan 10mg/kg (D1, D8) Q21D 直至PD",inc:["復發性EC（不含肉瘤）","先前含鉑化療及PD-1/L1失敗進展","ECOG 0-1"],exc:[],out:"招募中(Ongoing)"},
+// OVARIAN
+{c:"Ovarian",p:["P-TX"],s:["HGSC / Endometrioid"],n:"GOG-0218",ph:"Roche/GOG",d:"Chemo+Bevacizumab",t:"p",pop:"一線標靶基石：加入Bev並接續維持治療能顯著延長PFS(HR 0.72)，奠定標靶維持標準。",rat:"抗血管新生藥物阻斷VEGF通路，在一線化療期間與之後抑制腫瘤新生血管達到長期控制。",reg:"Bevacizumab 15mg/kg Q3W + Carbo/Pacli x6週期 → 單藥Bevacizumab維持至第22週期",inc:["新診斷FIGO Stage III（不全切除）或Stage IV上皮性卵巢癌","ECOG 0-2","接受過減積手術"],exc:["非上皮性卵巢癌","有腸穿孔病史或高風險","傷口未癒合"],out:"mPFS: 14.1m vs 10.3m(HR 0.717, P<0.001)"},
+{c:"Ovarian",p:["P-TX"],s:["HGSC / Endometrioid"],n:"ICON7",ph:"Roche/ENGOT",d:"Chemo+Bevacizumab (Low Dose)",t:"p",pop:"一線標靶證實：Bev PFS HR 0.81，高風險族群OS延長獲益(HR 0.64)。",rat:"驗證較低劑量Bev(7.5mg/kg)聯用化療與維持治療的有效性與安全性。",reg:"Bevacizumab 7.5mg/kg Q3W + Carbo/Pacli x6週期 → 單藥維持12週期",inc:["FIGO Stage I-II（高風險）或Stage III-IV上皮性卵巢癌","不限手術切除程度"],exc:["臨床顯著之心血管疾病","近期有重大手術史"],out:"PFS HR:0.81; 高風險族群mOS: 39.7m vs 30.2m(HR 0.64)"},
+{c:"Ovarian",p:["P-TX"],s:["HGSC / Endometrioid"],n:"BOOST / ENGOT-ov15",ph:"Roche/ENGOT",d:"Bev 15m vs 30m",t:"p",pop:"維持時程定案：Bev維持30個月相較15個月無額外生存獲益(HR 0.99)。",rat:"確定Bevacizumab在一線維持治療的最佳持續時間。",reg:"控制組: Bev 15mg/kg Q3W維持15個月\n試驗組: Bev 15mg/kg Q3W維持至30個月",inc:["新診斷FIGO Stage IIB-IV上皮性卵巢癌","完成化療+Bev誘導治療者"],exc:["誘導期間疾病已進展","對Bevacizumab不耐受"],out:"mPFS: 24.2m vs 26.0m(HR 0.99, P=0.90)"},
+{c:"Ovarian",p:["P-TX"],s:["Neoadjuvant Setting"],n:"van Driel HIPEC",ph:"NEJM",d:"Surgery+HIPEC(Cisplatin)",t:"p",pop:"間隔減積手術加入HIPEC可改善OS(HR 0.67)。IDS加溫：mOS延長12個月。",rat:"術中加溫腹腔化療強化物理殺傷與滲透力。",reg:"Stage III NACT後IDS時同步加溫(42°C)腹腔灌注Cisplatin 100mg/m² 90分鐘\nArm A: surgery+HIPEC+後續化療\nArm B: surgery(no HIPEC)+後續化療",inc:["Stage III epithelial ovarian cancer","NACT後適合interval debulking"],exc:["不適合大手術或HIPEC（腎功能/全身狀況等）"],out:"mOS: 45.7m vs 33.9m(HR 0.67, CI 0.48-0.94)"},
+{c:"Ovarian",p:["P-TX"],s:["Neoadjuvant Setting"],n:"EORTC 55971 (NEJM 2010)",ph:"EORTC",d:"PDS vs NACT",t:"p",pop:"NACT非劣效性里程碑：NACT後IDS與PDS相比OS相當，且手術併發症顯著降低。",rat:"探討先化療縮小腫瘤後再手術是否能達成相同預後並降低風險。",reg:"PDS組: 直接減積手術 → 含鉑化療\nNACT組: 3週期化療 → IDS手術 → 3週期化療",inc:["FIGO Stage IIIC或IV上皮性卵巢癌/腹膜癌","ECOG 0-2","具備組織學證據"],exc:[],out:"mOS: 30m(NACT) vs 29m(PDS)；NACT組重大併發症顯著較少"},
+{c:"Ovarian",p:["P-TX"],s:["Neoadjuvant Setting"],n:"CHORUS (Lancet 2015)",ph:"MRC",d:"PDS vs NACT (UK Standard)",t:"p",pop:"NACT標準再次確立：確認NACT非劣於PDS，且顯著減少術後28天內死亡率與嚴重併發症。",rat:"在英國醫療體系下驗證EORTC 55971結果。",reg:"NACT組: 3週期CP → IDS → 3週期CP\nPDS組: 直接手術 → 6週期CP",inc:["晚期上皮性卵巢癌","CT顯示腫瘤負荷大或體能狀況較差"],exc:[],out:"mOS: 24.1m(NACT) vs 22.6m(PDS)；NACT顯著改善生活品質與手術安全性"},
+{c:"Ovarian",p:["P-TX"],s:["Neoadjuvant Setting"],n:"SCORPION (Phase III)",ph:"Fagotti et al.",d:"NACT vs PDS (High Tumor Burden)",t:"p",pop:"高腫瘤負荷對策：Fagotti評分≥8者，NACT顯著降低圍術期發病率且不影響PFS/OS。",rat:"利用腹腔鏡Fagotti評分精準篩選無法達成R0的高風險患者，探討NACT的介入價值。",reg:"NACT組: 先行化療後進行IDS\nPDS組: 強力嘗試直接減積手術",inc:["晚期卵巢癌","腹腔鏡預估Fagotti評分≥8"],exc:[],out:"重大併發症率: NACT組顯著較低；PFS與OS兩組無顯著統計學差異"},
+{c:"Ovarian",p:["P-TX"],s:["Neoadjuvant Setting"],n:"JCOG0602",ph:"Japan Oncology",d:"NACT vs PDS (Japanese Data)",t:"p",pop:"日本實證支持：NACT可顯著縮短手術時間、減少失血量，並達成與PDS相當的生存預後。",rat:"在亞洲人群中驗證NACT的非劣效性。",reg:"NACT組: 4週期CP → IDS → 4週期CP\nPDS組: 直接手術 → 8週期CP",inc:["FIGO Stage III/IV卵巢癌/腹膜癌","預估手術難度高"],exc:[],out:"mOS: 44.3m(NACT) vs 49.0m(PDS)；達到非劣效性終點"},
+{c:"Ovarian",p:["P-TX"],s:["Neoadjuvant Setting"],n:"TRUST (Ongoing)",ph:"ENGOT-ov33",d:"Quality-controlled PDS vs NACT",t:"o",pop:"高品質手術挑戰：在全球高品質手術中心重新評估PDS是否優於NACT，備受學界期待。",rat:"TRUST要求極高R0率，旨在為PDS重新正名。",reg:"由認證高品質手術中心進行隨機分配，嚴格執行根治性PDS手術",inc:["新診斷Stage IIIB-IVB卵巢癌","ECOG 0-1"],exc:[],out:"試驗進行中(Ongoing)；主要終點為OS"},
+{c:"Ovarian",p:["P-TX"],s:["DDCT Setting"],n:"JGOG 3016",ph:"JGOG",d:"Dose-dense Paclitaxel",t:"p",pop:"劑量密集化療重大突破：亞洲人群，每週Paclitaxel顯著延長PFS(28m vs 17m)與OS(HR 0.75)。",rat:"更頻繁的給藥頻率來抑制腫瘤血管新生並減少腫瘤細胞在化療間期的修復機會。",reg:"Paclitaxel 80mg/m² (D1,8,15) + Carboplatin AUC6(D1) Q21d x6週期",inc:["Stage II-IV上皮性卵巢癌/腹膜癌","完成初步減積手術","ECOG 0-2"],exc:[],out:"mPFS: 28.2m vs 17.5m(HR 0.71); mOS: 100.5m vs 62.2m(HR 0.75)"},
+{c:"Ovarian",p:["P-TX"],s:["DDCT Setting"],n:"GOG-262",ph:"GOG",d:"Weekly Paclitaxel±Bev",t:"p",pop:"標靶併用之權衡：不使用Bevacizumab時每週給藥顯著延長PFS；若併用標靶，則無額外獲益。",rat:"北美人群驗證JGOG 3016結果，探討Bev是否影響每週化療方案優勢。",reg:"Weekly Paclitaxel 80mg/m² 每週 + Carboplatin AUC6 Q3W，± Bevacizumab",inc:["Stage II-IV上皮性卵巢癌","不限手術切除程度"],exc:[],out:"不含Bev族群PFS: 14.2m(Weekly) vs 10.3m(Q3W)；含Bev族群兩組無差異"},
+{c:"Ovarian",p:["P-TX"],s:["DDCT Setting"],n:"ICON8",ph:"GCIG/MRC",d:"Standard vs Weekly Pacli vs Weekly Carbo/Pacli",t:"p",pop:"歐洲大型實證：每週化療方案相較標準Q3W並未延長PFS。",rat:"三臂隨機試驗確定每週單藥或雙藥化療是否應成為上皮性卵巢癌新標準輔助治療。",reg:"Arm 1: Q3W標準方案\nArm 2: Weekly Pacli 80mg/m²+Q3W Carbo\nArm 3: Weekly Pacli 70mg/m²+Weekly Carbo AUC2",inc:["Stage IC-IV上皮性卵巢癌","計畫接受輔助化療或NACT"],exc:[],out:"mPFS: Arm1(17.7m), Arm2(20.8m), Arm3(21.0m)；三組間無統計學顯著差異"},
+{c:"Ovarian",p:["P-TX"],s:["DDCT Setting"],n:"MITO-7",ph:"MITO/ENGOT",d:"Low-dose Weekly Carbo/Pacli",t:"p",pop:"去毒強化標準：每週低劑量組合雖未延長PFS，但顯著提升生活品質並降低血液與神經毒性。",rat:"探討更溫和的每週低劑量組合是否能維持療效並改善耐受性。",reg:"Paclitaxel 60mg/m² + Carboplatin AUC2 同時每週給藥，共18週",inc:["Stage I-IV上皮性卵巢癌","ECOG 0-2"],exc:[],out:"mPFS: 17.3m vs 18.3m(P=0.66)；生活品質量表數據顯著優於Q3W組"},
+{c:"Ovarian",p:["P-TX"],s:["HGSC / Endometrioid"],n:"LION",ph:"NEJM",d:"No Lymphadenectomy",t:"p",pop:"系統性淋巴清掃不改善存活(OS HR 1.06；PFS HR 1.11)且併發症增加，改變臨床陰性LN患者手術範式。",rat:"臨床/影像陰性淋巴結且完成腫瘤切除患者，系統性清掃是否有生存獲益。",reg:"Arm A: 系統性骨盆+腹主動脈旁淋巴清掃\nArm B: 不清掃淋巴結",inc:["Advanced ovarian cancer","Complete resection","淋巴結臨床陰性"],exc:["明顯淋巴結病灶","無法耐受手術延長"],out:"OS HR 1.06（無獲益）；mOS: 65.5m vs 69.2m"},
+{c:"Ovarian",p:["P-TX"],s:["IP Setting"],n:"GOG-172 (NEJM 2006)",ph:"GOG",d:"IP Cisplatin/Paclitaxel Gold Standard",t:"p",pop:"IP化療黃金標準：Stage III殘餘病灶≤1cm患者，OS驚人延長達16個月。",rat:"確認R0/R1手術後，合併使用IV與IP Paclitaxel/Cisplatin是最有效的輔助化療策略。",reg:"D1: Paclitaxel 135mg/m²(IV 24h)\nD2: Cisplatin 100mg/m²(IP)\nD8: Paclitaxel 60mg/m²(IP) Q3W x6",inc:["Stage III上皮性卵巢癌/腹膜癌","最優減積手術後（殘餘病灶≤1cm）","ECOG 0-1"],exc:[],out:"mOS: 65.6m(IP) vs 49.7m(IV, P=0.03); mPFS: 23.8m vs 18.3m"},
+{c:"Ovarian",p:["P-TX"],s:["IP Setting"],n:"GOG-252",ph:"GOG",d:"IP vs IV with Bevacizumab",t:"p",pop:"IP地位重檢視：所有組別均併用Bev時，IP與IV組PFS並無顯著差異且IP組毒性較高。",rat:"探討在標靶時代，IP投藥模式是否仍能維持優於IV的生存優勢。",reg:"三組均加Bev:\n1. IV Carbo/Pacli\n2. IP Carbo/IV Pacli\n3. IP Cis/Pacli(按GOG-172修改)",inc:["Stage II-III上皮性卵巢癌","殘餘病灶≤1cm","適合使用Bevacizumab"],exc:[],out:"mPFS: 三組均落在27-28個月（無統計差異）；IP組導管相關併發症較多"},
+{c:"Ovarian",p:["P-TX"],s:["IP Setting","Neoadjuvant Setting"],n:"OV21/PETROC (GCIG)",ph:"NCIC/GCIG",d:"IP Carboplatin vs IV",t:"p",pop:"IP藥物改良研究：IP Carboplatin具有良好耐受性，且在PFS上展現出與IP Cisplatin競爭的潛力(Phase II)。",rat:"利用毒性較低的Carboplatin取代Cisplatin進行腹腔給藥，解決GOG-172方案的高毒性問題。",reg:"IP組: Carboplatin AUC6 IP Q3W x6週期\n對照組: IV Carboplatin",inc:["Stage II-III卵巢癌/腹膜癌","NACT後接受IDS者亦可入案"],exc:[],out:"PFS HR: 0.82(P=0.20)；NACT患者IP組顯示較佳腹膜控制趨勢"},
+{c:"Ovarian",p:["P-TX"],s:["Low grade serous carcinoma"],n:"NRG-GY019",ph:"NRG Oncology",d:"Letrozole vs Chemo→Letrozole",t:"o",pop:"一線去化療挑戰：評估新診斷LGSOC患者，單用Letrozole是否不劣於傳統化療後接續維持治療。",rat:"LGSOC對傳統化療反應率較低，驗證初期即使用內分泌治療的臨床效益。",reg:"Arm 1: Letrozole 2.5mg QD單藥直到進展\nArm 2: 6週期化療(CP) → Letrozole維持",inc:["新診斷Stage II-IV LGSOC/腹膜癌","ECOG 0-2"],exc:["曾受過全身性化療或標靶治療","計畫接受維持性PARPi"],out:"招募中(Ongoing)"},
+{c:"Ovarian",p:["R-TX"],s:["PSOC (Sensitive Recur)"],n:"DESKTOP III",ph:"AGO",d:"Secondary Cytoreduction Surgery",t:"p",pop:"AGO Score+患者次減積手術帶來OS改善(HR 0.75)。R0切除mOS 53.7m。",rat:"嚴選患者(AGO Score陽性)二次手術具生存獲益。",reg:"手術組: 腫瘤完全切除手術 → 含鉑化療\n化療組: 單純含鉑複方化療",inc:["首次鉑類敏感復發(PFI>6m)","AGO Score陽性(ECOG 0/無大量腹水/R0切除潛力)"],exc:["無法達到R0或手術風險過高"],out:"ITT mOS: 53.7m vs 46.0m(HR 0.75, CI 0.59-0.96); R0切除mOS 61.9m"},
+{c:"Ovarian",p:["R-TX"],s:["PSOC (Sensitive Recur)"],n:"Calypso Trial",ph:"ENGOT/GOG",d:"Carboplatin+PLD",t:"p",pop:"鉑敏復發去毒標準：Carbo/PLD在PFS上優於Carbo/Pacli，且具備更佳的耐受性。",rat:"為鉑類敏感復發患者尋找療效相當、毒性較低的化療組合。",reg:"Carboplatin AUC5 + PLD 30mg/m² Q4W x6週期",inc:["鉑類敏感復發(PFI>6m)","先前僅接受過一線含鉑輔助化療"],exc:[],out:"mPFS: 11.3m vs 9.4m(HR 0.82, P=0.005)"},
+{c:"Ovarian",p:["R-TX"],s:["PSOC (Sensitive Recur)"],n:"OCEANS",ph:"Roche/GOG",d:"Chemo+Bevacizumab (PSOC)",t:"p",pop:"鉑敏復發標靶標準：加入Bev維持治療顯著延長PFS達4個月(HR 0.48)。",rat:"利用抗血管新生藥物強化含鉑複方化療(Gem/Carbo)的療效並延緩二次復發。",reg:"Bevacizumab 15mg/kg Q3W + Gemcitabine/Carboplatin 6-10週期 → 單藥維持至進展",inc:["首次鉑類敏感復發(PFI>6m)","先前未接受過抗血管新生治療","具備可測量病灶"],exc:["曾受過VEGF抑制劑治療","有腸梗阻症狀或病史"],out:"mPFS: 12.4m vs 8.4m(HR 0.484, P<0.0001)"},
+{c:"Ovarian",p:["R-TX"],s:["PSOC (Sensitive Recur)"],n:"GOG-0213",ph:"Roche/GOG",d:"Chemo+Bevacizumab (OS Benefit)",t:"p",pop:"鉑敏復發OS突破：加入Bev維持治療帶來顯著OS獲益(mOS延長約5個月)。",rat:"評估Bevacizumab聯用Paclitaxel/Carboplatin對PSOC患者的OS影響。",reg:"Bevacizumab 15mg/kg Q3W + Pacli/Carbo → 單藥維持至進展",inc:["鉑類敏感復發上皮性卵巢癌","ECOG 0-1"],exc:[],out:"mOS: 42.6m vs 37.3m(HR 0.829, P=0.0447)"},
+{c:"Ovarian",p:["R-TX"],s:["PSOC (Sensitive Recur)"],n:"MITO16B / ENGOT-ov17",ph:"Roche/ENGOT",d:"Bevacizumab Beyond PD",t:"p",pop:"標靶跨線治療首選：一線用過Bev後，復發時持續使用Bev仍具顯著PFS獲益(HR 0.51)。",rat:"挑戰抗血管新生治療的耐藥概念，驗證跨線維持是否能持續抑制腫瘤血管新生。",reg:"含鉑複方化療 + Bevacizumab 15mg/kg Q3W → 單藥維持至進展",inc:["一線接受過Bev治療之鉑敏復發患者","ECOG 0-1"],exc:[],out:"mPFS: 11.8m vs 8.8m(HR 0.51, CI 0.41-0.65)"},
+{c:"Ovarian",p:["R-TX"],s:["PROC (Resistant Recur)"],n:"MIRASOL (GOG-3045)",ph:"ImmunoGen",d:"Mirvetuximab Soravtansine",t:"p",pop:"FRα高表現PROC：Mirvetuximab較化療改善PFS與OS（PFS HR 0.65；OS HR 0.67）。ORR 42.3%。",rat:"針對FRα高表現PROC患者，首個ADC生存獲益研究。",reg:"FRα-high族群\nArm A: Mirvetuximab 6.0mg/kg(AIBW) IV Q3W至進展\nArm B: 醫師選擇化療（weekly paclitaxel/PLD/topotecan）",inc:["Platinum-resistant高級別漿液性為主","FRα高表現"],exc:["不符合FRα門檻","不可控眼部/神經毒性風險"],out:"mOS: 16.4m vs 12.7m(HR 0.67); mPFS: 5.6m vs 4.0m(HR 0.65); ORR 42.3%"},
+{c:"Ovarian",p:["R-TX"],s:["PROC (Resistant Recur)","PSOC (Sensitive Recur)"],n:"FRAmework-01 (LY4170156)",ph:"Eli Lilly",d:"LY4170156+Bevacizumab",t:"o",pop:"FRα ADC聯用anti-VEGF攻克鉑抗藥卵巢癌，彌補鉑抗藥期有效且可耐受系統治療仍不足的缺口。",rat:"標靶FRα ADC聯用anti-VEGF，利用Bev血管調節作用降低腫瘤間質壓，提升ADC滲透深度。",reg:"PROC: Arm A: LY 3.0mg/kg+Bev 15mg/kg Q3W; Arm B: LY 4.0mg/kg+Bev Q3W\nPSOC(PFI 6-12m): Arm C: LY 3.0mg/kg+Bev Q3W\n對照(Arm D): 醫師選擇化療SoC",inc:["FRα表達陽性(IHC)","最後鉑類後進展之PROC或PSOC(PFI 90d-365d)"],exc:["曾用過針對FRα之ADC","活動性間質性肺病(ILD)"],out:"招募中(Ongoing)"},
+{c:"Ovarian",p:["R-TX"],s:["PROC (Resistant Recur)"],n:"AURELIA",ph:"Roche",d:"Bev+non-Platinum Chemo",t:"p",pop:"鉑抗復發基石：首個證明Bev聯用單藥化療能使PFS翻倍(6.7m vs 3.4m)且改善生活品質。",rat:"針對預後極差的鉑類抗藥型患者，利用Bev協同傳統單藥化療克服耐藥性。",reg:"Bevacizumab 10mg/kg Q2W 或 15mg/kg Q3W + 單藥化療(Pacli/PLD/Topotecan)",inc:["鉑類抗藥型(PFI<6m)上皮性卵巢癌","先前治療線數≤2線","無腸道受累風險"],exc:["先前一線即進展","活動性腸道疾病"],out:"mPFS: 6.7m vs 3.4m(HR 0.48, P<0.001)"},
+{c:"Ovarian",p:["R-TX"],s:["Low grade serous carcinoma"],n:"GOG-281 / LOGS",ph:"Targeted",d:"Trametinib",t:"p",pop:"LGSOC標靶重大突破：Trametinib顯著降低52%疾病進展風險(HR 0.48)，ORR達26%。",rat:"針對LGSOC中常見的MAPK路徑異常活化，利用MEK抑制劑進行精準標靶阻斷。",reg:"Trametinib 2.0mg 每日口服一次，持續直到PD或不可耐受",inc:["復發性LGSOC/腹膜癌","先前至少一次含鉑化療","ECOG 0-1"],exc:["曾受過其他MEK抑制劑治療","臨床顯著的心臟功能異常"],out:"mPFS: 13.0m vs 7.2m(HR 0.48, CI 0.36-0.64)"},
+{c:"Ovarian",p:["R-TX"],s:["Low grade serous carcinoma"],n:"RAMP-201",ph:"Verastem Oncology",d:"Avutometinib+Defactinib",t:"o",pop:"LGSOC雙重阻斷新高度：KRAS突變族群ORR高達55%；全體族群ORR達45%。",rat:"結合RAF/MEK雙重抑制劑(Avutometinib)與FAK抑制劑(Defactinib)，克服單一通路阻斷後的補償性耐藥機制。",reg:"Avutometinib 3.2mg(兩次/週) + Defactinib 200mg(兩次/日)\n採3週給藥1週休息之週期設計",inc:["復發性LGSOC（不限KRAS狀態）","先前接受含鉑化療及標靶治療"],exc:["活動性腦轉移","曾受過同類FAK抑制劑治療"],out:"KRAS mut ORR:55%; 全體ORR:45%（初步數據）"},
+{c:"Ovarian",p:["R-TX"],s:["Low grade serous carcinoma"],n:"GOG-3026",ph:"Novartis",d:"Ribociclib+Letrozole",t:"p",pop:"LGSOC去化療組合：CDK4/6+AI，達成ORR 23%與CBR 79%。mPFS 19.1m。",rat:"內分泌治療阻斷激素受體，協同CDK4/6抑制劑達成更強的細胞週期停滯效應。",reg:"Ribociclib 400mg QD（連服3週休息1週）+ Letrozole 2.5mg QD（持續每日口服）",inc:["復發性LGSOC","ER/PR陽性表達者優先","不限先前治療線數"],exc:["無法吞嚥口服藥物","併用強效CYP3A4誘導劑"],out:"mPFS: 19.1m; ORR:23%; CBR:79%"},
+{c:"Ovarian",p:["R-TX"],s:["Low grade serous carcinoma"],n:"MILO / ENGOT-ov11",ph:"Array BioPharma",d:"Binimetinib",t:"p",pop:"LGSOC標靶探索：MEK抑制劑Binimetinib vs化療，試驗因無效性早期停止。",rat:"針對LGSOC常見之MAPK通路激活，嘗試利用單藥MEK抑制劑達成控制。",reg:"Binimetinib 45mg 每日口服兩次 vs 醫師選擇化療(PLD/Pacli/Topo)",inc:["復發性LGSOC","先前至少一線含鉑化療","不限KRAS/BRAF狀態"],exc:[],out:"mPFS: 9.1m vs 10.6m, HR 1.21（未達預期獲益）"},
+{c:"Ovarian",p:["P-TX"],s:["Clear Cell Carcinoma"],n:"JGOG3017 / GCIG",ph:"JGOG",d:"Irinotecan+Cisplatin vs TC",t:"p",pop:"OCCC一線標準挑戰：Irinotecan/Cisplatin vs TC方案，PFS或OS無顯著差異。",rat:"考量OCCC對Paclitaxel較不敏感，嘗試利用對OCCC具潛在活性的Irinotecan方案。",reg:"Arm A: Irinotecan 60mg/m²(D1,8,15)+Cisplatin 60mg/m²(D1) Q4W\nArm B: Carboplatin AUC6+Paclitaxel 175mg/m² Q3W",inc:["新診斷FIGO Stage I-IV明細胞癌(OCCC)","ECOG 0-2"],exc:[],out:"2yr PFS: 63.0% vs 67.3%; mOS HR:1.06(P=0.72)"},
+{c:"Ovarian",p:["R-TX"],s:["Clear Cell Carcinoma"],n:"MoST-CIRCUIT",ph:"Garvan Institute",d:"Nivolumab+Ipilimumab",t:"p",pop:"OCCC免疫雙阻斷：難治型OCCC，Nivo+Ipi展現亮眼ORR(24%)與持久疾病控制(CBR 52%)。",rat:"OCCC具備特定的免疫抑制環境，PD-1與CTLA-4雙重阻斷激發更強T細胞抗腫瘤反應。",reg:"Nivolumab 3mg/kg + Ipilimumab 1mg/kg Q3W x4週期 → Nivolumab維持",inc:["復發性明細胞卵巢癌","先前至少一線化療","具備可測量病灶"],exc:[],out:"ORR:24%; CBR:52%"},
+{c:"Ovarian",p:["R-TX"],s:["Clear Cell Carcinoma"],n:"ATARI (ceralasertib±olaparib)",ph:"ENGOT-ov58/AZ",d:"Ceralasertib±Olaparib",t:"o",pop:"ARID1A靶點精準醫療：針對ARID1A突變OCCC，ATR抑制劑展現ORR 14%與良好疾病控制潛力(CBR 47%)。",rat:"ARID1A突變導致DNA損傷修復壓力增加，利用ATR抑制劑(Ceralasertib)誘導合成致死。",reg:"Cohort 1(ARID1A def): Ceralasertib單藥\nCohort 2: Ceralasertib+Olaparib",inc:["復發性明細胞癌或子宮內膜樣癌","NGS證實ARID1A缺失/突變","鉑類耐藥或不適合含鉑治療"],exc:[],out:"ARID1A缺失組ORR:14%; CBR at 16w:47%"},
+{c:"Ovarian",p:["R-TX"],s:["Clear Cell Carcinoma"],n:"DOVE",ph:"GSK",d:"Dostarlimab+Bevacizumab",t:"o",pop:"PD-1抑制+抗血管新生，將對化療不敏感的透明細胞癌轉成免疫/免疫+抗血管新生新策略。",rat:"OCCC利用PD-1+anti-VEGF雙重阻斷改善高度免疫抑制之微環境。",reg:"Dostarlimab 1000mg Q6W + Bevacizumab 15mg/kg Q3W 直至進展",inc:["復發性透明細胞卵巢癌"],exc:[],out:"招募中(Ongoing)"},
+{c:"Ovarian",p:["P-TX","R-TX"],s:["Mucinous (MOC) 鑑定"],n:"mEOC / GOG-0241",ph:"NRG Oncology/GOG",d:"Pac-Carbo vs Oxal-Cape±Bev",t:"p",pop:"罕見癌別標誌性研究：因收案困難提前終止，原發性mEOC亞組GI方案展現較佳生存獲益趨勢。",rat:"第一個針對mEOC的多國隨機試驗，對比婦癌化療與GI-type方案並探索Bev的角色。",reg:"1. Paclitaxel+Carboplatin±Bevacizumab 15mg/kg Q3W\n2. Oxaliplatin 130mg/m²+Capecitabine 850mg/m² bid(D1-14)±Bev",inc:["新診斷FIGO Stage II-IV或Stage I復發之原發黏液性上皮性卵巢癌"],exc:[],out:"原發性mEOC亞組OS HR:0.36(p=0.14); PFS HR:0.62(p=0.40)"},
+{c:"Ovarian",p:["R-TX"],s:["Mucinous (MOC) 鑑定"],n:"mFOLFIRINOX+Bev",ph:"Yonsei University",d:"modified FOLFIRINOX+Bevacizumab",t:"o",pop:"GI-style方案前瞻探索：針對難治型mEOC，高強度三藥化療聯用標靶，克服傳統化療耐藥性。",rat:"考量mEOC的GI遺傳特性，將FOLFIRINOX方案應用於卵巢癌。",reg:"Bev 5mg/kg+Oxaliplatin 85mg/m²+Leucovorin 400mg/m²+Irinotecan 150mg/m²+5-FU 2400mg/m²(46h) Q2W",inc:["復發或轉移性卵巢黏液性腺癌","先前接受過2線以下全身性治療"],exc:[],out:"試驗進行中(Ongoing)"},
+{c:"Ovarian",p:["P-MT"],s:["BRCA mutation"],n:"SOLO-1",ph:"AZ",d:"Olaparib",t:"p",pop:"BRCAm一線維持金標準：7年存活率達67%，PFS HR 0.33。",rat:"針對一線含鉑化療反應良好之BRCA突變患者，PARPi達成合成致死效果延緩復發。",reg:"Olaparib 300mg BID維持（通常至2年或進展）\n對照組: Placebo",inc:["新診斷晚期卵巢癌","germline或somatic BRCA1/2突變","一線platinum化療後CR/PR"],exc:["先前接受PARP抑制劑","持續性骨髓抑制未恢復"],out:"mPFS: 56.0m vs 13.8m(HR 0.30); 7yr OS Rate 67%"},
+{c:"Ovarian",p:["P-MT"],s:["HRD positive (wt)","HRD negative (pHRD)"],n:"PRIMA",ph:"GSK",d:"Niraparib",t:"p",pop:"全人群一線維持：HRD+ PFS HR 0.43；全體ITT HR 0.62，確立不需限縮到BRCA的一線維持策略。",rat:"不論HRD狀態，PARPi強化一線化療後維持獲益，特別針對高風險族群。",reg:"Niraparib維持（起始劑量依體重/血小板調整；至36個月或進展）\n對照組: Placebo",inc:["新診斷Stage III/IV、高復發風險","一線platinum化療後CR/PR"],exc:["MDS/AML風險","先前PARP抑制劑","持續性骨髓抑制未恢復"],out:"HRD+ PFS HR 0.43(CI 0.31-0.59); ITT HR 0.62"},
+{c:"Ovarian",p:["P-MT"],s:["HRD positive (wt)"],n:"PAOLA-1",ph:"AZ",d:"Olaparib+Bevacizumab",t:"p",pop:"Olaparib+Bev維持全體PFS HR 0.59，HRD+族群效益更大（HR 0.33）。HRD+5年OS率75.2%。",rat:"結合anti-VEGF(Bev)重塑血管環境與PARPi(Ola)抑制DNA修復之雙重機轉。",reg:"所有患者先接受含Bev一線化療\nArm A: Olaparib+Bevacizumab維持\nArm B: Bevacizumab維持（對照）",inc:["新診斷Stage III/IV、高復發風險","化療+Bev後CR/PR","分層HRD/BRCA"],exc:["不適合Bev（出血/廔管/血栓風險）","先前PARP抑制劑"],out:"HRD+ 5yr OS: 75.2% vs 58.3%(HR 0.62)"},
+{c:"Ovarian",p:["P-MT"],s:["BRCA mutation","HRD positive (wt)"],n:"ATHENA-MONO",ph:"Clovis",d:"Rucaparib",t:"p",pop:"Rucaparib一線維持改善PFS（ITT：HR 0.52；HRD：HR 0.47；HRD-negative：HR 0.65）。",rat:"證實Rucaparib在一線含鉑化療反應後的單藥維持價值，不論HRD狀態。",reg:"Rucaparib維持（至進展）\n對照組: Placebo",inc:["新診斷晚期（多為III/IV）","一線platinum後CR/PR","涵蓋HRD/HRP"],exc:["肝功能異常","先前PARP抑制劑","持續性骨髓抑制未恢復"],out:"ITT PFS: 28.7m vs 11.3m(HR 0.52)"},
+{c:"Ovarian",p:["P-MT"],s:["HRD positive (wt)","HRD negative (pHRD)"],n:"DUO-O (ENGOT-OV46)",ph:"AstraZeneca",d:"Durvalumab+Olaparib+Bev",t:"p",pop:"一線合併免疫/抗血管/PARPi：HRD+三藥組PFS HR 0.49; ITT HR 0.63。",rat:"IO+PARPi+anti-VEGF三藥聯用，於一線反應後清除微小殘留病灶並延緩復發。",reg:"Backbone: Carbo/Pacli+Bev\nArm 3: Bev+Durvalumab+Olaparib 300mg bid維持至PD",inc:["新診斷FIGO III-IV期上皮性卵巢癌","接受PDS或IDS且對鉑類有反應","non-tBRCAm（以HRD/ITT為主要分析）"],exc:["不適合Bev","既往免疫治療/PARP"],out:"HRD+(non-BRCAm) PFS HR 0.49(CI 0.34-0.69); ITT HR 0.63"},
+{c:"Ovarian",p:["P-MT"],s:["BRCA mutation","HRD positive (wt)"],n:"DS8201-772 (Enhertu/T-DXd)",ph:"AstraZeneca",d:"T-DXd維持",t:"o",pop:"HER2-ADC一線維持：瞄準HER2表現卵巢癌亞群缺乏明確標靶維持標準、仍易復發的unmet need。",rat:"標靶HER2 ADC用於維持。T-DXd極高DAR(8)優勢清除化療後殘餘HER2表現微小病灶。",reg:"Trastuzumab deruxtecan 5.4mg/kg IV Q3W維持至進展",inc:["新診斷晚期卵巢癌HER2表現者","一線化療後達CR/PR"],exc:[],out:"招募中(Ongoing)"},
+{c:"Ovarian",p:["R-MT"],s:["PARPi Maint"],n:"NOVA",ph:"GSK",d:"Niraparib",t:"p",pop:"復發鉑敏感Niraparib維持顯著延長PFS（gBRCA：HR 0.27；non-gBRCA：HR 0.45）。",rat:"首個證明PARPi在PSOC患者中不論BRCA是否突變皆有獲益的研究。",reg:"Niraparib維持（至進展）\n對照組: Placebo\n分gBRCA與non-gBRCA cohort",inc:["Platinum-sensitive recurrent ovarian cancer","對最近一次platinum有反應"],exc:["MDS/AML風險","先前PARP抑制劑"],out:"gBRCAm mPFS: 21.0m vs 5.5m(HR 0.27); non-gBRCA HR 0.45"},
+{c:"Ovarian",p:["R-MT"],s:["PARPi Maint"],n:"ARIEL3",ph:"Clovis",d:"Rucaparib",t:"p",pop:"Rucaparib維持改善PFS（ITT：HR 0.36；BRCA突變：HR 0.23）。精確分流維持獲益：BRCAm HR 0.23；HRD+ HR 0.32。",rat:"利用LOH（雜合性丟失）檢測輔助判定HRD狀態，導航PARPi在復發階段的使用。",reg:"Rucaparib維持（至進展）\n對照組: Placebo",inc:["Platinum-sensitive recurrent ovarian cancer","對platinum有反應","分層BRCA-mut/HRD/ITT"],exc:["先前PARP抑制劑","持續性骨髓抑制未恢復"],out:"BRCAm mPFS: 16.6m vs 5.4m(HR 0.23); HRD HR~0.32; ITT HR~0.36"},
+{c:"Ovarian",p:["R-MT"],s:["PARPi Maint"],n:"SOLO2",ph:"AZ",d:"Olaparib",t:"p",pop:"Olaparib維持延長PFS(HR 0.30)，BRCAm族群mOS顯著延長至51.7m(HR 0.74)。",rat:"確認Olaparib在復發維持階段能將PFS獲益轉化為最終OS獲益。",reg:"Olaparib tablets維持（至進展）\n對照組: Placebo",inc:["Platinum-sensitive recurrent ovarian cancer","對platinum有反應","BRCA1/2 mutation"],exc:["先前PARP抑制劑","持續性骨髓抑制未恢復"],out:"mOS: 51.7m vs 38.8m(HR 0.74); PFS HR~0.30; median OS +12.9 months"},
+// CERVICAL
+{c:"Cervical",p:["P-TX"],s:["Locally Advanced (CCRT)"],n:"KEYNOTE-A18 (ENGOT-cx11)",ph:"MSD",d:"Pembrolizumab+CCRT",t:"p",pop:"LACC標準：36m OS 82.6%(HR 0.67)。免疫治療整合入根治同步化放療場景的里程碑。",rat:"將免疫整合入高風險局部晚期之根治同步化放療。",reg:"Arm A: CCRT(Cisplatin 40mg/m² 週服+RT 45-50.4Gy)+Pembro 200mg Q3W x5週期\n→ 維持Pembro 400mg Q6W x15週期\nArm B: CCRT+Placebo",inc:["新診斷Stage IB2-IIB LN(+)或Stage III-IVA局部晚期"],exc:["既往系統性治療/免疫治療","活動性自體免疫需治療","不可控感染","放療禁忌"],out:"24m PFS:68% vs 57%(HR 0.70); 36m OS:82.6% vs 74.8%(HR 0.67)"},
+{c:"Cervical",p:["P-TX"],s:["Locally Advanced (CCRT)"],n:"INTERLACE",ph:"UCL",d:"Induction Carbo/Pacli x6 → CCRT",t:"p",pop:"誘導化療→CCRT策略：5年OS 80% vs 72%(HR 0.60)。治療序列本身帶來存活增益。",rat:"利用誘導化療(Induction Chemo)解決放療前的微小轉移。",reg:"Arm A: 誘導期Paclitaxel 80mg/m²+Carboplatin AUC2 每週 x6週期 → 接續標準CCRT(Cisplatin+RT)\nArm B: 標準CCRT alone",inc:["Treatment-naïve locally advanced cervical cancer","適合根治性CCRT"],exc:["無法接受化療或根治性放療","重大共病/感染","懷孕"],out:"5yr OS:80% vs 72%(HR 0.60); 5yr PFS:73% vs 64%(HR 0.65)"},
+{c:"Cervical",p:["P-TX"],s:["Locally Advanced (CCRT)"],n:"CALLA",ph:"AZ",d:"Durvalumab+CCRT",t:"p",pop:"整體試驗結果為陰性。局部晚期宮頸癌中CCRT加入Durvalumab並未顯著改善PFS(HR 0.84; P=0.174)。",rat:"探索PD-L1抑制劑與CCRT聯用是否能產生協同免疫效應。",reg:"Arm A: Durvalumab+CCRT → 持續Durvalumab\nArm B: Placebo+CCRT → 持續Placebo",inc:["Untreated locally advanced cervical cancer，接受根治性CCRT"],exc:["既往免疫治療","活動性自體免疫需治療","放療/化療禁忌"],out:"PFS HR 0.84(CI 0.65-1.08)，未達顯著"},
+{c:"Cervical",p:["P-TX"],s:["Locally Advanced (CCRT)"],n:"OUTBACK (ANZGOG 0902)",ph:"GOG/ANZGOG",d:"CCRT+Adjuvant Chemo",t:"p",pop:"輔助化療負向結論：CCRT後額外增加4週期輔助化療並未改善5年OS或PFS(HR 0.91)。",rat:"驗證CCRT完成後加入全身性化療是否能進一步清除遠端轉移。",reg:"標準CCRT結束後接續Carboplatin/Paclitaxel Q3W x4週期",inc:["Stage IB2-IVA局部晚期宮頸癌"],exc:[],out:"5yr OS:72% vs 71%; PFS HR:0.91(P=0.61)"},
+{c:"Cervical",p:["P-TX"],s:["Locally Advanced (NIC)"],n:"NACI Study",ph:"Henlius",d:"Camrelizumab+NACT",t:"p",pop:"新輔助免疫強效應：LACC pCR率高達38.6%，顯著優於傳統新輔助化療。",rat:"PD-1抑制劑與化療聯用作為手術前前導治療，縮小腫瘤體積並清除微小轉移病灶。",reg:"Camrelizumab 200mg+Cisplatin/Paclitaxel Q3W x2-3週期 → 根治性手術",inc:["Stage IB3, IIA2, IIB(FIGO 2018) 局部晚期宮頸癌","ECOG 0-1","未曾接受過化放療"],exc:[],out:"pCR Rate:38.6%; ORR:97.7%"},
+{c:"Cervical",p:["P-TX"],s:["Locally Advanced (NIC)"],n:"NATIC Trial",ph:"BeiGene/SYSU",d:"Tislelizumab+NACT",t:"p",pop:"新輔助免疫新選擇：Tislelizumab聯用化療達成41%的pCR率，展現強大的術前腫瘤降階能力。",rat:"探索PD-1抑制劑Tislelizumab在局部晚期患者手術前的應用。",reg:"Tislelizumab 200mg+Paclitaxel/Cisplatin Q3W x3週期 → 廣泛性子宮切除術",inc:["FIGO 2018 Stage IB3-IIB局部晚期鱗癌/腺癌/腺鱗癌","ECOG 0-1"],exc:[],out:"pCR Rate:41%; ORR:94.7%; Grade≥3 TRAE率約25.6%"},
+{c:"Cervical",p:["P-TX"],s:["Locally Advanced (NIC)"],n:"Cadonilimab+NACT → Surgery",ph:"Akeso",d:"Cadonilimab(PD-1/CTLA-4)+NACT",t:"o",pop:"雙特異性抗體領航：PD-1/CTLA-4雙特異性抗體聯用化療作為新輔助治療，展現比單免疫更高的臨床獲益潛力。",rat:"利用雙靶點阻斷機制強化腫瘤微環境的免疫活化。",reg:"Cadonilimab 10mg/kg+Carboplatin/Paclitaxel Q3W x3週期 → 手術或放療",inc:["新診斷FIGO Stage IB3-IIA2（含巨大腫瘤）或IIB-IVA期"],exc:[],out:"初步ORR表現優異，病理緩解數據追蹤中(Ongoing)"},
+{c:"Cervical",p:["P-TX"],s:["Early Stage (Surgery)"],n:"LACC Trial",ph:"NEJM/Academic",d:"Open vs MIS Radical Hysterectomy",t:"p",pop:"手術黃金準則：MIS相較傳統開腹手術，復發風險顯著較高且3年存活率較低。",rat:"評估達文西或腹腔鏡微創手術是否能達成與開腹手術同等的腫瘤學預後。",reg:"對照組: 傳統開腹根治性子宮切除術(Open RH)\n試驗組: 微創根治性子宮切除術(MIS RH)",inc:["FIGO 2009 Stage IA1(有LVSI), IA2, 或IB1宮頸癌","組織學為鱗癌/腺癌/腺鱗癌","ECOG 0-1"],exc:["腫瘤直徑>4cm","已知淋巴結轉移或遠端轉移"],out:"3yr DFS:91.2%(MIS) vs 97.1%(Open); HR for recurrence 3.74(P=0.002)"},
+{c:"Cervical",p:["P-TX"],s:["Early Stage (Surgery)"],n:"SHAPE Trial (CCTG CX.5)",ph:"CCTG/Academic",d:"Simple vs Radical Hysterectomy",t:"p",pop:"低風險手術降階：低風險早期患者，Simple切除的3年盆腔復發率不劣於Radical切除。",rat:"探討低風險早期患者是否能透過減少切除範圍降低術後併發症並維持生存率。",reg:"對照組: 廣泛性子宮切除(Radical RH)+盆腔淋巴清掃\n試驗組: 單純子宮切除(Simple RH)+盆腔淋巴清掃",inc:["FIGO 2018 Stage IA2或IB1(≤2cm)","間質浸潤深度<10mm","Grade 1-3鱗癌/腺癌/腺鱗癌"],exc:["影像學懷疑淋巴結轉移","小細胞神經內分泌癌"],out:"3yr Pelvic Recurrence:2.52%(Simple) vs 2.17%(Radical); 符合非劣效性"},
+{c:"Cervical",p:["P-MT"],s:["Maintenance"],n:"KEYNOTE-826",ph:"MSD",d:"Pembrolizumab+Chemo±Bev",t:"p",pop:"一線R/M宮頸癌黃金標準：化療基礎上加免疫治療顯著改善OS(HR 0.63)。完成誘導後接續免疫維持直至PD或滿24個月。",rat:"ICI與化療協同效應，後續單藥免疫維持持續活化免疫系統以控制腫瘤進展。",reg:"Arm 1: Pembrolizumab 200mg Q3W+Chemo(Pacli+Cis/Carbo)±Bev 15mg/kg Q3W\nArm 2: Placebo+Chemo±Bev",inc:["Persistent/recurrent/metastatic宮頸癌","1L systemic therapy","主要分析以PD-L1 CPS分層"],exc:["既往免疫治療","活動性自體免疫需治療"],out:"CPS≥1族群mOS:28.6m vs 16.5m(HR 0.60); ITT OS HR 0.63"},
+{c:"Cervical",p:["R-TX"],s:["Recurr / Metastatic"],n:"GOG-240",ph:"NCI/GOG",d:"Chemo+Bevacizumab",t:"p",pop:"轉移性宮頸癌里程碑：首個證明加入Bev能顯著延長OS(16.8m vs 13.3m, HR 0.71)的研究。",rat:"抗血管新生藥物協同雙標靶化療，強化對晚期宮頸癌的系統性控制。",reg:"Cisplatin+Paclitaxel（或Topotecan+Paclitaxel）+Bevacizumab 15mg/kg Q3W",inc:["復發、持久性或轉移性宮頸癌","先前未接受過針對R/M之化療","ECOG 0-1"],exc:["臨床顯著之心血管疾病","曾受過全身性血管抑制劑治療"],out:"mOS:16.8m vs 13.3m(HR 0.71, P=0.004)"},
+{c:"Cervical",p:["R-TX"],s:["Recurr / Metastatic"],n:"BEATcc",ph:"Roche",d:"Atezolizumab+Chemo+Bev",t:"p",pop:"一線R/M宮頸癌：加入Atezolizumab顯著延長PFS(13.7m vs 10.4m)與OS(32.1m vs 22.8m)。PFS HR 0.62；OS HR 0.68。",rat:"PD-L1阻斷+VEGF抑制劑+化療，三軌聯用強化腫瘤微環境之殺傷力。",reg:"Arm A: Atezolizumab+Bev+platinum chemo → Atezolizumab+Bev維持\nArm B: Bev+platinum chemo → Bev維持",inc:["Untreated metastatic/persistent/recurrent宮頸癌","可接受含Bev的標準一線"],exc:["既往免疫治療","活動性自體免疫需治療","不適合Bev"],out:"mPFS HR 0.62; mOS HR 0.68(CI 0.52-0.88)"},
+{c:"Cervical",p:["R-TX"],s:["Recurr / Metastatic"],n:"innovaTV 301 (ENGOT-cx12)",ph:"Genmab",d:"Tisotumab Vedotin(ADC)",t:"p",pop:"後線ADC突破：Tisotumab vedotin相較醫師選擇化療改善OS(HR 0.70)。ORR 17.8%。",rat:"標靶組織因子(Tissue Factor) ADC，解決後線化療耐藥。",reg:"Arm A: Tisotumab Vedotin 2.0mg/kg IV Q3W\nArm B: 醫師選擇化療(Chemo SoC)",inc:["Recurrent/metastatic宮頸癌","2L/3L治療情境"],exc:["不適合ADC/既往相關藥物限制","嚴重角膜/眼部風險"],out:"mOS:11.5m vs 9.5m(HR 0.70); ORR 17.8% vs 5.2%"},
+{c:"Cervical",p:["R-TX"],s:["Recurr / Metastatic"],n:"EMPOWER-Cervical 1",ph:"Regeneron",d:"Cemiplimab 單藥",t:"p",pop:"二線後單藥免疫治療：相較化療顯著延長OS(mOS 12.0m vs 8.5m; HR 0.69)，不論組織型態均有獲益。",rat:"針對一線鉑類化療失敗後之患者，PD-1阻斷提供持久緩解與生存優勢。",reg:"Arm A: Cemiplimab\nArm B: 醫師選擇單藥化療",inc:["Recurrent/metastatic宮頸癌","Progressed after 1L platinum"],exc:["既往免疫治療","活動性自體免疫需治療"],out:"ITT OS HR 0.69(CI 0.56-0.84)"},
+// UTERINE SARCOMA
+{c:"Uterine Sarcoma",p:["P-TX"],s:["Primary Sarcoma"],n:"GOG-0277",ph:"GOG/NCI",d:"Gem/Doce vs Observation",t:"p",pop:"高惡性度LMS輔助治療：Gem+Doce輔助化療相較觀察組，有PFS獲益趨勢但未達顯著差異。",rat:"針對完全切除的高惡性度uLMS，探討輔助化療是否能降低極高復發率。",reg:"Gemcitabine 900mg/m²(D1,D8)+Docetaxel 75mg/m²(D8) Q21d x4週期",inc:["完全切除之Stage I子宮平滑肌肉瘤(uLMS)","ECOG 0-1"],exc:[],out:"由於收案困難提前終止，未達顯著統計學差異"},
+{c:"Uterine Sarcoma",p:["P-TX"],s:["Primary Sarcoma"],n:"EORTC 55874",ph:"EORTC",d:"Adjuvant Radiotherapy",t:"p",pop:"術後放療價值：早期子宮肉瘤輔助骨盆放療能降低局部復發率，但無法改善PFS與OS。",rat:"探討Stage I/II子宮肉瘤患者術後接受EBRT的臨床獲益。",reg:"骨盆腔EBRT，總劑量50.4Gy分28次照射",inc:["Stage I/II子宮LMS或子宮肉瘤","手術完全切除後"],exc:[],out:"局部復發率降低；OS HR 0.94(P=0.69)無顯著差異"},
+{c:"Uterine Sarcoma",p:["P-TX"],s:["Primary Sarcoma"],n:"EORTC 62012",ph:"EORTC",d:"Doxorubicin+Ifosfamide",t:"p",pop:"晚期一線組合：聯用方案顯著提升ORR(26%)與PFS，但OS上與單藥Dox相比無顯著差異。",rat:"不可切除或轉移性肉瘤，比較加強型聯用化療與單藥化療的療效權衡。",reg:"Doxorubicin 75mg/m²+Ifosfamide 5g/m²+Mesna Q3W",inc:["晚期/轉移性軟組織肉瘤（含子宮肉瘤）","先前未接受過系統化療"],exc:[],out:"mPFS:7.4m vs 4.6m(HR 0.74); ORR:26% vs 14%"},
+{c:"Uterine Sarcoma",p:["P-TX"],s:["Primary Sarcoma"],n:"GeDDiS (Phase III)",ph:"CRUK",d:"Gem/Doce vs Doxorubicin",t:"p",pop:"一線標準對照：Gem/Doce與Doxorubicin作為一線治療，PFS無顯著差異，Dox具備更佳的用藥便利性。",rat:"確定Gem/Doce是否能取代Doxorubicin成為晚期肉瘤一線首選。",reg:"Gemcitabine 675mg/m²(D1,D8)+Docetaxel 75mg/m²(D8) vs Doxorubicin 75mg/m²(D1) Q3W",inc:["不可切除或轉移性軟組織肉瘤","ECOG 0-1"],exc:[],out:"mPFS:23.3週(Gem/Doce) vs 23.3週(Dox), HR 1.14(P=0.06)"},
+{c:"Uterine Sarcoma",p:["P-TX"],s:["Primary Sarcoma"],n:"LMS-04 (Phase III)",ph:"French Sarcoma Group",d:"Doxorubicin+Trabectedin",t:"p",pop:"LMS一線新高度：聯用Trabectedin顯著延長子宮LMS中位PFS達兩倍(12.2m vs 6.2m)。",rat:"專對LMS，Doxorubicin聯用Trabectedin挑戰傳統單藥治療瓶頸。",reg:"Doxorubicin 60mg/m²+Trabectedin 1.1mg/m² Q3W → 接續Trabectedin單藥維持",inc:["晚期/轉移性子宮或非子宮LMS","一線治療"],exc:[],out:"mPFS:12.2m vs 6.2m(HR 0.37); mOS:31.6m vs 24.1m"},
+{c:"Uterine Sarcoma",p:["P-TX","R-TX"],s:["Carcinosarcoma"],n:"NRG/GOG-0261 (Phase III)",ph:"NRG Oncology",d:"Paclitaxel+Carboplatin",t:"p",pop:"UCS新標準：PC方案不劣於Pacli/Ifo且毒性顯著降低。PFS 14.6m vs 10.3m。",rat:"確定Pacli/Carbo(PC)是否能取代毒性較大的Ifosfamide方案，成為癌肉瘤一線治療新標竿。",reg:"Arm A: Paclitaxel 175mg/m²+Carboplatin AUC6 Q3W\nArm B: Paclitaxel 135mg/m²+Ifosfamide 1.6g/m²(D1-3) Q3W",inc:["新診斷Stage III-IV或復發性子宮/卵巢癌肉瘤","ECOG 0-2"],exc:[],out:"PFS:14.6m vs 10.3m; OS:37m vs 29m（非劣效達成）"},
+{c:"Uterine Sarcoma",p:["R-TX"],s:["Carcinosarcoma"],n:"GOG-161 (Phase III)",ph:"GOG/NCI",d:"Ifosfamide+Paclitaxel",t:"p",pop:"雙藥聯用獲益：Ifosfamide+Paclitaxel比單用Ifosfamide顯著延長PFS(5.8m vs 3.6m)與OS。",rat:"驗證在Ifosfamide基礎上加入紫杉醇類藥物是否能克服UCS的化療抗藥性。",reg:"試驗組: Ifosfamide 1.6g/m²(D1-3)+Paclitaxel 135mg/m²(D1) Q3W\n對照組: Ifosfamide單藥 2.0g/m²(D1-3)",inc:["不可切除、持久性或復發性子宮癌肉瘤","先前未接受過針對晚期疾病之化療"],exc:[],out:"mPFS:5.8m vs 3.6m(HR 0.71); mOS:13.5m vs 8.4m"},
+{c:"Uterine Sarcoma",p:["P-TX"],s:["Carcinosarcoma"],n:"GOG-150 (Phase III)",ph:"GOG/NCI",d:"Adjuvant AP Chemo vs WAI",t:"p",pop:"術後輔助策略：WAI與化療(AP)比較，OS無顯著差異，但化療對Stage I-II癌肉瘤的系統控制力更佳。",rat:"Stage I-II癌肉瘤完全切除後，局部放療與全身化療哪種能更有效降低高復發率。",reg:"化療組: Doxorubicin 60mg/m²+Cisplatin 50mg/m²(AP) Q3W x8\n放療組: WAI 30Gy分20次照射",inc:["完全切除之Stage I或II子宮癌肉瘤","手術探查證實無腹膜內轉移"],exc:[],out:"兩組間OS無顯著差異，AP化療組復發風險比率呈下降趨勢"},
+{c:"Uterine Sarcoma",p:["R-TX"],s:["Recurr / Metastatic"],n:"ET743-SAR-3007",ph:"Janssen",d:"Trabectedin vs Dacarbazine",t:"p",pop:"LMS救援二線標準：Trabectedin相比Dacarbazine可顯著降低45%疾病進展風險(HR 0.55)。",rat:"針對含Anthracycline化療失敗的晚期LMS，驗證Trabectedin的療效。",reg:"Trabectedin 1.5mg/m²(24h持續靜脈滴注) Q3W\n對照組: Dacarbazine 1000mg/m² Q3W",inc:["不可切除或轉移性LMS或脂肪肉瘤","先前接受含Anthracycline方案治療"],exc:[],out:"LMS族群mPFS:4.2m vs 1.5m(HR 0.55, P<0.001)；ITT OS無顯著差異"},
+{c:"Uterine Sarcoma",p:["R-TX"],s:["Recurr / Metastatic"],n:"PALETTE",ph:"Novartis/GSK",d:"Pazopanib(TKI)",t:"p",pop:"非脂肪肉瘤二線標準：Pazopanib顯著延長中位PFS達三倍(4.6m vs 1.6m, HR 0.31)。",rat:"多靶點TKI抑制VEGF、PDGFR與c-Kit通路，阻斷肉瘤的血管新生與生長訊號。",reg:"Pazopanib 800mg 每日口服一次，持續直到PD或不可耐受",inc:["先前化療失敗之晚期非脂肪肉瘤性軟組織肉瘤（含子宮LMS）","ECOG 0-1"],exc:[],out:"mPFS:4.6m vs 1.6m(HR 0.31, P<0.0001)；OS呈獲益趨勢但未達統計顯著"},
+{c:"Uterine Sarcoma",p:["R-TX"],s:["Recurr / Metastatic"],n:"REGOSARC",ph:"Bayer",d:"Regorafenib(TKI)",t:"p",pop:"二線TKI新數據：LMS族群Regorafenib顯著延長PFS(HR 0.46)，具備臨床救援價值。",rat:"隨機雙盲安慰劑對照II期試驗，驗證Regorafenib在各類肉瘤分型中的活性。",reg:"Regorafenib 160mg QD（服用3週休息1週），每28天為一週期",inc:["先前接受含Anthracycline或多線治療失敗之晚期肉瘤","包含子宮LMS隊列"],exc:[],out:"LMS隊列PFS:4.4m vs 1.4m(HR 0.46, P=0.0045)"},
+{c:"Uterine Sarcoma",p:["R-TX"],s:["Recurr / Metastatic"],n:"Eribulin vs Dacarbazine",ph:"Eisai",d:"Eribulin",t:"p",pop:"LMS/LPS存活獲益：Eribulin顯著延長中位OS(13.5m vs 11.5m, HR 0.77)。",rat:"非微管蛋白解聚類藥物，探索其在難治型肉瘤中對OS的貢獻。",reg:"Eribulin 1.4mg/m²(D1,D8) Q21d",inc:["先前至少2線治療（含Anthracycline）失敗之晚期LMS或LPS","ECOG 0-1"],exc:[],out:"mOS:13.5m vs 11.5m(HR 0.77, P=0.016)"},
+{c:"Uterine Sarcoma",p:["R-TX","P-TX"],s:["Recurr / Metastatic","Primary Sarcoma"],n:"NTRK Basket Trials",ph:"Bayer/Roche",d:"Larotrectinib/Entrectinib",t:"p",pop:"跨癌別精準醫療：帶有NTRK基因融合的肉瘤，Larotrectinib的ORR高達75%。",rat:"NTRK融合為高度致癌驅動因子，TRK抑制劑可達成極高且持久的臨床反應。",reg:"Larotrectinib 100mg 每日兩次口服；或Entrectinib 600mg 每日一次口服",inc:["NGS證實具備NTRK1/2/3基因融合之晚期固體腫瘤","無現有標準治療或治療失敗"],exc:[],out:"ITT ORR:~75%; 中位PFS顯著優於傳統化療"},
+{c:"Uterine Sarcoma",p:["R-TX"],s:["Recurr / Metastatic"],n:"Olaparib+Temozolomide (NCT03880019)",ph:"NCI/Columbia",d:"Olaparib+TMZ",t:"p",pop:"uLMS二線新組合：晚期uLMS，ORR達27%，中位PFS為6.9個月。",rat:"TMZ誘導DNA損傷+Olaparib阻斷修復路徑，針對uLMS產生合成致死效應。",reg:"Temozolomide 75mg/m² QD(D1-7)+Olaparib 300mg bid(D1-21) Q21d",inc:["組織學證實之晚期uLMS","先前至少一線系統治療後進展"],exc:[],out:"ORR:27%; mPFS:6.9m; CBR:68%"},
+{c:"Uterine Sarcoma",p:["R-TX","P-TX"],s:["Low grade ESS"],n:"PARAGON (ANZGOG 0903)",ph:"ANZGOG",d:"Anastrozole",t:"p",pop:"LG-ESS激素治療里程碑：ER/PR陽性患者CBR高達73.3%，中位PFS尚未達到。25%族群PFS超過44個月。",rat:"芳香環轉化酶抑制劑(AI)阻斷雌激素生成，針對高度激素依賴性LG-ESS提供去化療的長期控制。",reg:"Anastrozole 1mg 每日口服一次，持續直到PD",inc:["復發性或轉移性ER/PR(+)子宮內膜間質肉瘤(LGESS)","ECOG 0-2","具備可測量病灶"],exc:[],out:"CBR at 3m:73.3%; ORR:26.7%; 25%族群PFS>44個月"},
+{c:"Uterine Sarcoma",p:["R-TX","P-TX"],s:["Low grade ESS"],n:"Letrozole (NCT05649956)",ph:"Investigator-Initiated",d:"Letrozole",t:"o",pop:"LG-ESS長期維持新實證：評估Letrozole在早期術後輔助或晚期維持中的長期療效與安全性。",rat:"ER/PR高度表達的間質肉瘤，Letrozole已顯示出極佳緩解率與低毒性。",reg:"Letrozole 2.5mg 每日口服一次，長期服用直至PD",inc:["新診斷或復發性LGESS","ER/PR陽性"],exc:[],out:"部分個案顯示可達7年以上之穩定緩解(Stable Disease)"},
+{c:"Uterine Sarcoma",p:["P-TX"],s:["Primary Sarcoma"],n:"NCT07076186 (Adjuvant Doxo+Trab)",ph:"Decentralized Pragmatic Trial",d:"Doxorubicin+Trabectedin",t:"o",pop:"早期輔助強化研究：Stage Ib/2 uLMS術後使用Doxo+Trab是否能顯著延長無病生存期。",rat:"基於LMS-04試驗成功，將Doxo聯用Trabectedin提前至輔助治療階段以降低高復發風險。",reg:"Doxorubicin 60mg/m²+Trabectedin 1.1mg/m² Q21d → Trabectedin維持",inc:["Stage Ib或II期子宮平滑肌肉瘤(uLMS)","手術完全切除(R0)後3個月內"],exc:[],out:"試驗進行中(Ongoing)，預計2025年底開始正式收案"}
 ];
 
-const GUIDELINES = {
-  "Endometrial": [
-    {id:"P-TX", header:"🌿 初治 (Primary Tx)", css:"p-tx", subs:[
-      {title:"dMMR / MSI-H / MMRd", content:"一線首選：含鉑化療 + PD-1 (RUBY/GY018/AtTEnd)。"},
-      {title:"pMMR / NSMP / MSS", content:"一線維持：Chemo + Durva/Ola (DUO-E)。二線標靶免疫 (KN775)。"},
-      {title:"POLE mutation", content:"預後極佳。早期考慮治療降階 (De-escalation)。"},
-      {title:"p53 mutation", content:"侵襲性最強。建議化放療積極介入。Serous型需檢測HER2。"}]},
-    {id:"P-MT", header:"💊 一線維持 (1L Maint)", css:"p-mt", subs:[
-      {title:"Maintenance Therapy", content:"一線IO後延續維持至PD (MK2870-033/DUO-E)。"}]},
-    {id:"R-TX", header:"🔄 復發治療 (Recurr Tx)", css:"r-tx", subs:[
-      {title:"Recurrent EC", content:"標準二線：標靶+免疫 (KN775) 或單藥IO (GARNET)。救援ADC (SG)。"}]},
-    {id:"R-MT", header:"🔒 復後維持 (PR-Maint)", css:"r-mt", subs:[
-      {title:"Continuous Therapy", content:"救援治療後維持當前有效方案直到PD。"}]}
-  ],
-  "Ovarian": [
-    {id:"P-TX", header:"🌿 初治 (Primary Tx)", css:"p-tx", subs:[
-      {title:"Neoadjuvant Setting", content:"NAC + IDS + HIPEC (van Driel)。"},
-      {title:"HGSC / Endometrioid", content:"手術 (PDS/IDS) + Carbo/Pacli ± Bev。"},
-      {title:"Low grade serous carcinoma", content:"AI, MEK, CDK 4/6。"},
-      {title:"Clear Cell Carcinoma", content:"OCCC 特殊方案。"}]},
-    {id:"P-MT", header:"💊 一線維持 (1L Maint)", css:"p-mt", subs:[
-      {title:"BRCA mutation", content:"Olaparib單藥維持2年 (SOLO-1)。"},
-      {title:"HRD positive (wt)", content:"PAOLA-1 (Ola+Bev) 或 PRIMA (Nira)。"},
-      {title:"HRD negative (pHRD)", content:"Niraparib維持 (PRIMA ITT) 或Bevacizumab。"}]},
-    {id:"R-TX", header:"🔄 復發治療 (Recurr Tx)", css:"r-tx", subs:[
-      {title:"PSOC (Sensitive Recur)", content:"PFI>6m。評估二次手術 (DESKTOP III) 或含鉑複方。"},
-      {title:"PROC (Resistant Recur)", content:"PFI<6m。單藥化療 ± Bev 或標靶ADC (MIRASOL)。"},
-      {title:"Low grade serous carcinoma", content:"AI, MEK, CDK 4/6。"}]},
-    {id:"R-MT", header:"🔒 復後維持 (PR-Maint)", css:"r-mt", subs:[
-      {title:"PARPi Maint", content:"救援緩解後續用PARPi (NOVA/ARIEL3/SOLO2)。"}]}
-  ],
-  "Cervical": [
-    {id:"P-TX", header:"🌿 初治 (Primary Tx)", css:"p-tx", subs:[
-      {title:"Locally Advanced (CCRT)", content:"同步化放療 ± 同步IO (A18) 或誘導化療 (INTERLACE)。"},
-      {title:"Early Stage (Surgery)", content:"根治術 (LACC) 或單純切除 (SHAPE)。"}]},
-    {id:"P-MT", header:"💊 一線維持 (1L Maint)", css:"p-mt", subs:[
-      {title:"Maintenance", content:"1L方案後接續維持 (KEYNOTE-826)。"}]},
-    {id:"R-TX", header:"🔄 復發治療 (Recurr Tx)", css:"r-tx", subs:[
-      {title:"Recurr / Metastatic", content:"一線KN826/BEATcc。二線ADC (innovaTV 301) 或IO (EMPOWER)。"}]},
-    {id:"R-MT", header:"🔒 復後維持 (PR-Maint)", css:"r-mt", subs:[
-      {title:"Continuous Therapy", content:"維持當前有效救援方案直至PD。"}]}
-  ],
-  "Uterine Sarcoma": [
-    {id:"P-TX", header:"🌿 初治 (Primary Tx)", css:"p-tx", subs:[
-      {title:"Primary Sarcoma", content:"術後輔助或轉移性不可切除。"},
-      {title:"Carcinosarcoma", content:"PC方案 (NRG-GOG0261)。"},
-      {title:"Low grade ESS", content:"激素治療 (Anastrozole/Letrozole)。"}]},
-    {id:"P-MT", header:"💊 一線維持 (1L Maint)", css:"p-mt", subs:[
-      {title:"Maintenance", content:"1L方案後接續維持。"}]},
-    {id:"R-TX", header:"🔄 復發治療 (Recurr Tx)", css:"r-tx", subs:[
-      {title:"Recurr / Metastatic", content:"LMS: Trabectedin (ET743)、Pazopanib、Eribulin。"},
-      {title:"Low grade ESS", content:"激素治療為主。"}]},
-    {id:"R-MT", header:"🔒 復後維持 (PR-Maint)", css:"r-mt", subs:[
-      {title:"Continuous Therapy", content:"維持當前有效救援方案直至PD。"}]}
-  ]
+const GUIDELINES={
+"Endometrial":[
+{id:"P-TX",header:"🌿 初治 (Primary Tx)",css:"p-tx",subs:[
+{title:"dMMR / MSI-H / MMRd",content:"一線首選：含鉑化療 + PD-1 (RUBY/GY018/AtTEnd)。"},
+{title:"pMMR / NSMP / MSS",content:"一線維持：Chemo + Durva/Ola (DUO-E)。二線標靶免疫 (KN775)。"},
+{title:"POLE mutation (超突變型)",content:"預後極佳。早期可考慮治療降階 (De-escalation)。RAINBO BLUE。"},
+{title:"p53 mutation (高拷貝型)",content:"侵襲性最強。建議化放療積極介入。Serous型需檢測HER2。RAINBO RED。"}]},
+{id:"P-MT",header:"💊 一線維持 (1L Maint)",css:"p-mt",subs:[
+{title:"Maintenance Therapy",content:"一線IO治療後延續維持至PD (MK2870-033/DUO-E/SIENDO)。"}]},
+{id:"R-TX",header:"🔄 復發治療 (Recurr Tx)",css:"r-tx",subs:[
+{title:"Recurrent EC",content:"標準二線：標靶+免疫 (KN775) 或單藥IO (GARNET)。救援ADC (SG/Trodelvy)。"}]},
+{id:"R-MT",header:"🔒 復後維持 (PR-Maint)",css:"r-mt",subs:[
+{title:"Continuous Therapy",content:"救援治療後維持當前有效方案直到疾病進展。"}]}
+],
+"Ovarian":[
+{id:"P-TX",header:"🌿 初治 (Primary Tx)",css:"p-tx",subs:[
+{title:"Neoadjuvant Setting",content:"NACT vs PDS (EORTC/CHORUS/SCORPION/JCOG0602/TRUST)。NACT+IDS+HIPEC(van Driel)。"},
+{title:"DDCT Setting",content:"Dose-Dense Chemo (JGOG3016/GOG-262/ICON8/MITO-7)。"},
+{title:"IP Setting",content:"IP Cisplatin/Paclitaxel (GOG-172)。GOG-252(with Bev)。OV21/PETROC。"},
+{title:"HGSC / Endometrioid",content:"手術(PDS/IDS)+Carbo/Pacli±Bev(GOG-0218/ICON7)。LION(LN-陰性免清掃)。"},
+{title:"Low grade serous carcinoma",content:"AI, MEK, CDK 4/6。NRG-GY019進行中。"},
+{title:"Clear Cell Carcinoma",content:"OCCC。JGOG3017比較一線方案。"},
+{title:"Mucinous (MOC) 鑑定",content:"CK7+/SATB2-(原發)。考慮GI-style化療方案(mEOC/GOG-0241)。"}]},
+{id:"P-MT",header:"💊 一線維持 (1L Maint)",css:"p-mt",subs:[
+{title:"BRCA mutation",content:"Olaparib單藥維持2年(SOLO-1)。T-DXd(HER2)維持試驗(DS8201-772)。"},
+{title:"HRD positive (wt)",content:"PAOLA-1(Ola+Bev) 或 PRIMA(Nira) 或 DUO-O(Durva+Ola+Bev)。"},
+{title:"HRD negative (pHRD)",content:"Niraparib維持(PRIMA ITT)或Bevacizumab(GOG-0218/ICON7)。"},
+{title:"Clear Cell Carcinoma",content:"OCCC。Temsirolimus維持Phase II資料。"}]},
+{id:"R-TX",header:"🔄 復發治療 (Recurr Tx)",css:"r-tx",subs:[
+{title:"PSOC (Sensitive Recur)",content:"PFI>6m。評估二次手術(DESKTOP III)或含鉑複方+Bev(OCEANS/GOG-0213/MITO16B)。Calypso。"},
+{title:"PROC (Resistant Recur)",content:"PFI<6m。單藥化療±Bev(AURELIA)或FRα ADC(MIRASOL/FRAmework-01)。"},
+{title:"Low grade serous carcinoma",content:"Trametinib(GOG-281)、Ribociclib+Let(GOG-3026)、Avutometinib+Def(RAMP-201)。"},
+{title:"Clear Cell Carcinoma",content:"OCCC。Nivo+Ipi(MoST-CIRCUIT)、Ceralasertib±Ola(ATARI)、Dostarlimab+Bev(DOVE)。"},
+{title:"Mucinous (MOC) 鑑定",content:"考慮GI-style方案。mFOLFIRINOX+Bev試驗進行中。"}]},
+{id:"R-MT",header:"🔒 復後維持 (PR-Maint)",css:"r-mt",subs:[
+{title:"PARPi Maint",content:"救援緩解後續用PARPi(NOVA/ARIEL3/SOLO2)。"}]}
+],
+"Cervical":[
+{id:"P-TX",header:"🌿 初治 (Primary Tx)",css:"p-tx",subs:[
+{title:"Locally Advanced (CCRT)",content:"同步化放療±同步IO(KN-A18)或誘導化療(INTERLACE)。CALLA陰性/OUTBACK陰性。"},
+{title:"Locally Advanced (NIC)",content:"新輔助免疫+化療→手術(NACI/NATIC/Cadonilimab)。"},
+{title:"Early Stage (Surgery)",content:"根治術開腹優先(LACC)。低風險可單純切除(SHAPE)。"}]},
+{id:"P-MT",header:"💊 一線維持 (1L Maint)",css:"p-mt",subs:[
+{title:"Maintenance",content:"1L方案後接續維持(KEYNOTE-826)。"}]},
+{id:"R-TX",header:"🔄 復發治療 (Recurr Tx)",css:"r-tx",subs:[
+{title:"Recurr / Metastatic",content:"一線KN826/BEATcc/GOG-240+Bev。二線ADC(innovaTV 301)或IO(EMPOWER/Cemiplimab)。"}]},
+{id:"R-MT",header:"🔒 復後維持 (PR-Maint)",css:"r-mt",subs:[
+{title:"Continuous Therapy",content:"維持當前有效救援方案直至PD。"}]}
+],
+"Uterine Sarcoma":[
+{id:"P-TX",header:"🌿 初治 (Primary Tx)",css:"p-tx",subs:[
+{title:"Primary Sarcoma",content:"術後輔助或轉移性。Dox±Ifo(EORTC62012)。GeDDiS確認Dox為基準。LMS-04(Dox+Trab)。"},
+{title:"Carcinosarcoma",content:"PC方案為新標準(GOG-0261)。或Pacli/Ifo(GOG-161)。GOG-150輔助資料。"},
+{title:"Low grade ESS",content:"激素治療優先：Anastrozole(PARAGON)。Letrozole(NCT05649956進行中)。"}]},
+{id:"P-MT",header:"💊 一線維持 (1L Maint)",css:"p-mt",subs:[
+{title:"Maintenance",content:"LMS: Trabectedin維持(LMS-04)。LGESS: 持續激素治療。NCT07076186輔助試驗進行中。"}]},
+{id:"R-TX",header:"🔄 復發治療 (Recurr Tx)",css:"r-tx",subs:[
+{title:"Recurr / Metastatic",content:"LMS: Trabectedin(ET743)、Pazopanib(PALETTE)、Regorafenib(REGOSARC)、Eribulin、Ola+TMZ。"},
+{title:"Carcinosarcoma",content:"PC方案(GOG-0261)。GOG-161 Ifo+Pacli。"},
+{title:"Low grade ESS",content:"激素治療為主(PARAGON/Letrozole)。NTRK融合: Larotrectinib/Entrectinib。"}]},
+{id:"R-MT",header:"🔒 復後維持 (PR-Maint)",css:"r-mt",subs:[
+{title:"Continuous Therapy",content:"維持當前有效救援方案直至PD。LMS: 考慮Olaparib+TMZ。NTRK融合: Larotrectinib/Entrectinib。"}]}
+]
 };
 
-// ════════════════════════════════════════
-// RENDER NAVIGATION
-// ════════════════════════════════════════
-let currentCancer = 'Endometrial';
+let currentCancer='Endometrial';
 
-function selectCancer(cancer, btn) {
-  currentCancer = cancer;
-  document.querySelectorAll('.cancer-btn').forEach(b => b.classList.remove('active'));
+function selectCancer(cancer,btn){
+  currentCancer=cancer;
+  document.querySelectorAll('.cancer-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  renderStageGrid(cancer);
+  renderGrid(cancer);
 }
 
-function renderStageGrid(cancer) {
-  const grid = document.getElementById('stage-grid');
-  const stages = GUIDELINES[cancer];
-  if (!stages) return;
-  grid.innerHTML = stages.map(stage => {
-    const subsHTML = stage.subs.map(sub => {
-      const trials = TRIALS_DB.filter(t =>
-        t.cancer === cancer &&
-        t.pos.includes(stage.id) &&
-        t.sub.some(s => sub.title.includes(s) || s.includes(sub.title.split('(')[0].trim()))
-      );
-      const trialBtns = trials.map(t => `
-        <button class="trial-chip ${t.type === 'ongoing' ? 'ongoing' : ''}"
-          onclick="openModal('${encodeURIComponent(JSON.stringify(t))}')">
-          ${t.type === 'ongoing' ? '📍' : '📚'} ${t.name}
-          <br><span style="opacity:0.7">${t.pharma} · ${t.drug}</span>
-        </button>`).join('');
+function matchTrial(t,stageId,subTitle){
+  if(!t.p.includes(stageId))return false;
+  const clean=w=>w.replace(/\(.*?\)/g,'').trim().toLowerCase();
+  const ct=clean(subTitle);
+  return t.s.some(s=>{
+    const cs=clean(s);
+    return ct.includes(cs)||cs.includes(ct)||subTitle.includes(s.split('(')[0].trim())||s.includes(subTitle.split('(')[0].trim());
+  });
+}
+
+function renderGrid(cancer){
+  const grid=document.getElementById('stage-grid');
+  const stages=GUIDELINES[cancer];
+  if(!stages)return;
+  grid.innerHTML=stages.map(stage=>{
+    const subsHTML=stage.subs.map(sub=>{
+      const trials=TRIALS.filter(t=>t.c===cancer&&matchTrial(t,stage.id,sub.title));
+      const chips=trials.map(t=>{
+        const encoded=encodeURIComponent(JSON.stringify(t));
+        const isO=t.t==='o';
+        return `<button class="trial-chip${isO?' ongoing':''}" data-t="${encoded}" onclick="openModal(this)">
+          ${isO?'📍':'📚'} ${t.n}
+          <span class="chip-pharma">${t.ph} · ${t.d}</span>
+        </button>`;
+      }).join('');
       return `<div class="sub-section">
         <div class="sub-title">📘 ${sub.title}</div>
         <div class="sub-content">${sub.content}</div>
-        ${trialBtns}
+        ${chips}
       </div>`;
     }).join('');
     return `<div class="stage-col stage-${stage.css}">
@@ -820,177 +488,136 @@ function renderStageGrid(cancer) {
   }).join('');
 }
 
-// ════════════════════════════════════════
-// MODAL
-// ════════════════════════════════════════
-function openModal(encoded) {
-  const t = JSON.parse(decodeURIComponent(encoded));
-  document.getElementById('modalTitle').textContent = t.name;
-  document.getElementById('modalDrug').textContent = `${t.pharma} · ${t.drug}`;
-  document.getElementById('modalResults').textContent = t.pop;
-  document.getElementById('modalRationale').textContent = t.rationale;
-  document.getElementById('modalRegimen').textContent = t.regimen;
-  const incEl = document.getElementById('modalInclusion');
-  const excEl = document.getElementById('modalExclusion');
-  incEl.innerHTML = (t.inclusion||[]).map(i => `<li>${i}</li>`).join('');
-  excEl.innerHTML = (t.exclusion||[]).map(e => `<li>${e}</li>`).join('');
+function openModal(btn){
+  const t=JSON.parse(decodeURIComponent(btn.getAttribute('data-t')));
+  document.getElementById('modalTitle').textContent=t.n;
+  document.getElementById('modalDrug').textContent=t.d;
+  document.getElementById('modalPharma').textContent=t.ph;
+  document.getElementById('modalResults').textContent=t.pop;
+  document.getElementById('modalRationale').textContent=t.rat;
+  document.getElementById('modalRegimen').textContent=t.reg;
+  document.getElementById('modalInclusion').innerHTML=(t.inc||[]).map(i=>`<li>${i}</li>`).join('');
+  document.getElementById('modalExclusion').innerHTML=(t.exc||[]).map(e=>`<li>${e}</li>`).join('');
   document.getElementById('detailOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
 }
-function closeModal(e, force) {
-  if (force || !e || e.target === document.getElementById('detailOverlay')) {
+function closeModal(e,force){
+  if(force||!e||e.target===document.getElementById('detailOverlay')){
     document.getElementById('detailOverlay').classList.remove('open');
+    document.body.style.overflow='';
   }
 }
-
-// ════════════════════════════════════════
-// TAB SWITCHING
-// ════════════════════════════════════════
-function switchTab(tab) {
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + tab).classList.add('active');
-  event.target.classList.add('active');
+function switchTab(tab,btn,src){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.mobile-nav-btn').forEach(b=>b.classList.remove('active'));
+  if(src==='mobile'){document.getElementById('mnav-'+tab).classList.add('active');}
+  else{if(btn)btn.classList.add('active');document.getElementById('mnav-'+tab).classList.add('active');}
+  window.scrollTo({top:0,behavior:'smooth'});
 }
-
-function switchMode(mode, btn) {
-  ['text','image','form'].forEach(m => {
-    document.getElementById('mode-' + m).style.display = m === mode ? 'block' : 'none';
-  });
-  document.querySelectorAll('.mode-tab').forEach(b => b.classList.remove('active'));
+function switchMode(mode,btn){
+  ['text','image','form'].forEach(m=>{document.getElementById('mode-'+m).style.display=m===mode?'block':'none';});
+  document.querySelectorAll('.mode-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
 }
-
-// ════════════════════════════════════════
-// IMAGE UPLOAD
-// ════════════════════════════════════════
-let uploadedImageBase64 = null;
-let uploadedImageMime = null;
-
-function handleImageUpload(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const result = e.target.result;
-    uploadedImageBase64 = result.split(',')[1];
-    uploadedImageMime = file.type;
-    document.getElementById('previewImg').src = result;
-    document.getElementById('previewName').textContent = `✅ ${file.name} (${(file.size/1024).toFixed(0)} KB)`;
+let imgB64=null,imgMime=null;
+function handleImageUpload(event){
+  const file=event.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=(e)=>{
+    const r=e.target.result;
+    imgB64=r.split(',')[1];imgMime=file.type;
+    document.getElementById('previewImg').src=r;
+    document.getElementById('previewName').textContent='✅ '+file.name+' ('+(file.size/1024).toFixed(0)+' KB)';
     document.getElementById('uploadedPreview').classList.add('show');
   };
   reader.readAsDataURL(file);
 }
-
-// drag/drop
-const uploadZone = document.getElementById('uploadZone');
-if (uploadZone) {
-  uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.style.borderColor = 'var(--teal)'; });
-  uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = ''; });
-  uploadZone.addEventListener('drop', e => {
-    e.preventDefault(); uploadZone.style.borderColor = '';
-    const file = e.dataTransfer.files[0];
-    if (file) { document.getElementById('imgUpload').files = e.dataTransfer.files; handleImageUpload({target:{files:[file]}}); }
+const uz=document.getElementById('uploadZone');
+if(uz){
+  uz.addEventListener('dragover',e=>{e.preventDefault();uz.style.borderColor='var(--teal)';});
+  uz.addEventListener('dragleave',()=>{uz.style.borderColor='';});
+  uz.addEventListener('drop',e=>{
+    e.preventDefault();uz.style.borderColor='';
+    const file=e.dataTransfer.files[0];
+    if(file){document.getElementById('imgUpload').files=e.dataTransfer.files;handleImageUpload({target:{files:[file]}});}
   });
 }
 
-// ════════════════════════════════════════
-// AI ANALYSIS
-// ════════════════════════════════════════
-const SYSTEM_PROMPT = `你是一位資深婦科腫瘤臨床醫師，同時也是臨床試驗設計專家。
-根據以下婦癌臨床試驗實證資料庫，針對患者病歷資料進行深度分析，提供：
-
-1. 【分子分型解讀】根據輸入的標記（MMR、p53、POLE、BRCA、HRD等），判斷患者屬於哪個分子亞型，及其預後意義。
-2. 【推薦治療路徑】依據目前實證最強的方案，提供分期分線的具體建議（請引用試驗名稱如RUBY、KN775等）。
-3. 【可參與臨床試驗】列出符合條件的進行中試驗（標記📍者），說明符合原因。
-4. 【風險與注意事項】免疫相關副作用、PARPi血液毒性、ADC眼毒性等個別化注意事項。
-
+const SYS_PROMPT=`你是一位資深婦科腫瘤臨床醫師，同時也是臨床試驗設計專家。根據以下婦癌臨床試驗實證資料庫，針對患者病歷資料進行深度分析，提供：
+【分子分型解讀】根據輸入的標記（MMR、p53、POLE、BRCA、HRD等），判斷患者分子亞型及其預後意義。
+【推薦治療路徑】依據目前實證最強的方案，提供分期分線的具體建議（請引用試驗名稱如RUBY、KN775等）。
+【可參與臨床試驗】列出符合條件的進行中試驗（標記📍者），說明符合原因。
+【風險與注意事項】免疫相關副作用、PARPi血液毒性、ADC眼毒性等個別化注意事項。
 請使用繁體中文，回答要精準且有條理，用醫師對醫師的語氣，不需過度解釋基礎知識。`;
 
-async function runAnalysis() {
-  const apiKey = document.getElementById('apiKey').value.trim();
-  if (!apiKey) { alert('請先輸入 Gemini API Key。'); return; }
-
-  let userContent = '';
-  const activeMode = document.querySelector('.mode-tab.active').textContent.trim();
-
-  if (activeMode.includes('文字')) {
-    userContent = document.getElementById('textInput').value.trim();
-    if (!userContent) { alert('請輸入患者病歷摘要。'); return; }
-  } else if (activeMode.includes('影像')) {
-    if (!uploadedImageBase64) { alert('請先上傳影像檔案。'); return; }
-    userContent = document.getElementById('imageContextInput').value || '請分析此病理/影像圖片，並根據婦癌試驗資料庫給出治療建議。';
-  } else {
-    const cancer = document.getElementById('f-cancer').value;
-    const stage = document.getElementById('f-stage').value;
-    const mmr = document.getElementById('f-mmr').value;
-    const p53 = document.getElementById('f-p53').value;
-    const brca = document.getElementById('f-brca').value;
-    const ecog = document.getElementById('f-ecog').value;
-    const prior = document.getElementById('f-prior').value;
-    const markers = document.getElementById('f-markers').value;
-    userContent = `癌症: ${cancer} | 分期: ${stage} | MMR: ${mmr} | p53: ${p53} | BRCA/HRD: ${brca} | ECOG: ${ecog} | 既往治療: ${prior} | 其他標記: ${markers}`;
+async function runAnalysis(){
+  const apiKey=document.getElementById('apiKey').value.trim();
+  if(!apiKey){alert('請先輸入 Gemini API Key。');return;}
+  const activeMode=document.querySelector('.mode-tab.active').textContent.trim();
+  let userContent='';
+  if(activeMode.includes('文字')){
+    userContent=document.getElementById('textInput').value.trim();
+    if(!userContent){alert('請輸入患者病歷摘要。');return;}
+  }else if(activeMode.includes('影像')){
+    if(!imgB64){alert('請先上傳影像檔案。');return;}
+    userContent=document.getElementById('imageContextInput').value||'請分析此病理/影像圖片，並根據婦癌試驗資料庫給出治療建議。';
+  }else{
+    const cancer=document.getElementById('f-cancer').value;
+    const stage=document.getElementById('f-stage').value;
+    const mmr=document.getElementById('f-mmr').value;
+    const p53=document.getElementById('f-p53').value;
+    const pole=document.getElementById('f-pole').value;
+    const brca=document.getElementById('f-brca').value;
+    const ecog=document.getElementById('f-ecog').value;
+    const histo=document.getElementById('f-histo').value;
+    const prior=document.getElementById('f-prior').value;
+    const markers=document.getElementById('f-markers').value;
+    userContent=`癌症:${cancer}|分期:${stage}|MMR:${mmr}|p53:${p53}|POLE:${pole}|BRCA/HRD:${brca}|ECOG:${ecog}|組織型態:${histo}|既往治療:${prior}|其他標記:${markers}`;
   }
-
-  // Build request
-  const btn = document.getElementById('analyzeBtn');
-  btn.disabled = true;
-  document.getElementById('btnIcon').innerHTML = '<div class="spinner"></div>';
-  document.getElementById('btnText').textContent = 'Gemini AI 分析中…';
-
-  const trialSummary = TRIALS_DB.map(t => `[${t.name}] ${t.cancer} ${t.pos.join('/')} - ${t.pop}`).join('\n');
-  const fullPrompt = `${SYSTEM_PROMPT}\n\n===試驗資料庫摘要===\n${trialSummary}\n\n===患者資料===\n${userContent}`;
-
+  const btn=document.getElementById('analyzeBtn');
+  btn.disabled=true;
+  document.getElementById('btnIcon').innerHTML='<div class="spinner"></div>';
+  document.getElementById('btnText').textContent='Gemini AI 分析中…';
+  const trialSummary=TRIALS.map(t=>`[${t.n}][${t.c}/${t.p}] ${t.pop}`).join('\n');
+  const fullPrompt=SYS_PROMPT+'\n\n===試驗資料庫摘要===\n'+trialSummary+'\n\n===患者資料===\n'+userContent;
   let requestBody;
-  if (uploadedImageBase64 && activeMode.includes('影像')) {
-    requestBody = { contents: [{ parts: [
-      { text: fullPrompt },
-      { inline_data: { mime_type: uploadedImageMime, data: uploadedImageBase64 } }
-    ]}]};
-  } else {
-    requestBody = { contents: [{ parts: [{ text: fullPrompt }] }] };
+  if(imgB64&&activeMode.includes('影像')){
+    requestBody={contents:[{parts:[{text:fullPrompt},{inline_data:{mime_type:imgMime,data:imgB64}}]}]};
+  }else{
+    requestBody={contents:[{parts:[{text:fullPrompt}]}]};
   }
-
-  try {
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-      { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(requestBody) }
-    );
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.error?.message || `HTTP ${res.status}`);
-    }
-    const data = await res.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '無法取得回應。';
+  try{
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(requestBody)});
+    if(!res.ok){const err=await res.json();throw new Error(err.error?.message||`HTTP ${res.status}`);}
+    const data=await res.json();
+    const text=data.candidates?.[0]?.content?.parts?.[0]?.text||'無法取得回應。';
     displayResult(text);
-  } catch (err) {
-    alert(`❌ 分析失敗：${err.message}\n\n請確認 API Key 是否正確，或您的網路是否允許連接 Google API。`);
-  } finally {
-    btn.disabled = false;
-    document.getElementById('btnIcon').textContent = '✨';
-    document.getElementById('btnText').textContent = '啟動 Gemini AI 分析';
+  }catch(err){
+    alert('❌ 分析失敗：'+err.message+'\n\n請確認 API Key 是否正確，或網路是否允許連接 Google API。');
+  }finally{
+    btn.disabled=false;
+    document.getElementById('btnIcon').textContent='✨';
+    document.getElementById('btnText').textContent='啟動 Gemini AI 分析';
   }
 }
-
-function displayResult(text) {
-  const resultDiv = document.getElementById('aiResult');
-  const contentDiv = document.getElementById('resultContent');
-  // Convert markdown-like to HTML
-  let html = text
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/^#{1,3}\s(.+)$/gm, '<h4>$1</h4>')
-    .replace(/^[-•]\s(.+)$/gm, '<li>$1</li>')
-    .replace(/(<li>.*<\/li>\n?)+/g, match => `<ul>${match}</ul>`)
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n/g, '<br>');
-  contentDiv.innerHTML = `<p>${html}</p>`;
-  resultDiv.classList.add('show');
-  resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+function displayResult(text){
+  const contentDiv=document.getElementById('resultContent');
+  let html=text
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^#{1,3}\s(.+)$/gm,'<h4>$1</h4>')
+    .replace(/^[-•]\s(.+)$/gm,'<li>$1</li>')
+    .replace(/(<li>.*<\/li>\n?)+/g,m=>`<ul>${m}</ul>`)
+    .replace(/\n\n/g,'</p><p>')
+    .replace(/\n/g,'<br>');
+  contentDiv.innerHTML=`<p>${html}</p>`;
+  const rd=document.getElementById('aiResult');
+  rd.classList.add('show');
+  rd.scrollIntoView({behavior:'smooth',block:'start'});
 }
-
-// ════════════════════════════════════════
-// INIT
-// ════════════════════════════════════════
-renderStageGrid('Endometrial');
+renderGrid('Endometrial');
 </script>
 </body>
 </html>
