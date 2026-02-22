@@ -688,7 +688,6 @@ function displayResult(text){
   rd.classList.add('show');
   rd.scrollIntoView({behavior:'smooth',block:'start'});
 }
-renderGrid('Endometrial');
 
 // ===== TRIAL BROWSER =====
 let selectedTrialIdx = null;
@@ -854,13 +853,28 @@ ${t.reg}
 }
 
 // Init
-window.addEventListener('DOMContentLoaded',()=>{
-  renderTrialList();
-  renderDetailPane(null);
-  renderGrid('Endometrial');
-  // count update
-  document.getElementById('trialCount').textContent = TRIALS.length + ' 個試驗';
-});
+// ===== INITIALIZATION =====
+function initApp(){
+  try {
+    renderGrid('Endometrial');
+    renderTrialList();
+    renderDetailPane(null);
+    if(document.getElementById('trialCount')){
+      document.getElementById('trialCount').textContent = TRIALS.length + ' 個試驗';
+    }
+    console.log('婦癌導航系統已初始化，試驗數量：' + TRIALS.length);
+  } catch(e) {
+    console.error('初始化錯誤:', e);
+  }
+}
+
+// Run immediately (script is at bottom of body, DOM is ready)
+initApp();
+
+// Also run on DOMContentLoaded as fallback
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', initApp);
+}
 
 </script>
 </body>
