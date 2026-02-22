@@ -182,7 +182,7 @@ body{font-family:"Noto Sans TC","Inter",sans-serif;background:#f0f4f8;color:var(
     <div class="ai-hero">
       <h2>AI 患者臨床路徑分析</h2>
       <p>貼上患者病歷摘要，或上傳病理/影像照片，Gemini AI 將根據婦癌試驗資料庫，推薦最適合的治療路徑與可參與的臨床試驗。</p>
-      <span class="ai-badge">⚡ Powered by Google Gemini · 需輸入 API Key</span>
+      <span class="ai-badge">⚡ Powered by Gemini 2.5 Flash · 需輸入 API Key</span>
     </div>
     <div class="api-setup">
       <div class="api-setup-text">
@@ -252,6 +252,27 @@ body{font-family:"Noto Sans TC","Inter",sans-serif;background:#f0f4f8;color:var(
           <div class="form-group" style="grid-column:1/-1"><label>其他重要標記 / 特殊考量</label>
             <input type="text" class="form-text" id="f-markers" placeholder="例如：HER2 2+, FRα高表現, PD-L1 CPS, 腹水, 腎功能…"></div>
         </div>
+      </div>
+    </div>
+    
+    <div class="trial-quick-select" style="background:#f8fafc;border-radius:14px;border:1.5px solid #e2e8f0;padding:18px 20px;margin-bottom:16px;">
+      <div style="font-size:12px;font-weight:700;color:#64748b;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">📋 快速選取試驗 — 自動帶入 AI 分析</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <select id="cancerFilter" onchange="filterTrialList()" style="padding:9px 13px;border-radius:10px;border:2px solid #e2e8f0;background:white;font-size:13px;color:#1a202c;min-width:150px;cursor:pointer;">
+          <option value="">全部癌別</option>
+          <option value="Endometrial">🔴 子宮內膜癌</option>
+          <option value="Ovarian">🟣 卵巢癌</option>
+          <option value="Cervical">🟠 子宮頸癌</option>
+          <option value="Uterine Sarcoma">🔵 子宮肉瘤</option>
+        </select>
+        <select id="statusFilter" onchange="filterTrialList()" style="padding:9px 13px;border-radius:10px;border:2px solid #e2e8f0;background:white;font-size:13px;color:#1a202c;min-width:130px;cursor:pointer;">
+          <option value="">全部狀態</option>
+          <option value="p">📚 已發表</option>
+          <option value="o">📍 進行中</option>
+        </select>
+        <select id="trialQuickList" onchange="loadTrialToAnalysis()" style="flex:1;min-width:200px;padding:9px 13px;border-radius:10px;border:2px solid #bfdbfe;background:#eff6ff;font-size:13px;color:#1d4ed8;font-weight:600;cursor:pointer;">
+          <option value="">▼ 選擇試驗，自動填入分析欄位…</option>
+        </select>
       </div>
     </div>
     <button class="analyze-btn" id="analyzeBtn" onclick="runAnalysis()">
@@ -601,7 +622,7 @@ async function runAnalysis(){
     requestBody={contents:[{parts:[{text:fullPrompt}]}]};
   }
   try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
       {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(requestBody)});
     if(!res.ok){const err=await res.json();throw new Error(err.error?.message||`HTTP ${res.status}`);}
     const data=await res.json();
@@ -630,6 +651,83 @@ function displayResult(text){
   rd.scrollIntoView({behavior:'smooth',block:'start'});
 }
 renderGrid('Endometrial');
+
+function buildTrialOptions(){
+  const cancer=document.getElementById('cancerFilter').value;
+  const status=document.getElementById('statusFilter').value;
+  const sel=document.getElementById('trialQuickList');
+  sel.innerHTML='<option value="">▼ 選擇試驗，自動填入分析欄位…</option>';
+  const filtered=TRIALS.filter(t=>{
+    if(cancer && t.c!==cancer)return false;
+    if(status && t.t!==status)return false;
+    return true;
+  });
+  // Group by cancer
+  const groups={};
+  filtered.forEach(t=>{
+    if(!groups[t.c])groups[t.c]={};
+    const stage=t.p.join('/');
+    if(!groups[t.c][stage])groups[t.c][stage]=[];
+    groups[t.c][stage].push(t);
+  });
+  Object.keys(groups).forEach(c=>{
+    const og=document.createElement('optgroup');
+    og.label='— '+c+' —';
+    Object.keys(groups[c]).forEach(stage=>{
+      groups[c][stage].forEach(t=>{
+        const o=document.createElement('option');
+        o.value=JSON.stringify({n:t.n,ph:t.ph,d:t.d,pop:t.pop,rat:t.rat,reg:t.reg,inc:t.inc,exc:t.exc,out:t.out,c:t.c,t:t.t});
+        o.textContent=(t.t==='o'?'📍 ':'📚 ')+t.n+' — '+t.d;
+        og.appendChild(o);
+      });
+    });
+    sel.appendChild(og);
+  });
+}
+
+function filterTrialList(){
+  buildTrialOptions();
+}
+
+function loadTrialToAnalysis(){
+  const sel=document.getElementById('trialQuickList');
+  if(!sel.value)return;
+  const t=JSON.parse(sel.value);
+  // Switch to text mode
+  ['text','image','form'].forEach(m=>{document.getElementById('mode-'+m).style.display=m==='text'?'block':'none';});
+  document.querySelectorAll('.mode-tab').forEach((b,i)=>{b.classList.toggle('active',i===0);});
+  const prompt=`【試驗快速查詢】
+試驗名稱: ${t.n}
+藥物方案: ${t.d}
+藥廠/研究者: ${t.ph}
+癌別: ${t.c}
+狀態: ${t.t==='o'?'進行中(招募中)':'已發表'}
+
+核心結果: ${t.pop}
+科學理據: ${t.rat}
+給藥方案: ${t.reg}
+納入標準: ${(t.inc||[]).join('; ')}
+排除標準: ${(t.exc||[]).join('; ')}
+主要終點: ${t.out||''}
+
+請針對本試驗進行深度臨床解讀：
+1. 試驗設計的優缺點與潛在偏差
+2. 結果對臨床實務的影響及可適用的患者族群
+3. 與同類競爭試驗(如有)的比較
+4. 目前指引推薦等級與實際採用狀況
+5. 未解決的問題與後續研究方向
+6. 台灣/亞洲人群的適用性考量`;
+  document.getElementById('textInput').value=prompt;
+  // Scroll to textarea
+  document.getElementById('textInput').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+// Init
+window.addEventListener('DOMContentLoaded',()=>{
+  buildTrialOptions();
+  renderGrid('Endometrial');
+});
+
 </script>
 </body>
 </html>
