@@ -20,6 +20,15 @@ st.markdown("""
         font-size: 19px !important; line-height: 1.1;
     }
 
+    /* 修復手機端 st.code 左右溢出，強制換行 */
+    div[data-testid="stCodeBlock"] pre {
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        background-color: #F8F9FA !important;
+        padding: 15px !important;
+        font-size: 14px !important; /* 手機端字體稍微縮小更易讀 */
+    }
+
     .main-title {
         font-size: 34px !important; font-weight: 900; color: #004D40;
         padding: 10px 0; border-bottom: 4px solid #4DB6AC; margin-bottom: 10px;
@@ -1285,7 +1294,25 @@ with tab_ai:
                 try:
                     genai.configure(api_key=api_key_ai)
                     model = get_gemini_model()
-                    prompt_text = f"請作為專家分析：{p_notes_main}。參考實證庫：{all_trials_db}。請輸出純淨格式報告。"
+                    # --- [優化 Prompt] 移除 Markdown 符號，適合手機閱讀 ---
+                    prompt_text = f"""
+                    您現在是一位專業的婦癌臨床導航助理。請針對以下病歷進行實證媒合：
+                    內容：{p_notes_main}
+                    實證資料庫：{all_trials_db}。
+
+                    【輸出規範 (重要：請嚴格執行)】：
+                    1. 嚴禁使用任何星號 (**)、井字號 (###) 或底線 (_)。
+                    2. 標題請直接用 [大括號標題] 表示，例如：[病歷摘要]。
+                    3. 列表請統一使用簡單的橫線 (-)。
+                    4. 請在各段落之間留一個空行，增加手機閱讀的清晰度。
+                    5. 輸出語言：中文（專有名詞保留英文）。
+                    
+                    【內容架構】：
+                    [病理判讀]
+                    [推薦臨床試驗]
+                    [具體建議理由]
+                    [下一步決策路徑]
+                    """
                     
                     payload = [prompt_text]
                     if uploaded_file_main:
@@ -1306,6 +1333,17 @@ with tab_ai:
 
     # 顯示分析結果
     if 'ai_matching_report' in st.session_state:
+        st.markdown("---")
+        # 手機端友善的小提示
+        st.caption("📱 手機提示：點擊下方區塊右上角圖示即可全選複製全文")
+        
+        # 這裡顯示的 report 將會是沒有 ** 符號且會自動換行的純文字
+        st.code(st.session_state['ai_matching_report'], language=None)
+        
+        if st.button("🗑️ 清空分析", use_container_width=True):
+            del st.session_state['ai_matching_report']
+            st.rerun()
+        
         st.info("AI 分析建議如下：")
         st.code(st.session_state['ai_matching_report'], language=None)
 
