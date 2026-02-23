@@ -1,5 +1,6 @@
 import streamlit as st
 import google.generativeai as genai
+from PIL import Image  # --- [1. 新增：處理影像用庫] ---
 
 # --- 🏥 婦癌臨床導航與實證圖書館 (2026 旗艦最終極量整合版) ---
 st.set_page_config(page_title="婦癌臨床試驗導航系統", layout="wide")
@@ -1188,50 +1189,72 @@ def get_gemini_model():
         if target_model: return genai.GenerativeModel(target_model)
     except: return None
 
-# --- 4. 側邊欄：決策助理 (複製功能與排版優化版) ---
+# --- 4. 側邊欄：決策助理 (支援文字與照片雙輸入版) ---
 with st.sidebar:
     st.markdown("<h3 style='color: #6A1B9A;'>🤖 AI 實證媒合助理</h3>", unsafe_allow_html=True)
     api_key = st.text_input("Gemini API Key", type="password")
     
-    with st.expander("✨ 患者病歷數據深度分析", expanded=True):
-        p_notes = st.text_area("輸入摘要 (含分期/細胞/標記)", placeholder="例如：EC Stage III, dMMR, p53 mutation...", height=200)
+    with st.expander("✨ 患者數據深度分析 (支援影像)", expanded=True):
+        # 文字輸入區
+        p_notes = st.text_area("1. 輸入文字病歷 (選填)", placeholder="例如：EC Stage III, dMMR...", height=150)
         
-        if st.button("🚀 開始媒合分析", use_container_width=True):
-            if api_key and p_notes:
+        # 影像上傳區
+        uploaded_file = st.file_uploader("2. 上傳病歷照片/截圖 (選填)", type=["jpg", "jpeg", "png"])
+        if uploaded_file:
+            st.image(uploaded_file, caption="已上傳影像預覽", use_container_width=True)
+
+        # 按鈕排版
+        col_ai1, col_ai2 = st.columns(2)
+        
+        if col_ai1.button("🚀 開始分析", use_container_width=True):
+            if api_key and (p_notes or uploaded_file):
                 try:
                     genai.configure(api_key=api_key)
                     model = get_gemini_model()
                     
-                    # --- [優化 Prompt] 限制 AI 不要輸出過多 Markdown 符號 ---
-                    prompt = f"""
-                    請作為專業婦癌專家分析以下病歷：{p_notes}。
-                    參考實證庫：{all_trials_db}。
+                    # 這是給 AI 的指令，要求它輸出乾淨的內容
+                    prompt_text = f"""
+                    請作為專業婦癌專家，根據【文字摘要】與【病歷影像】進行分析。
+                    參考實證庫數據：{all_trials_db}。
                     
-                    【輸出要求】：
-                    1. 請使用『純文字』專業醫療報告格式。
-                    2. 嚴禁使用過多的星號(**)或井字號(###)。
-                    3. 使用簡單的標題與點列式(•)即可。
-                    4. 內容需包含：病歷摘要、推薦試驗、推薦理由與 Decision Tree 步驟。
+                    文字摘要內容：{p_notes if p_notes else "未提供文字，請直接從影像讀取。"}
+                    
+                    【輸出格式規範】：
+                    1. 嚴禁使用大量的星號(**)或井字號(###)。
+                    2. 請使用簡單的標題與點列式(•)符號。
+                    3. 內容包含：病況判讀、適合的臨床試驗、建議 Decision Tree。
+                    4. 輸出的報告必須整齊、適合直接複製貼上。
                     """
                     
-                    response = model.generate_content(prompt)
-                    # 將結果存入暫存
+                    # 打包數據：如果有照片就一起送過去
+                    payload = [prompt_text]
+                    if uploaded_file:
+                        img = Image.open(uploaded_file)
+                        payload.append(img)
+                    
+                    # AI 運算
+                    response = model.generate_content(payload)
                     st.session_state['ai_matching_report'] = response.text
                 except Exception as e: 
-                    st.error(f"AI 異常: {e}")
+                    st.error(f"分析失敗: {e}")
             else:
-                st.warning("請輸入 Key 與病歷摘要")
+                st.warning("請至少提供文字描述或上傳一張照片")
 
-        # --- [重點：穩定複製區塊] ---
+        # 複製功能
+        if col_ai2.button("📋 複製報告", use_container_width=True):
+            if 'ai_matching_report' in st.session_state:
+                st.toast("✅ 請利用下方區塊右上角按鈕一鍵複製！", icon="📝")
+            else:
+                st.warning("請先生成報告")
+
+        # 顯示報告結果 (採用最穩定的 st.code 複製法)
         if 'ai_matching_report' in st.session_state:
             st.markdown("---")
-            st.info("📋 **分析完成！點擊下方方框右上角圖示即可『一鍵複製』：**")
-            
-            # 使用 st.code 顯示，右上角會自動出現一個官方的複製按鈕，保證 100% 成功
+            st.info("以下為 AI 分析建議：")
+            # 這裡的 st.code 右上角會有一個原生複製按鈕，100% 能成功複製
             st.code(st.session_state['ai_matching_report'], language=None)
             
-            # 提供清空按鈕，方便下一次分析
-            if st.button("🗑️ 清空目前的分析內容", use_container_width=True):
+            if st.button("🗑️ 清空結果", use_container_width=True):
                 del st.session_state['ai_matching_report']
                 st.rerun()
 
