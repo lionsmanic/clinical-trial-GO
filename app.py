@@ -1258,8 +1258,58 @@ with st.sidebar:
                 del st.session_state['ai_matching_report']
                 st.rerun()
 
-# --- 5. 主頁面：導航地圖佈局 ---
-st.markdown("<div class='main-title'>婦癌臨床導航儀表板 (2026 旗艦最終極量整合版)</div>", unsafe_allow_html=True)
+# --- 5. 主頁面：響應式導航與 AI 助理佈局 ---
+st.markdown("<div class='main-title'>婦癌臨床導航儀表板 (2026 旗艦版)</div>", unsafe_allow_html=True)
+
+# 建立兩個分頁，讓手機版可以直接切換
+tab_map, tab_ai = st.tabs(["🗺️ 臨床導航地圖", "🤖 AI 實證助理"])
+
+with tab_ai:
+    st.markdown("### 🤖 AI 實證媒合助理 (支援照片上傳)")
+    # 將原本在側邊欄的內容移入此處
+    api_key_ai = st.text_input("輸入 Gemini API Key", type="password", key="main_api_key")
+    
+    col_input1, col_input2 = st.columns([1, 1])
+    with col_input1:
+        p_notes_main = st.text_area("1. 輸入文字摘要", placeholder="例如：EC Stage III, dMMR...", height=150)
+    with col_input2:
+        uploaded_file_main = st.file_uploader("2. 上傳病歷照片", type=["jpg", "jpeg", "png"])
+        if uploaded_file_main:
+            st.image(uploaded_file_main, width=200)
+
+    # 按鈕列
+    col_btn1, col_btn2 = st.columns(2)
+    if col_btn1.button("🚀 開始分析報告", use_container_width=True):
+        if api_key_ai and (p_notes_main or uploaded_file_main):
+            with st.spinner("AI 正在判讀實證數據..."):
+                try:
+                    genai.configure(api_key=api_key_ai)
+                    model = get_gemini_model()
+                    prompt_text = f"請作為專家分析：{p_notes_main}。參考實證庫：{all_trials_db}。請輸出純淨格式報告。"
+                    
+                    payload = [prompt_text]
+                    if uploaded_file_main:
+                        payload.append(Image.open(uploaded_file_main))
+                    
+                    response = model.generate_content(payload)
+                    st.session_state['ai_matching_report'] = response.text
+                except Exception as e:
+                    st.error(f"分析失敗: {e}")
+        else:
+            st.warning("請提供 Key 與病歷資訊")
+
+    if col_btn2.button("📋 複製 AI 報告", use_container_width=True):
+        if 'ai_matching_report' in st.session_state:
+            st.toast("✅ 請點擊下方區塊右上角圖示進行複製", icon="📝")
+        else:
+            st.warning("請先生成報告")
+
+    # 顯示分析結果
+    if 'ai_matching_report' in st.session_state:
+        st.info("AI 分析建議如下：")
+        st.code(st.session_state['ai_matching_report'], language=None)
+
+with tab_map:
 cancer_type = st.radio("第一步：選擇癌症類型", ["Endometrial", "Ovarian", "Cervical", "Uterine Sarcoma"], horizontal=True)
 
 cols = st.columns(len(guidelines_nested[cancer_type]))
