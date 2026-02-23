@@ -1310,7 +1310,7 @@ with tab_ai:
         st.code(st.session_state['ai_matching_report'], language=None)
 
 with tab_map:
-cancer_type = st.radio("第一步：選擇癌症類型", ["Endometrial", "Ovarian", "Cervical", "Uterine Sarcoma"], horizontal=True)
+    cancer_type = st.radio("第一步：選擇癌症類型", ["Endometrial", "Ovarian", "Cervical", "Uterine Sarcoma"], horizontal=True)
 
 cols = st.columns(len(guidelines_nested[cancer_type]))
 stages_data = guidelines_nested[cancer_type]
