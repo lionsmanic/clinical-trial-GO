@@ -1,52 +1,6 @@
 import streamlit as st
 import google.generativeai as genai
 
-# --- [1. 新增：匯入組件與複製函數] ---
-import streamlit.components.v1 as components
-
-def st_copy_to_clipboard(text):
-    """強效版複製功能：相容性最高，支援 iframe 與多種瀏覽器"""
-    # 處理特殊字元
-    escaped_text = text.replace("\\", "\\\\").replace("`", "\\`").replace("$", "\\$").replace("\n", "\\n").replace("'", "\\'")
-    
-    copy_js = f"""
-    <script>
-    function copyToClipboard() {{
-        const text = `{escaped_text}`;
-        
-        // 建立一個隱藏的 textarea
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        
-        // 確保它在畫面外，不被看見
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        textArea.style.top = "0";
-        document.body.appendChild(textArea);
-        
-        // 選取文字並執行複製
-        textArea.focus();
-        textArea.select();
-        
-        try {{
-            const successful = document.execCommand('copy');
-            if (successful) {{
-                // 傳送成功訊號給 Streamlit
-                window.parent.postMessage({{"type": "streamlit:setComponentValue", "value": "copied"}}, "*");
-            }}
-        }} catch (err) {{
-            console.error('無法複製', err);
-        }}
-        
-        // 移除暫存元件
-        document.body.removeChild(textArea);
-    }}
-    copyToClipboard();
-    </script>
-    """
-    components.html(copy_js, height=0, width=0)
-# ------------------------------------
-
 # --- 🏥 婦癌臨床導航與實證圖書館 (2026 旗艦最終極量整合版) ---
 st.set_page_config(page_title="婦癌臨床試驗導航系統", layout="wide")
 
@@ -1238,38 +1192,37 @@ def get_gemini_model():
 with st.sidebar:
     st.markdown("<h3 style='color: #6A1B9A;'>🤖 AI 實證媒合助理</h3>", unsafe_allow_html=True)
     api_key = st.text_input("Gemini API Key", type="password")
+    
     with st.expander("✨ 患者病歷數據深度分析", expanded=True):
-        p_notes = st.text_area("輸入摘要 (含分期/細胞/標記)", placeholder="例如：EC Stage III, dMMR, p53 mutation, HER2 2+...", height=250)
-# --- [2. 修改：兩排並列按鈕與複製邏輯] ---
-        col_ai1, col_ai2 = st.columns(2)
+        p_notes = st.text_area("輸入摘要 (含分期/細胞/標記)", placeholder="例如：EC Stage III, dMMR...", height=200)
         
-        if col_ai1.button("🚀 開始分析", use_container_width=True):
+        # 點擊按鈕進行分析
+        if st.button("🚀 開始媒合分析", use_container_width=True):
             if api_key and p_notes:
                 try:
                     genai.configure(api_key=api_key)
                     model = get_gemini_model()
                     prompt = f"分析病歷：{p_notes}。請參考實證庫：{all_trials_db}。建議適合路徑與試驗理由。"
-                    # 生成內容並存入 session_state
                     response = model.generate_content(prompt)
+                    # 將結果存入暫存
                     st.session_state['ai_matching_report'] = response.text
                 except Exception as e: 
                     st.error(f"AI 異常: {e}")
             else:
                 st.warning("請輸入 Key 與病歷摘要")
 
-        if col_ai2.button("📋 複製報告", use_container_width=True):
-            if 'ai_matching_report' in st.session_state:
-                st_copy_to_clipboard(st.session_state['ai_matching_report'])
-                st.toast("✅ 媒合報告已複製！", icon="🤖")
-            else:
-                st.warning("請先完成分析")
-
-        # 顯示 AI 分析結果
+        # --- 重點：如果 AI 有跑出結果，顯示「原生複製區塊」 ---
         if 'ai_matching_report' in st.session_state:
             st.markdown("---")
-            st.markdown("**AI 建議路徑：**")
-            st.info(st.session_state['ai_matching_report'])
-        # ---------------------------------------
+            st.markdown("✅ **分析完成！請點擊下方區塊右上角圖示進行複製：**")
+            
+            # 使用 st.code 顯示，這會自動產生一個 100% 成功的複製按鈕
+            st.code(st.session_state['ai_matching_report'], language=None)
+            
+            # 如果還是想要一個按鈕提醒使用者，可以加一個裝飾用的清空鍵
+            if st.button("🗑️ 清空分析結果"):
+                del st.session_state['ai_matching_report']
+                st.rerun()
 
 # --- 5. 主頁面：導航地圖佈局 ---
 st.markdown("<div class='main-title'>婦癌臨床導航儀表板 (2026 旗艦最終極量整合版)</div>", unsafe_allow_html=True)
