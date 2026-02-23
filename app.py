@@ -105,7 +105,9 @@ guidelines_nested = {
             {"title": "Low grade serous carcinoma", "content": "AI, MEK, CDK 4/6"},
             {"title": "Clear Cell Carcinoma", "content": "OCCC。"},
             {"title": "Mucinous (MOC) 鑑定", "content": "判定：CK7+/SATB2- (原發)。IA 期可保守。侵襲型建議積極化療。"}]},
-        {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [{"title": "PARPi Maint", "content": "救援緩解後續用 PARPi (NOVA/ARIEL3/SOLO2)。"}]}
+        {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [
+            {"title": "PARPi Maint", "content": "救援緩解後續用 PARPi (NOVA/ARIEL3/SOLO2)。"}
+            {"title": "ADC/other Maint", "content": "其他藥物。"}]}
     ],
     "Cervical": [
         {"id": "P-TX", "header": "初治 (Primary Tx)", "css": "p-tx", "subs": [
@@ -1086,7 +1088,7 @@ all_trials_db = [
 
     {"cancer": "Endometrial", 
         "pos": ["R-TX"], 
-        "sub_pos": ["Recurrent EC"], 
+        "sub_pos": ["Recurrent EC"], "type": "Ongoing",
         "name": "📍 BLUESTAR (NCT05123482)", "pharma": "AstraZeneca", "drug": "Puxitatug samrotecan (AZD8205)", 
         "pop_results": "B7-H4 ADC 突破訊號：在晚期/轉移性子宮內膜癌擴展隊列中，ORR 達 34.6-38.5%，中位 PFS 達 7.0 個月。",
         "rationale": "利用 B7-H4 (於婦癌高度表現之免疫調控分子) 作為導引，搭載 DAR 8 的 TOP1i 載荷，透過旁觀者效應克服腫瘤異質性。",
@@ -1116,8 +1118,8 @@ all_trials_db = [
     
     {"cancer": "Cervical", 
         "pos": ["P-MT"], 
-        "sub_pos": ["Locally Advanced (CCRT)", "Maintenance"], 
-        "name": "📚 eVOLVE-Cervical (NCT06079671)", "pharma": "AstraZeneca", "drug": "Volrustomig (PD-1/CTLA-4)", 
+        "sub_pos": ["Maintenance"], "type": "Ongoing",
+        "name": "📍 eVOLVE-Cervical (NCT06079671)", "pharma": "AstraZeneca", "drug": "Volrustomig (PD-1/CTLA-4)", 
         "pop_results": "LACC 輔助強化探索：針對局部晚期高風險患者，於 CCRT 完結且未進展後，評估雙特異性抗體維持治療之價值。",
         "rationale": "利用 PD-1/CTLA-4 雙重阻斷 (Volrustomig) 作為序列免疫治療，旨在於化放療後之免疫原性空窗期進一步降低復發風險。",
         "regimen": "Arm A: Volrustomig (IV) 維持治療; Arm B: Placebo (IV) 維持治療。(對象為 CCRT 後達 CR/PR/SD 之患者)。",
@@ -1135,7 +1137,7 @@ all_trials_db = [
 
 {"cancer": "Ovarian", 
         "pos": ["P-MT"], 
-        "sub_pos": ["HGSC / Endometrioid", "Maintenance Therapy", "HRD-negative"], 
+        "sub_pos": ["BRCA mutation", "HRD positive (wt)"], "type": "Ongoing",
         "name": "📍 TroFuse-021 (GOG-3102 / ENGOT-ov85)", "pharma": "MSD (Merck)", "drug": "sac-TMT (MK-2870) ± Bev", 
         "pop_results": "HRD- 族群維持新解：針對 PARPi 獲益有限的 HRD 陰性族群，探索 ADC 維持治療能否優於標準觀察或標靶維持。",
         "rationale": "HRD 陰性腫瘤對 PARPi 反應差，TROP2 ADC 提供與修復路徑無關的殺傷機制，並可能與 Bevacizumab 具備協同抗血管效應。",
@@ -1149,7 +1151,7 @@ all_trials_db = [
 
     {"cancer": "Ovarian", 
         "pos": ["R-MT"], 
-        "sub_pos": ["PSOC (Sensitive Recur)", "Maintenance Therapy"], 
+        "sub_pos": ["ADC/other Maint"], "type": "Ongoing",
         "name": "📍 TroFuse-022 (GOG-3103 / ENGOT-ov84)", "pharma": "MSD (Merck)", "drug": "sac-TMT (MK-2870) ± Bev", 
         "pop_results": "PSOC 維持治療新機制：針對含鉑敏感復發且完成化療後，探索 TROP2 ADC 作為非鉑類機制維持治療的潛力。",
         "rationale": "PSOC 在含鉑治療後的微小病灶期，利用不同於鉑類的 ADC 載荷 (Payload) 達成更深層的細胞毒殺，延緩復發。",
@@ -1161,8 +1163,8 @@ all_trials_db = [
 
 {"cancer": "Ovarian", 
         "pos": ["R-TX"], 
-        "sub_pos": ["PROC (Resistant Recur)"], 
-        "name": "🌟 REJOICE-Ovarian01 (R-DXd)", "pharma": "Daiichi Sankyo / MSD", "drug": "Raludotatug Deruxtecan (R-DXd)", 
+        "sub_pos": ["PROC (Resistant Recur)"], "type": "Ongoing",
+        "name": "📍 REJOICE-Ovarian01 (R-DXd)", "pharma": "Daiichi Sankyo / MSD", "drug": "Raludotatug Deruxtecan (R-DXd)", 
         "pop_results": "PROC 救星：針對鉑類抗藥復發，Phase II 實證 ORR 高達 50.5% (DCR 77.6%)，打破以往單藥化療僅 10-15% 的瓶頸。",
         "rationale": "針對上皮性卵巢癌高度表現的 CDH6 標靶，利用 DXd 載荷達成強效細胞殺傷，為 PROC 提供全新的精準打擊方案。",
         "regimen": "Phase III 劑量: 5.6 mg/kg Q3W (對比醫師選擇化療 TPC: Pacli, PLD, Gem, Topo)。",
