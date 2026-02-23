@@ -470,7 +470,8 @@ const GUIDELINES={
 {title:"Clear Cell Carcinoma",content:"OCCC。Nivo+Ipi(MoST-CIRCUIT)、Ceralasertib±Ola(ATARI)、Dostarlimab+Bev(DOVE)。"},
 {title:"Mucinous (MOC) 鑑定",content:"考慮GI-style方案。mFOLFIRINOX+Bev試驗進行中。"}]},
 {id:"R-MT",header:"🔒 復後維持 (PR-Maint)",css:"r-mt",subs:[
-{title:"PARPi Maint",content:"救援緩解後續用PARPi(NOVA/ARIEL3/SOLO2)。"}]}
+{title:"PARPi Maint",content:"救援緩解後續用PARPi(NOVA/ARIEL3/SOLO2)。"},
+{title:"ADC/other Maint",content:"ADC維持新選項：sac-TMT±Bev維持(TroFuse-022)。"}]}
 ],
 "Cervical":[
 {id:"P-TX",header:"🌿 初治 (Primary Tx)",css:"p-tx",subs:[
@@ -512,11 +513,18 @@ function selectCancer(cancer,btn){
 
 function matchTrial(t,stageId,subTitle){
   if(!t.p.includes(stageId))return false;
-  const clean=w=>w.replace(/\(.*?\)/g,'').trim().toLowerCase();
-  const ct=clean(subTitle);
+  const cleanBase=w=>w.replace(/\(.*?\)/g,'').trim().toLowerCase();
+  const getParen=w=>{const m=w.match(/\(([^)]+)\)/g);return m?m.join(' ').toLowerCase():''};
+  const ctBase=cleanBase(subTitle);const ctParen=getParen(subTitle);
   return t.s.some(s=>{
-    const cs=clean(s);
-    return ct.includes(cs)||cs.includes(ct)||subTitle.includes(s.split('(')[0].trim())||s.includes(subTitle.split('(')[0].trim());
+    const csBase=cleanBase(s);const csParen=getParen(s);
+    if(ctBase===csBase){
+      if(ctParen&&csParen)return ctParen.includes(csParen)||csParen.includes(ctParen);
+      if(!ctParen&&!csParen)return true;
+      return false;
+    }
+    return ctBase.includes(csBase)||csBase.includes(ctBase)||
+           subTitle.includes(s.split('(')[0].trim())||s.includes(subTitle.split('(')[0].trim());
   });
 }
 
