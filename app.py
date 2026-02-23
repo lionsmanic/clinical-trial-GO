@@ -20,13 +20,27 @@ st.markdown("""
         font-size: 19px !important; line-height: 1.1;
     }
 
-    /* 修復手機端 st.code 左右溢出，強制換行 */
+    /* 強效修復：侷限代碼區塊在框架內，防止手機版左右溢出 */
+    div[data-testid="stCodeBlock"] {
+        width: 100% !important;
+    }
+
     div[data-testid="stCodeBlock"] pre {
-        white-space: pre-wrap !important;
-        word-break: break-word !important;
+        white-space: pre-wrap !important;       /* 核心：強制換行 */
+        word-break: break-all !important;      /* 核心：單字過長也強制斷行 */
+        overflow-wrap: break-word !important;
         background-color: #F8F9FA !important;
-        padding: 15px !important;
-        font-size: 14px !important; /* 手機端字體稍微縮小更易讀 */
+        border: 1px solid #E0E0E0 !important;
+        border-radius: 8px !important;
+        padding: 12px !important;
+    }
+
+    /* 針對手機螢幕寬度做微調 */
+    @media (max-width: 640px) {
+        div[data-testid="stCodeBlock"] pre {
+            font-size: 13px !important; /* 手機字體微調，增加閱讀量 */
+            line-height: 1.4 !important;
+        }
     }
 
     .main-title {
@@ -1332,20 +1346,16 @@ with tab_ai:
             st.warning("請先生成報告")
 
     # 顯示分析結果
+    # --- 修正：確保只顯示一次，且排版整齊 ---
     if 'ai_matching_report' in st.session_state:
         st.markdown("---")
-        # 手機端友善的小提示
-        st.caption("📱 手機提示：點擊下方區塊右上角圖示即可全選複製全文")
-        
-        # 這裡顯示的 report 將會是沒有 ** 符號且會自動換行的純文字
+        # 直接使用 st.code，它自帶一鍵複製功能，且我們下方會用 CSS 強制它換行
         st.code(st.session_state['ai_matching_report'], language=None)
         
-        if st.button("🗑️ 清空分析", use_container_width=True):
+        # 清空按鈕放在最後
+        if st.button("🗑️ 清空分析結果", use_container_width=True):
             del st.session_state['ai_matching_report']
             st.rerun()
-        
-        st.info("AI 分析建議如下：")
-        st.code(st.session_state['ai_matching_report'], language=None)
 
 with tab_map:
     cancer_type = st.radio("第一步：選擇癌症類型", ["Endometrial", "Ovarian", "Cervical", "Uterine Sarcoma"], horizontal=True)
