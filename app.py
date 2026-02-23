@@ -1,5 +1,20 @@
 import streamlit as st
 import google.generativeai as genai
+# --- [新增代碼] ---
+import streamlit.components.v1 as components
+
+def st_copy_to_clipboard(text):
+    """自定義複製功能 (JavaScript)"""
+    escaped_text = text.replace("`", "\\`").replace("$", "\\$").replace("\n", "\\n")
+    copy_js = f"""
+    <script>
+    navigator.clipboard.writeText(`{escaped_text}`).then(() => {{
+        window.parent.postMessage({{"type": "streamlit:setComponentValue", "value": "copied"}}, "*");
+    }});
+    </script>
+    """
+    components.html(copy_js, height=0, width=0)
+# ------------------
 
 # --- 🏥 婦癌臨床導航與實證圖書館 (2026 旗艦最終極量整合版) ---
 st.set_page_config(page_title="婦癌臨床試驗導航系統", layout="wide")
@@ -1278,4 +1293,48 @@ else:
     with r4:
         st.markdown("<div style='background:#FFEBEE; border-left:8px solid #C62828; padding:15px; border-radius:10px;'><b>❌ Exclusion Criteria (關鍵排除標準)</b></div>", unsafe_allow_html=True)
         for exc in t_obj.get('exclusion', ['排除臟器功能異常或活動性自體免疫疾病。']): st.write(f"• **{exc}**")
+
+# --- [新增代碼：按鈕排版與報告生成] ---
+    st.divider()
+    st.markdown("### 📝 臨床決策報告生成")
+    
+    # 建立兩排並列的按鈕
+    btn_col1, btn_col2 = st.columns([1, 1])
+
+    with btn_col1:
+        if st.button("🚀 生成整段報告內容", use_container_width=True):
+            # 組合所有資訊成一段純文字
+            inc_str = "\n".join([f"• {i}" for i in t_obj.get('inclusion', [])])
+            exc_str = "\n".join([f"• {e}" for e in t_obj.get('exclusion', [])])
+            
+            full_report = f"""【婦癌實證導航報告：{t_obj['name']}】
+------------------------------------------
+● 核心藥物：{t_obj['drug']}
+● 療效結論：{t_obj.get('pop_results', 'N/A')}
+● 分組給藥：{t_obj.get('regimen', 'N/A')}
+● 納入標準：
+{inc_str}
+● 排除標準：
+{exc_str}
+● 存活數據：{t_obj.get('outcomes', 'N/A')}
+------------------------------------------
+(由 2026 旗艦導航系統自動生成)"""
+            
+            st.session_state['current_report_text'] = full_report
+            st.success("報告已就緒，可點擊右側複製。")
+
+    with btn_col2:
+        if st.button("📋 一鍵全選複製全文", use_container_width=True):
+            if 'current_report_text' in st.session_state:
+                st_copy_to_clipboard(st.session_state['current_report_text'])
+                st.toast("✅ 已複製到剪貼簿！", icon="📝")
+            else:
+                st.warning("請先點擊左側『生成報告』")
+
+    # 如果有報告內容，顯示在一個可讀區塊中
+    if 'current_report_text' in st.session_state:
+        st.info("請檢查下方內容後點擊複製：")
+        st.text_area("預覽報告內容", st.session_state['current_report_text'], height=300)
+    # ------------------
+    
     st.markdown("</div>", unsafe_allow_html=True)
