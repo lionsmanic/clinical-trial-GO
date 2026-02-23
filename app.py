@@ -1,6 +1,22 @@
 import streamlit as st
 import google.generativeai as genai
 
+# --- [1. 新增：匯入組件與複製函數] ---
+import streamlit.components.v1 as components
+
+def st_copy_to_clipboard(text):
+    """自定義複製功能 (JavaScript)"""
+    escaped_text = text.replace("`", "\\`").replace("$", "\\$").replace("\n", "\\n")
+    copy_js = f"""
+    <script>
+    navigator.clipboard.writeText(`{escaped_text}`).then(() => {{
+        window.parent.postMessage({{"type": "streamlit:setComponentValue", "value": "copied"}}, "*");
+    }});
+    </script>
+    """
+    components.html(copy_js, height=0, width=0)
+# ------------------------------------
+
 # --- 🏥 婦癌臨床導航與實證圖書館 (2026 旗艦最終極量整合版) ---
 st.set_page_config(page_title="婦癌臨床試驗導航系統", layout="wide")
 
@@ -1194,14 +1210,36 @@ with st.sidebar:
     api_key = st.text_input("Gemini API Key", type="password")
     with st.expander("✨ 患者病歷數據深度分析", expanded=True):
         p_notes = st.text_area("輸入摘要 (含分期/細胞/標記)", placeholder="例如：EC Stage III, dMMR, p53 mutation, HER2 2+...", height=250)
-        if st.button("🚀 開始媒合分析"):
+# --- [2. 修改：兩排並列按鈕與複製邏輯] ---
+        col_ai1, col_ai2 = st.columns(2)
+        
+        if col_ai1.button("🚀 開始分析", use_container_width=True):
             if api_key and p_notes:
                 try:
                     genai.configure(api_key=api_key)
                     model = get_gemini_model()
                     prompt = f"分析病歷：{p_notes}。請參考實證庫：{all_trials_db}。建議適合路徑與試驗理由。"
-                    st.write(model.generate_content(prompt).text)
-                except Exception as e: st.error(f"AI 異常: {e}")
+                    # 生成內容並存入 session_state
+                    response = model.generate_content(prompt)
+                    st.session_state['ai_matching_report'] = response.text
+                except Exception as e: 
+                    st.error(f"AI 異常: {e}")
+            else:
+                st.warning("請輸入 Key 與病歷摘要")
+
+        if col_ai2.button("📋 複製報告", use_container_width=True):
+            if 'ai_matching_report' in st.session_state:
+                st_copy_to_clipboard(st.session_state['ai_matching_report'])
+                st.toast("✅ 媒合報告已複製！", icon="🤖")
+            else:
+                st.warning("請先完成分析")
+
+        # 顯示 AI 分析結果
+        if 'ai_matching_report' in st.session_state:
+            st.markdown("---")
+            st.markdown("**AI 建議路徑：**")
+            st.info(st.session_state['ai_matching_report'])
+        # ---------------------------------------
 
 # --- 5. 主頁面：導航地圖佈局 ---
 st.markdown("<div class='main-title'>婦癌臨床導航儀表板 (2026 旗艦最終極量整合版)</div>", unsafe_allow_html=True)
