@@ -106,7 +106,7 @@ guidelines_nested = {
             {"title": "Clear Cell Carcinoma", "content": "OCCC。"},
             {"title": "Mucinous (MOC) 鑑定", "content": "判定：CK7+/SATB2- (原發)。IA 期可保守。侵襲型建議積極化療。"}]},
         {"id": "R-MT", "header": "復後維持 (PR-Maint)", "css": "r-mt", "subs": [
-            {"title": "PARPi Maint", "content": "救援緩解後續用 PARPi (NOVA/ARIEL3/SOLO2)。"}
+            {"title": "PARPi Maint", "content": "救援緩解後續用 PARPi (NOVA/ARIEL3/SOLO2)。"},
             {"title": "ADC/other Maint", "content": "其他藥物。"}]}
     ],
     "Cervical": [
