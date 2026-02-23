@@ -5,13 +5,43 @@ import google.generativeai as genai
 import streamlit.components.v1 as components
 
 def st_copy_to_clipboard(text):
-    """自定義複製功能 (JavaScript)"""
-    escaped_text = text.replace("`", "\\`").replace("$", "\\$").replace("\n", "\\n")
+    """強效版複製功能：相容性最高，支援 iframe 與多種瀏覽器"""
+    # 處理特殊字元
+    escaped_text = text.replace("\\", "\\\\").replace("`", "\\`").replace("$", "\\$").replace("\n", "\\n").replace("'", "\\'")
+    
     copy_js = f"""
     <script>
-    navigator.clipboard.writeText(`{escaped_text}`).then(() => {{
-        window.parent.postMessage({{"type": "streamlit:setComponentValue", "value": "copied"}}, "*");
-    }});
+    function copyToClipboard() {{
+        const text = `{escaped_text}`;
+        
+        // 建立一個隱藏的 textarea
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        
+        // 確保它在畫面外，不被看見
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        document.body.appendChild(textArea);
+        
+        // 選取文字並執行複製
+        textArea.focus();
+        textArea.select();
+        
+        try {{
+            const successful = document.execCommand('copy');
+            if (successful) {{
+                // 傳送成功訊號給 Streamlit
+                window.parent.postMessage({{"type": "streamlit:setComponentValue", "value": "copied"}}, "*");
+            }}
+        }} catch (err) {{
+            console.error('無法複製', err);
+        }}
+        
+        // 移除暫存元件
+        document.body.removeChild(textArea);
+    }}
+    copyToClipboard();
     </script>
     """
     components.html(copy_js, height=0, width=0)
