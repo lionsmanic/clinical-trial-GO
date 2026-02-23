@@ -1188,21 +1188,32 @@ def get_gemini_model():
         if target_model: return genai.GenerativeModel(target_model)
     except: return None
 
-# --- 4. 側邊欄：決策助理 ---
+# --- 4. 側邊欄：決策助理 (複製功能與排版優化版) ---
 with st.sidebar:
     st.markdown("<h3 style='color: #6A1B9A;'>🤖 AI 實證媒合助理</h3>", unsafe_allow_html=True)
     api_key = st.text_input("Gemini API Key", type="password")
     
     with st.expander("✨ 患者病歷數據深度分析", expanded=True):
-        p_notes = st.text_area("輸入摘要 (含分期/細胞/標記)", placeholder="例如：EC Stage III, dMMR...", height=200)
+        p_notes = st.text_area("輸入摘要 (含分期/細胞/標記)", placeholder="例如：EC Stage III, dMMR, p53 mutation...", height=200)
         
-        # 點擊按鈕進行分析
         if st.button("🚀 開始媒合分析", use_container_width=True):
             if api_key and p_notes:
                 try:
                     genai.configure(api_key=api_key)
                     model = get_gemini_model()
-                    prompt = f"分析病歷：{p_notes}。請參考實證庫：{all_trials_db}。建議適合路徑與試驗理由。"
+                    
+                    # --- [優化 Prompt] 限制 AI 不要輸出過多 Markdown 符號 ---
+                    prompt = f"""
+                    請作為專業婦癌專家分析以下病歷：{p_notes}。
+                    參考實證庫：{all_trials_db}。
+                    
+                    【輸出要求】：
+                    1. 請使用『純文字』專業醫療報告格式。
+                    2. 嚴禁使用過多的星號(**)或井字號(###)。
+                    3. 使用簡單的標題與點列式(•)即可。
+                    4. 內容需包含：病歷摘要、推薦試驗、推薦理由與 Decision Tree 步驟。
+                    """
+                    
                     response = model.generate_content(prompt)
                     # 將結果存入暫存
                     st.session_state['ai_matching_report'] = response.text
@@ -1211,16 +1222,16 @@ with st.sidebar:
             else:
                 st.warning("請輸入 Key 與病歷摘要")
 
-        # --- 重點：如果 AI 有跑出結果，顯示「原生複製區塊」 ---
+        # --- [重點：穩定複製區塊] ---
         if 'ai_matching_report' in st.session_state:
             st.markdown("---")
-            st.markdown("✅ **分析完成！請點擊下方區塊右上角圖示進行複製：**")
+            st.info("📋 **分析完成！點擊下方方框右上角圖示即可『一鍵複製』：**")
             
-            # 使用 st.code 顯示，這會自動產生一個 100% 成功的複製按鈕
+            # 使用 st.code 顯示，右上角會自動出現一個官方的複製按鈕，保證 100% 成功
             st.code(st.session_state['ai_matching_report'], language=None)
             
-            # 如果還是想要一個按鈕提醒使用者，可以加一個裝飾用的清空鍵
-            if st.button("🗑️ 清空分析結果"):
+            # 提供清空按鈕，方便下一次分析
+            if st.button("🗑️ 清空目前的分析內容", use_container_width=True):
                 del st.session_state['ai_matching_report']
                 st.rerun()
 
